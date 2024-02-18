@@ -1,20 +1,24 @@
-# Capstone Full-Stack Template
+# Capstone Server Template
 
-Welcome to the Capstone Full-Stack Template! This repository is a starting point for full-stack development capstone projects, featuring a backend Express server with MongoDB, and a frontend Next.js client, both dockerized for ease of development and deployment.
+### To start the server
 
-## Features
+run the command `yarn && yarn start`. This will install all the dependencies and build the docker image
 
-- **Backend**: A Dockerized Express server setup, pre-configured with CORS to handle cross-origin requests, connected to MongoDB for data persistence.
-- **Frontend**: A Dockerized Next.js application setup for building modern web applications with server-side rendering and static site generation capabilities.
-- **Development Environment**: Fully dockerized environment for both frontend and backend, ensuring consistency across different setups.
+### To install packages
 
-## Prerequisites
+when you run `yarn add PACKAGE` the package will be installed in docker as well automatically. However if you run into issues, you need to stop the server first with `yarn stop` then you can run `yarn build` to rebuild the docker image and start again.
 
-Before you begin, ensure you have the following installed on your system:
-- Docker and Docker Compose
-- Node.js (recommended: the latest LTS version)
-- Git (for cloning the repository)
+### To prune the containers and data
 
-## Getting Started
+> ⚠️ WARNING: This is a destructuve command that would delete the containers and all the data inside like database data, and uploads
+> you can run `yarn prune` to shutdown the server and delete all the volumes associated with it. This serves as a start fresh command, that will return your server environment to original. It will not affect your code changes though.
 
-Follow the README.md file in each of the client and server for setup steps
+## Starter Code
+
+In this project folder, you will find:
+
+1. Express server setup in `/index.js`
+2. The database connection is setup in `db/connection.js`
+3. CORS is enabled and there's a test endpoint `/test`
+
+Now the rest is for you to build on your own 😁
