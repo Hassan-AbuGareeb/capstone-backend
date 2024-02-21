@@ -5,11 +5,6 @@ const orderSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       required: true
     },
-    customerId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Customer',
-      required: true
-    },
     restaurantId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Restaurant',
@@ -34,12 +29,6 @@ const orderSchema = new mongoose.Schema({
 });
 
 const basketSchema = mongoose.Schema({
-        customerId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Customer',
-            required: true,
-            unique: true 
-        },
         itemId: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Item'
@@ -130,7 +119,7 @@ const customerSchema = mongoose.Schema({
         },
         basket: {
             type: basketSchema,
-            default: [],
+            default: {},
             required: true
         },
         orders: {
