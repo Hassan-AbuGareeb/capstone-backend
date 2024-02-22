@@ -1,6 +1,6 @@
 const moongose = require("mongoose");
 const restaurantSchema = require("../models/Restaurant");
-// const itemSchema = require("../models/item");
+const itemSchema = require("../models/item");
 
 //sign in
 async function restaurantSignIn(req, res){
@@ -66,8 +66,8 @@ async function removeMenuItem(req, res){
 // get rx info
 async function getRestaurantInfo(req, res){
     try{
-        const {rxId} = req.params;
-        const restaurantInfo = await restaurantSchema.findbyId(rxId);
+        const {restaurantId} = req.params;
+        const restaurantInfo = await restaurantSchema.findbyId(restaurantId);
         res.status(200).json(restaurantInfo);
     }
     catch(err){
@@ -78,8 +78,8 @@ async function getRestaurantInfo(req, res){
 // update rx info
 async function updateRestaurantInfo(req, res){
     try{
-        const {rxId} = req.params;
-        const upadtedRestaurantInfo = await restaurantSchema.findByIdAndUpdate(req.body, rxId, {new: true});
+        const {restaurantId} = req.params;
+        const upadtedRestaurantInfo = await restaurantSchema.findByIdAndUpdate(restaurantId, req.body, {new: true});
         res.status(201).json([upadtedRestaurantInfo, 'Profile updated successfully']);
     }
     catch(err){
