@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const tokenBlackListModel = require("../models/tokenBlackList");
 const isAuthenticated = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  const token = req.headers.authorization;
   //request doesn't contain a token
   if (!token) {
     return res.status(403).end();
