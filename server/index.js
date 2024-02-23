@@ -1,5 +1,8 @@
 const express = require("express");
+const mongoose = require('mongoose')
 const cors = require("cors");
+const bodyParser = require('body-parser')
+const restaurantRouter = require('./routes/Restaurant')
 
 require("dotenv").config();
 
@@ -11,6 +14,7 @@ const port =
     ? process.env.NODE_LOCAL_TEST_PORT
     : process.env.NODE_LOCAL_PORT;
 
+app.use(bodyParser.json())    
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -25,5 +29,7 @@ app.get("/test", (req, res) => {
     "Server connection to client works!!  Good Luck with your capstones :D"
   );
 });
+
+app.use('/restaurants', restaurantRouter)
 
 module.exports = app;

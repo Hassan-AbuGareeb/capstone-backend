@@ -1,38 +1,59 @@
 const mongoose = require("mongoose");
 
 const itemSchema = new mongoose.Schema({
-  //itemId:{
-  //    type: mongoose.Schema.Types.ObjectId,
-  //    required: true,
-  //   unique: true
-  // },
   restaurantId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Restaurant",
-    required: true,
   },
   name: {
     type: String,
-    required: true,
+    required: [true, 'Item name is required'],
+    unique: [true, 'Item has been already added to the menu']
   },
   description: {
     type: String,
-    required: true,
+    required: [true, 'Item description is required'],
   },
   image: {
-    type: String,
+    type: Buffer,
   },
   price: {
     type: mongoose.Schema.Types.Decimal128,
-    required: true,
+    required: [true, 'Item price is required']
   },
-  category: {
-    type: String,
-    enum: ["Desserts", "Breakfast", "Traditional", "Beverages", "Snacks"],
-    default: "uncategorized",
-  },
+  customFields: [
+    {
+      required: false,
+      title: {
+        type: String,
+        required: true
+      },
+      fieldType: {
+        type: String,
+        enum: ["required", "optional"],
+        required: true
+      },
+      minSelection: {
+        type: Number,
+        required: true
+      },
+      maxSelection: {
+        type: Number,
+        required: false
+      },
+      options: {
+        type: [String],
+        required: true
+      },
+      additionalPrice: {
+        type: Number,
+        required: false
+      }
+    }
+  ]
+  
 });
 
-const item = mongoose.model("Item", itemSchema);
+const Item = mongoose.model("Item", itemSchema);
 
-module.exports = item;
+module.exports = Item;
