@@ -20,8 +20,7 @@ router.get("/search", customerController.searchItems);
 // Filter route
 router.get("/filter", customerController.filterItems);
 
-// View item info route
-router.get("/items/:itemId", customerController.viewItemInfo);
+
 
 
 // router.get("/profile", customerController.getProfile);
