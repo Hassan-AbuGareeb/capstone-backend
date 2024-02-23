@@ -135,12 +135,15 @@ const customerSchema = mongoose.Schema({
     required: true,
   },
   favourites: {
-    itemId: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Item",
-      },
-    ],
+    itemId: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Item",
+        },
+      ],
+      default: [],
+    },
   },
 });
 
