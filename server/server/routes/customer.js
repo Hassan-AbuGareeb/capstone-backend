@@ -7,7 +7,7 @@ const customerController = require("../controllers/customer");
 
 // Signup route
 router.post("/signup", customerController.signup);
-
+router.get("/getAll", customerController.getUsers);
 // Signout route
 // router.post("/signout", customerController.signout);
 

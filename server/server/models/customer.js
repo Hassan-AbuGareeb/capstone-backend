@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const validator = require("validator");
 const orderSchema = new mongoose.Schema({
   orderId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -40,6 +40,7 @@ const basketSchema = mongoose.Schema({
   notes: String,
   quantity: {
     type: Number,
+    default: 0,
     required: true,
   },
 });
@@ -130,8 +131,8 @@ const customerSchema = mongoose.Schema({
     required: true,
   },
   orders: {
-    type: orderSchema,
-    default: {},
+    type: [orderSchema],
+    default: [],
     required: true,
   },
   favourites: {
