@@ -20,9 +20,6 @@ router.get("/search", customerController.searchItems);
 // Filter route
 router.get("/filter", customerController.filterItems);
 
-
-
-
 // router.get("/profile", customerController.getProfile);
 // router.put("/profile", customerController.updateProfile);
 // router.get("/basket",customerController.getCart);
