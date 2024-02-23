@@ -24,6 +24,7 @@ router.get("/getall", customerController.getUsers);
 // router.get("/profile", customerController.getProfile);
 // router.put("/profile", customerController.updateProfile);
 // router.get("/basket",customerController.getCart);
+// router.post("/basket/:id",customerController.addItem)
 // router.put("/basket",customerController.updateCart);
 // router.delete("/basket",customerController.deleteCart);
 // router.post("/checkout",customerController.checkout)
