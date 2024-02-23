@@ -30,4 +30,19 @@ async function getUsers(req, res) {
   res.json(users);
 }
 
-module.exports = { signup, getUsers };
+async function signin(req, res) {
+  const { email, password } = req.body;
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const customer = customerModel.findOne({ email, hashedPassword });
+    if (!customer) throw new Error("wrong username or password");
+    const token = jwt.sign({ userId: customer._id }, process.env.SECRET_KEY, {
+      expiresIn: "1h",
+    });
+    res.status(200).json(token);
+  } catch (err) {
+    res.status(422).json({ message: err.message });
+  }
+}
+
+module.exports = { signup, getUsers, signin };

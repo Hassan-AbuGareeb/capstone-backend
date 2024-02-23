@@ -2,13 +2,14 @@ const express = require("express");
 const router = express.Router();
 const isAuthenticated = require("../middleware/isAuthenticated");
 const customerController = require("../controllers/customer");
-// Signin route
-// router.post("/signin", customerController.signin);
 
 // Signup route
 router.post("/signup", customerController.signup);
 //for testing purposes
 router.get("/getall", customerController.getUsers);
+// Signin route
+router.post("/signin", customerController.signin);
+
 // Signout route
 // router.post("/signout", customerController.signout);
 
