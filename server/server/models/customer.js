@@ -136,15 +136,13 @@ const customerSchema = mongoose.Schema({
     required: true,
   },
   favourites: {
-    itemId: {
-      type: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Item",
-        },
-      ],
-      default: [],
-    },
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Item",
+      },
+    ],
+    default: [],
   },
 });
 

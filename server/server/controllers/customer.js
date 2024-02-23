@@ -12,7 +12,7 @@ async function signup(req, res) {
     //remove the password confirmation from the request body
     delete req.body.password2;
     //replace the password with hashed password
-    req.body.password =hashedPassword;
+    req.body.password = hashedPassword;
     const newCustomer = await customerModel.create(req.body);
     const token = jwt.sign(
       { userId: newCustomer._id },
@@ -24,7 +24,7 @@ async function signup(req, res) {
     res.status(422).json({ message: err.message });
   }
 }
-
+//for testing purposes
 async function getUsers(req, res) {
   const users = await customerModel.find({});
   res.json(users);
