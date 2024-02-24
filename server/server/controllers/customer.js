@@ -34,13 +34,12 @@ async function signin(req, res) {
   const { email, password } = req.body;
   try {
     //find the customer in the database
-    const customer = customerModel.findOne({ email });
+    const customer = await customerModel.findOne({ email });
+    // console.log(customer);
     if (!customer) throw new Error("wrong username or password");
-    const hashedPassword = bcrypt.compare(password, 10);
-    const customerPassword = customer.password;
     //check if the entered password equals the stored password
-    if (hashedPassword === customerPassword)
-      throw new Error("wrong username or password");
+    const isPasswordCorrect = await bcrypt.compare(password, customer.password);
+    if (!isPasswordCorrect) throw new Error("wrong username or password");
     //log in successful, create and send the jwt
     const token = jwt.sign({ userId: customer._id }, process.env.SECRET_KEY, {
       expiresIn: "1h",
