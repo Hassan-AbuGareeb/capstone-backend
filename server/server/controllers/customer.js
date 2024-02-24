@@ -1,6 +1,7 @@
 const moongose = require("mongoose");
 const customerModel = require("../models/customer");
 const itemModel = require("../models/item");
+const tokenBlackListModel = require("../models/tokenBlackList");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -50,4 +51,14 @@ async function signin(req, res) {
   }
 }
 
-module.exports = { signup, getUsers, signin };
+async function signout(req, res) {
+  try {
+    await tokenBlackListModel.create({ token: req.headers.authorization });
+    //should redirect the user to home page, will be changed during front end development
+    res.status(200).json({ message: "signed out sucessfully" });
+  } catch (err) {
+    res.status(422).json({ message: err.message });
+  }
+}
+
+module.exports = { signup, getUsers, signin, signout };
