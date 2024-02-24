@@ -30,4 +30,25 @@ async function getUsers(req, res) {
   res.json(users);
 }
 
-module.exports = { signup, getUsers };
+async function signin(req, res) {
+  const { email, password } = req.body;
+  try {
+    //find the customer in the database
+    const customer = customerModel.findOne({ email });
+    if (!customer) throw new Error("wrong username or password");
+    const hashedPassword = bcrypt.compare(password, 10);
+    const customerPassword = customer.password;
+    //check if the entered password equals the stored password
+    if (hashedPassword === customerPassword)
+      throw new Error("wrong username or password");
+    //log in successful, create and send the jwt
+    const token = jwt.sign({ userId: customer._id }, process.env.SECRET_KEY, {
+      expiresIn: "1h",
+    });
+    res.status(200).json(token);
+  } catch (err) {
+    res.status(422).json({ message: err.message });
+  }
+}
+
+module.exports = { signup, getUsers, signin };
