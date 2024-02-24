@@ -11,7 +11,7 @@ router.get("/getall", customerController.getUsers);
 router.post("/signin", customerController.signin);
 
 // Signout route
-// router.post("/signout", customerController.signout);
+router.post("/signout", isAuthenticated, customerController.signout);
 
 // Items route - View all items
 // router.get("/items", customerController.viewAllItems);
