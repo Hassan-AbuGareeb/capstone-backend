@@ -3,7 +3,7 @@ const customerModel = require("../models/customer");
 const itemModel = require("../models/item");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const Basket = require("../models/basket");
+
 
 async function signup(req, res) {
   const { password, password2 } = req.body;
@@ -31,81 +31,100 @@ async function getUsers(req, res) {
   res.json(users);
 }
 
-//get basket
-async function getBasket(req, res) {
-  const customerId = req.user.id; 
+//get cart
+async function getCart(req, res) {
   try {
-    // Retrieve the customer's basket
-    const basket = await Basket.findOne({ customerId }).populate("itemId.itemId");
-
-    if (!basket) {
-      return res.status(404).json({ message: "Basket not found" });
-    }
-
-    res.status(200).json({ message: "Basket retrieved successfully", basket });
+    const customerId = req.user.userId;
+    const customer = await customerModel.findById(customerId).populate("basket.itemId");
+    res.status(200).json({ message: "Basket retrieved successfully", basket: customer.basket });
   } catch (error) {
-    console.error("Error retrieving basket:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "An error occurred while retrieving the basket" });
   }
 }
-//add Item
+//add item to cart
 async function addItem(req, res) {
-  const { itemId, quantity } = req.body;
-  const customerId = req.user.id; 
   try {
-    let basket = await Basket.findOne({ customerId });
-    if (!basket) {
-      basket = new Basket({ customerId });
-    }
-    basket.itemId.push({ itemId, quantity });
-    await basket.save();
-    
-    res.status(200).json({ message: "Item added to basket successfully", basket });
-  } catch (error) {
-    console.error("Error adding item to basket:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-}
-//update item
-async function updateItem(req, res) {
-  const { itemId, quantity } = req.body;
-  const customerId = req.user.id; 
-  try {
-    let basket = await Basket.findOne({ customerId });
+    const customerId = req.user.userId; // Corrected typo: changed '.user' to 'req.user'
+    const { id } = req.params;
+    const { quantity } = req.body;
 
-    const itemIndex = basket.itemId.findIndex(id => id.toString() === itemId);
+    const customer = await customerModel.findById(customerId).populate("basket.itemId"); // Corrected typo: changed 'Model' to 'customerModel'
+    const item = await itemModel.findById(id);
+
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    if (!item) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    const itemIndex = customer.basket.itemId.findIndex((item) => item.itemId.toString() === id); // Corrected typo: changed 'itemId' to 'item'
 
     if (itemIndex === -1) {
-      return res.status(404).json({ message: "Item not found in basket" });
+      customer.basket.itemId.push({ itemId: id, quantity });
+    } else {
+      customer.basket.itemId[itemIndex].quantity += quantity;
     }
-    basket.itemId[itemIndex].quantity = quantity;
-    await basket.save();
-    res.status(200).json({ message: "Item quantity updated successfully", basket });
+
+    await customer.save();
+
+    res.status(200).json({ message: "Item added to cart successfully", cart: customer.basket });
   } catch (error) {
-    console.error("Error updating item quantity:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "An error occurred while adding the item to the cart" });
   }
 }
 
-//delete item
-async function deleteItem(req, res) {
-  const { itemId } = req.params;
-  const customerId = req.user.id; 
+//update item quantity in cart
+async function updateCart(req, res) {
   try {
-    let basket = await Basket.findOne({ customerId });
-    const itemIndex = basket.itemId.findIndex(item => item.itemId.toString() === itemId);
-    if (itemIndex === -1) {
-      return res.status(404).json({ message: "Item not found in basket" });
-    }
-    basket.itemId.splice(itemIndex, 1);
-    await basket.save();
+    const customerId = req.user.userId;
+    const { id, quantity } = req.body;
 
-    res.status(200).json({ message: "Item deleted from basket successfully", basket });
+    const customer = await customerModel.ById(customerId).populate("basket.itemId");
+    const item = customer.basket.itemId.find((item) => item.itemId.toString() === id);
+
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    if (!item) {
+      return res.status(404).json({ message: "Item not found in cart" });
+    }
+
+    const itemIndex = customer.basket.itemId.findIndex((itemId) => itemId.itemId.toString() === id);
+
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: "Item not found in cart" });
+    }
+
+    customer.basket.itemId[itemIndex].quantity = quantity;
+
+    await customer.save();
+
+    res.status(200).json({ message: "Item quantity updated in cart successfully", cart: customer.basket });
   } catch (error) {
-    console.error("Error deleting item from basket:", error);
+    res.status(500).json({ message: "An error occurred while updating the item quantity in the cart" });
+  }
+}
+//delete cart
+async function deleteCart(req, res) {
+  const userId = req.user.userId; 
+  try {
+    let cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    cart.items = [];
+    await cart.save();
+
+    res.status(200).json({ message: "All items deleted from cart successfully", cart });
+  } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
 
 
-module.exports = { signup, getUsers , getBasket, addItem, updateItem, deleteItem};
+module.exports = { signup, getUsers , getCart, addItem, updateCart, deleteCart};
