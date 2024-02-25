@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const isAuthenticated = require("../middleware/isAuthenticated");
 const customerController = require("../controllers/customer");
-
+const item = require("../models/item");
 // Signup route
 router.post("/signup", customerController.signup);
 //for testing purposes
@@ -24,10 +24,19 @@ router.post("/signout", isAuthenticated, customerController.signout);
 
 // router.get("/profile", customerController.getProfile);
 // router.put("/profile", customerController.updateProfile);
+// router.post("/items", async (req, res) => {
+//   const body = {
+//     name: "Ice cream",
+//     description: "multiple flavoured ice cream",
+//     price: 1.5,
+//   };
+//   const items = await item.create(body);
+//   res.json(items);
+// });
 router.get("/basket", isAuthenticated, customerController.getCart);
 router.post("/basket/:id", isAuthenticated, customerController.addItem);
 router.put("/basket/:id", isAuthenticated, customerController.updateCart);
 router.delete("/basket", isAuthenticated, customerController.deleteCart);
-// router.post("/checkout",customerController.checkout)
+router.post("/checkout", isAuthenticated, customerController.checkout);
 // router.post("/cancelOrder", customerController.cancelOrder);
 module.exports = router;
