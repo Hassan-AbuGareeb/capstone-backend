@@ -24,10 +24,10 @@ router.post("/signout", isAuthenticated, customerController.signout);
 
 // router.get("/profile", customerController.getProfile);
 // router.put("/profile", customerController.updateProfile);
-// router.get("/basket",customerController.getCart);
-// router.post("/basket/:id",customerController.addItem)
-// router.put("/basket",customerController.updateCart);
-// router.delete("/basket",customerController.deleteCart);
+router.get("/basket", isAuthenticated, customerController.getCart);
+router.post("/basket/:id", isAuthenticated, customerController.addItem);
+router.put("/basket/:id", isAuthenticated, customerController.updateCart);
+router.delete("/basket", isAuthenticated, customerController.deleteCart);
 // router.post("/checkout",customerController.checkout)
 // router.post("/cancelOrder", customerController.cancelOrder);
 module.exports = router;
