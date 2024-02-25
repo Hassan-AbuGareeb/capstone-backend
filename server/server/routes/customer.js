@@ -24,15 +24,6 @@ router.post("/signout", isAuthenticated, customerController.signout);
 
 // router.get("/profile", customerController.getProfile);
 // router.put("/profile", customerController.updateProfile);
-// router.post("/items", async (req, res) => {
-//   const body = {
-//     name: "Ice cream",
-//     description: "multiple flavoured ice cream",
-//     price: 1.5,
-//   };
-//   const items = await item.create(body);
-//   res.json(items);
-// });
 router.get("/basket", isAuthenticated, customerController.getCart);
 router.post("/basket/:id", isAuthenticated, customerController.addItem);
 router.put("/basket/:id", isAuthenticated, customerController.updateCart);
