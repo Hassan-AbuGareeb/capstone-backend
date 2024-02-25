@@ -186,12 +186,41 @@ async function deleteCart(req, res) {
   }
 }
 
+async function cancelOrder(req, res) {
+  const customerId = req.user.userId;
+  const orderId = req.body.orderId;
+  try {
+    const customer = await customerModel.findById(customerId);
+    const order = customer.orders.find(
+      (order) => order._id.toString() === orderId
+    );
+    if (!order) {
+      return res.status(422).json({ message: "order not found" });
+    }
+    if (order.status === "Canceled")
+      return res.status(302).json({ message: "order is already canceled" });
+    else if (order.status !== "Pending")
+      return res.status(302).json({ message: "order can't be canceled" });
+
+    const orderIndex = customer.orders.findIndex(
+      (order) => order._id.toString() === orderId
+    );
+    customer.orders[orderIndex].status = "Canceled";
+    await customer.save();
+    res.status(200).json({ message: "order canceled successfully" });
+  } catch (err) {
+    res.status(422).json({ message: err.message });
+  }
+}
+
 module.exports = {
   signup,
-  signin, signout,
+  signin,
+  signout,
   getUsers,
   getCart,
   addItem,
   updateCart,
   deleteCart,
+  cancelOrder,
 };
