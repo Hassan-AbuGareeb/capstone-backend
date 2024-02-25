@@ -195,10 +195,12 @@ async function checkout(req, res) {
       .populate("basket.items.itemId");
     const basketItems = customer.basket.items;
     if (basketItems.length < 1) {
+      //should redirect the user to home page, to be changed in front end
       return res.status(301).json({ message: "basket is empty!" });
     }
     //create the order object and fill it with data from the basket
     const order = {};
+    order.restaurantId = basketItems[0].itemId.restaurantId;
     order.items = [...basketItems];
     order.status = "Pending";
     let totalBill = 0;
@@ -218,6 +220,7 @@ async function checkout(req, res) {
     basket.quantity = 0;
     customer.basket = basket;
     await customer.save();
+    console.log(customer.orders);
     res.status(201).json({ message: "order is pending!", order });
   } catch (err) {
     res.status(422).json({ message: err.message });
