@@ -198,10 +198,12 @@ async function removeMenuItem(req, res) {
 }
 
 async function getRestaurantInfo(req, res) {
+  const token = req.headers.authorization;
   try {
-    const { restaurantId } = req.params;
-    const restaurantInfo = await Restaurant.findbyId(restaurantId);
-    res.status(200).json(restaurantInfo);
+    const extractedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const restaurantId = extractedToken.userId;
+    const profile = await Restaurant.findById(restaurantId);
+    res.status(200).json(profile);
   } catch (err) {
     res.status(422).json(err.message);
   }
@@ -212,14 +214,23 @@ async function updateRestaurantInfo(req, res) {
   try {
     const extractedToken = jwt.verify(token, process.env.JWT_SECRET);
     const restaurantId = extractedToken.userId;
-    const upadtedRestaurantInfo = await Restaurant.findByIdAndUpdate(restaurantId, req.body, { new: true });
+    const updatedProfile = await Restaurant.findByIdAndUpdate(restaurantId, req.body, { new: true });
 
-    if (JSON.stringify(upadtedRestaurantInfo) === JSON.stringify(Restaurant)){
-      return res.status(200).json('No changes made');
+    // const changesDetected = (
+    //   req.body.title !== updatedProfile.title ||
+    //   req.body.phoneNumber !== updatedProfile.phoneNumber ||
+    //   req.body.email !== updatedProfile.email ||
+    //   req.body.password !== updatedProfile.password ||
+    //   req.body.location !== updatedProfile.location ||
+    //   req.body.category !== updatedProfile.category ||
+    //   req.body.ein !== updatedProfile.ein
+    //   // add other properties as needed
+    // );
+    // if (!changesDetected) {
+    //   res.status(200).json('No changes made');
+    // }else{
 
-    }else{
-      res.status(201).json([upadtedRestaurantInfo, "Profile updated successfully"]);
-    }
+    res.status(201).json([updatedProfile, "Profile updated successfully"]);
 
   }catch(err){
     res.status(422).json(err.message);
