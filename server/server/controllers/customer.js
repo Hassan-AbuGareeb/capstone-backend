@@ -31,7 +31,6 @@ async function signin(req, res) {
   try {
     //find the customer in the database
     const customer = await customerModel.findOne({ email });
-    // console.log(customer);
     if (!customer) throw new Error("wrong username or password");
     //check if the entered password equals the stored password
     const isPasswordCorrect = await bcrypt.compare(password, customer.password);
@@ -220,7 +219,6 @@ async function checkout(req, res) {
     basket.quantity = 0;
     customer.basket = basket;
     await customer.save();
-    console.log(customer.orders);
     res.status(201).json({ message: "order is pending!", order });
   } catch (err) {
     res.status(422).json({ message: err.message });
