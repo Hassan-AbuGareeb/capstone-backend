@@ -14,7 +14,7 @@ router.post("/signin", customerController.signin);
 router.post("/signout", isAuthenticated, customerController.signout);
 
 // Items route - View all items
-// router.get("/items", customerController.viewAllItems);
+ router.get("/items", customerController.viewAllItems);
 
 // Search route
 // router.get("/search", customerController.searchItems);
