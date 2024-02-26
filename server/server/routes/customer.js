@@ -16,7 +16,7 @@ router.get("/getall", customerController.getUsers);
 // router.get("/items", customerController.viewAllItems);
 
 // Search route
-// router.get("/search", customerController.searchItems);
+router.get("/search", isAuthenticated ,customerController.searchItems);
 
 // Filter route
 // router.get("/filter", customerController.filterItems);

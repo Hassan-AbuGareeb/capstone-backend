@@ -125,6 +125,25 @@ async function deleteCart(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
+//search items by name
+async function searchItems(req, res) {
+  try {
+    const { name } = req.query;
 
+    if (!name) {
+      return res.status(400).json({ message: "Please provide a name to search for" });
+    }
 
-module.exports = { signup, getUsers , getCart, addItem, updateCart, deleteCart};
+    const items = await itemModel.find({ name: { $regex: name, $options: "i" } });
+
+    if (!items.length) {
+      return res.status(404).json({ message: "No items found with the provided name" });
+    }
+
+    res.status(200).json({ message: "Items found successfully", items });
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred while searching for items" });
+  }
+}
+
+module.exports = { signup, getUsers , getCart, addItem, updateCart, deleteCart , searchItems};
