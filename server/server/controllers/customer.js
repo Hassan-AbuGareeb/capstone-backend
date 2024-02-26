@@ -86,10 +86,8 @@ async function addItem(req, res) {
     const customerId = req.user.userId; // Corrected typo: changed '.user' to 'req.user'
     const { id } = req.params;
     const { quantity } = req.body;
-
-    const customer = await customerModel
-      .findById(customerId)
-      .populate("basket.items"); // Corrected typo: changed 'Model' to 'customerModel'
+    const customer = await customerModel.findById(customerId);
+    // .populate("basket.items"); // Corrected typo: changed 'Model' to 'customerModel'
     const item = await itemModel.findById(id);
 
     if (!customer) {
@@ -109,6 +107,7 @@ async function addItem(req, res) {
     } else {
       customer.basket.items[itemIndex].quantity += quantity;
     }
+
     customer.basket.quantity += quantity;
     await customer.save();
 
@@ -187,22 +186,73 @@ async function deleteCart(req, res) {
   }
 }
 
+
+async function cancelOrder(req, res) {
+  const customerId = req.user.userId;
+  const orderId = req.body.orderId;
+  try {
+    const customer = await customerModel.findById(customerId);
+    const order = customer.orders.find(
+      (order) => order._id.toString() === orderId
+    );
+    if (!order) {
+      return res.status(422).json({ message: "order not found" });
+    }
+
+    if (order.status === "Canceled")
+      return res.status(302).json({ message: "order is already canceled" });
+    else if (order.status !== "Pending")
+      return res.status(302).json({ message: "order can't be canceled" });
+
+    //calculate the time passed from the moment the order was placed
+    const currentTime = new Date().toString().split(" ")[4];
+    const orderTime = order.creationDate.toString().split(" ")[4];
+    const currentMinutes = Number(currentTime.split(":")[1]);
+    const orderMinutes = Number(orderTime.split(":")[1]);
+    let canCancel = false;
+    if (
+      //check if the duration between the order and the cancellation is less than three minutes
+      currentMinutes - orderMinutes >= 0 &&
+      currentMinutes - orderMinutes <= 3
+    ) {
+      canCancel = true;
+      //handles the case of the cancellation of the order being in the next hour after ordering but within 3 minutes limit
+    } else if (currentMinutes - orderMinutes < 0) {
+      canCancel = 60 - orderMinutes + currentMinutes + 1 <= 3;
+    }
+    if (canCancel) {
+      const orderIndex = customer.orders.findIndex(
+        (order) => order._id.toString() === orderId
+      );
+      customer.orders[orderIndex].status = "Canceled";
+      await customer.save();
+      return res.status(200).json({ message: "order canceled successfully" });
+    }
+    res.json({
+      message: "order can't be canceled after three minutes has passed",
+    });
+  } catch (err) {
+    res.status(422).json({ message: err.message });
+
 async function viewAllItems(req, res) {
   try {
     const allItems = await Item.find({});
     res.json(allItems);
   } catch (err) {
     res.json(err.message);
+
   }
 }
 
 module.exports = {
   signup,
-  signin, signout,
+  signin,
+  signout,
   getUsers,
   getCart,
   addItem,
   updateCart,
   deleteCart,
+  cancelOrder,
   viewAllItems
 };
