@@ -215,21 +215,6 @@ async function updateRestaurantInfo(req, res) {
     const extractedToken = jwt.verify(token, process.env.JWT_SECRET);
     const restaurantId = extractedToken.userId;
     const updatedProfile = await Restaurant.findByIdAndUpdate(restaurantId, req.body, { new: true });
-
-    // const changesDetected = (
-    //   req.body.title !== updatedProfile.title ||
-    //   req.body.phoneNumber !== updatedProfile.phoneNumber ||
-    //   req.body.email !== updatedProfile.email ||
-    //   req.body.password !== updatedProfile.password ||
-    //   req.body.location !== updatedProfile.location ||
-    //   req.body.category !== updatedProfile.category ||
-    //   req.body.ein !== updatedProfile.ein
-    //   // add other properties as needed
-    // );
-    // if (!changesDetected) {
-    //   res.status(200).json('No changes made');
-    // }else{
-
     res.status(201).json([updatedProfile, "Profile updated successfully"]);
 
   }catch(err){
