@@ -4,6 +4,7 @@ const itemModel = require("../models/item");
 const tokenBlackListModel = require("../models/tokenBlackList");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const Item = require("../models/item");
 
 async function signup(req, res) {
   const { password, password2 } = req.body;
@@ -185,6 +186,7 @@ async function deleteCart(req, res) {
   }
 }
 
+
 async function cancelOrder(req, res) {
   const customerId = req.user.userId;
   const orderId = req.body.orderId;
@@ -231,6 +233,14 @@ async function cancelOrder(req, res) {
     });
   } catch (err) {
     res.status(422).json({ message: err.message });
+
+async function viewAllItems(req, res) {
+  try {
+    const allItems = await Item.find({});
+    res.json(allItems);
+  } catch (err) {
+    res.json(err.message);
+
   }
 }
 
@@ -244,4 +254,5 @@ module.exports = {
   updateCart,
   deleteCart,
   cancelOrder,
+  viewAllItems
 };
