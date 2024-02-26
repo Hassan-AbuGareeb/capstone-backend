@@ -32,7 +32,6 @@ async function signin(req, res) {
   try {
     //find the customer in the database
     const customer = await customerModel.findOne({ email });
-    // console.log(customer);
     if (!customer) throw new Error("wrong username or password");
     //check if the entered password equals the stored password
     const isPasswordCorrect = await bcrypt.compare(password, customer.password);
@@ -186,6 +185,43 @@ async function deleteCart(req, res) {
   }
 }
 
+async function checkout(req, res) {
+  const customerId = req.user.userId;
+  try {
+    //get the customer and fill the basket with the items data
+    const customer = await customerModel
+      .findById(customerId)
+      .populate("basket.items.itemId");
+    const basketItems = customer.basket.items;
+    if (basketItems.length < 1) {
+      //should redirect the user to home page, to be changed in front end
+      return res.status(301).json({ message: "basket is empty!" });
+    }
+    //create the order object and fill it with data from the basket
+    const order = {};
+    order.restaurantId = basketItems[0].itemId.restaurantId;
+    order.items = [...basketItems];
+    order.status = "Pending";
+    let totalBill = 0;
+    //calculating the total bill
+    for (let i = 0; i < order.items.length; i++) {
+      let currentItem = order.items[i];
+      totalBill +=
+        parseFloat(currentItem.itemId.price.toString()) * currentItem.quantity; //converting from the decimal128 type to javascript number type
+    }
+    order.totalBill = totalBill;
+    //add order to the customer orders
+    customer.orders.push(order);
+    //empty the customer basket
+    const basket = customer.basket;
+    basket.items = [];
+    basket.notes = "";
+    basket.quantity = 0;
+    customer.basket = basket;
+    await customer.save();
+    res.status(201).json({ message: "order is pending!", order });
+  } catch (err) {
+    res.status(422).json({ message: err.message });
 
 async function cancelOrder(req, res) {
   const customerId = req.user.userId;
@@ -253,6 +289,7 @@ module.exports = {
   addItem,
   updateCart,
   deleteCart,
+  checkout,
   cancelOrder,
   viewAllItems
 };
