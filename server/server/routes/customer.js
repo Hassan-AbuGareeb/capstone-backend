@@ -28,6 +28,6 @@ router.get("/basket", isAuthenticated, customerController.getCart);
 router.post("/basket/:id", isAuthenticated, customerController.addItem);
 router.put("/basket/:id", isAuthenticated, customerController.updateCart);
 router.delete("/basket", isAuthenticated, customerController.deleteCart);
-// router.post("/checkout",customerController.checkout)
+// router.post("/checkout", isAuthenticated, customerController.checkout);
 router.post("/cancelOrder", isAuthenticated, customerController.cancelOrder);
 module.exports = router;
