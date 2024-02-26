@@ -14,7 +14,7 @@ router.post("/signin", customerController.signin);
 router.post("/signout", isAuthenticated, customerController.signout);
 
 // Items route - View all items
-// router.get("/items", customerController.viewAllItems);
+ router.get("/items", customerController.viewAllItems);
 
 // Search route
 // router.get("/search", customerController.searchItems);
@@ -30,4 +30,6 @@ router.put("/basket/:id", isAuthenticated, customerController.updateCart);
 router.delete("/basket", isAuthenticated, customerController.deleteCart);
 router.post("/checkout", isAuthenticated, customerController.checkout);
 // router.post("/cancelOrder", customerController.cancelOrder);
+// router.post("/checkout", isAuthenticated, customerController.checkout);
+router.post("/cancelOrder", isAuthenticated, customerController.cancelOrder);
 module.exports = router;
