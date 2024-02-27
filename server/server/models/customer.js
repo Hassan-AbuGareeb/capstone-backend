@@ -1,19 +1,18 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const orderSchema = new mongoose.Schema({
-  orderId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  },
   restaurantId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Restaurant",
     required: true,
   },
-  itemId: [
+  items: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Item",
+      itemId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Item",
+      },
+      quantity: { type: Number, default: 0, required: true },
     },
   ],
   status: {
@@ -31,10 +30,13 @@ const orderSchema = new mongoose.Schema({
 });
 
 const basketSchema = mongoose.Schema({
-  itemId: [
+  items: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Item",
+      itemId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Item",
+      },
+      quantity: { type: Number, default: 0, required: true },
     },
   ],
   notes: String,
