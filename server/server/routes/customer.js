@@ -17,7 +17,7 @@ router.post("/signout", isAuthenticated, customerController.signout);
  router.get("/items", customerController.viewAllItems);
 
 // Search route
-// router.get("/search", customerController.searchItems);
+router.get("/search",customerController.searchItems);
 
 // Filter route
 // router.get("/filter", customerController.filterItems);
