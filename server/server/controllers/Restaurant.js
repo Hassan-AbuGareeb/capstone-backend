@@ -81,8 +81,11 @@ async function removeRestaurant(req, res) {
   const { id } = req.params;
   try {
     await Restaurant.findByIdAndDelete(id);
-    return res.status(204).json("Restaurant Deleted Successfully!");
-  } catch (err) {}
+    console.log(id)
+    return res.status(200).json("Restaurant Deleted Successfully!");
+  } catch (err) {
+    res.json(err.message)
+  }
 }
 
 const searchRestaurantItems = async (req, res) => {
@@ -114,34 +117,45 @@ const searchRestaurantItems = async (req, res) => {
 
 async function addItem(req, res) {
   const token = req.headers.authorization;
+  if (!token) {
+    return res.json('/');
+  }
   const item = req.body;
   try {
-    const extractedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const restaurantId = extractedToken.userId;
-    const restaurant = await Restaurant.findById(restaurantId);
-    if (!restaurant) {
-      return res.status(401).json({ message: "Authentication error" });
-    }
-
-    const existingItem = await Item.findOne({
-      name: item.name,
-      restaurantId: restaurantId,
+    jwt.verify(token, process.env.JWT_SECRET, async function(err, extractedToken) {
+      if (err) {
+        return res.json('Authentication Error');
+      } else {
+        if (!extractedToken) {
+          return res.json('token unverified');
+        }
+        const restaurantId = extractedToken.userId;
+        const restaurant = await Restaurant.findById(restaurantId);
+        if (!restaurant) {
+          return res.status(401).json({ message: "Authentication error" });
+        }
+  
+        const existingItem = await Item.findOne({
+          name: item.name,
+          restaurantId: restaurantId,
+        });
+        if (existingItem) {
+          return res
+            .status(422)
+            .json({ message: "Item with the same name has already been created!" });
+        }
+  
+        item.restaurantId = restaurantId;
+  
+        const newItem = await Item.create(item);
+        restaurant.menu.push(newItem._id);
+        await restaurant.save();
+  
+        return res
+          .status(201)
+          .json({ newItem, message: "Item added to your menu successfully!" });
+      }
     });
-    if (existingItem) {
-      return res
-        .status(422)
-        .json({ message: "Item with the same name has already been created!" });
-    }
-
-    item.restaurantId = restaurantId;
-
-    const newItem = await Item.create(item);
-    restaurant.menu.push(newItem._id);
-    await restaurant.save();
-
-    return res
-      .status(201)
-      .json({ newItem, message: "Item added to your menu successfully!" });
   } catch (err) {
     res.status(422).json(err.message);
   }
