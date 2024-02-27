@@ -244,6 +244,8 @@ async function checkout(req, res) {
     res.status(201).json({ message: "order is pending!", order });
   } catch (err) {
     res.status(422).json({ message: err.message });
+  }
+}
 
 async function cancelOrder(req, res) {
   const customerId = req.user.userId;
@@ -291,7 +293,7 @@ async function cancelOrder(req, res) {
     });
   } catch (err) {
     res.status(422).json({ message: err.message });
-
+  }}
 async function viewAllItems(req, res) {
   try {
     const allItems = await Item.find({});
