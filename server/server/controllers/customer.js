@@ -190,22 +190,28 @@ async function searchItems(req, res) {
     const { name } = req.query;
 
     if (!name) {
-      return res.status(400).json({ message: "Please provide a name to search for" });
+      return res
+        .status(400)
+        .json({ message: "Please provide a name to search for" });
     }
 
-
-    const items = await itemModel.find({ name: { $regex: name, $options: "i" } });
+    const items = await itemModel.find({
+      name: { $regex: name, $options: "i" },
+    });
 
     if (!items.length) {
-      return res.status(404).json({ message: "No items found with the provided name" });
+      return res
+        .status(404)
+        .json({ message: "No items found with the provided name" });
     }
 
     res.status(200).json({ message: "Items found successfully", items });
   } catch (error) {
-    res.status(500).json({ message: "An error occurred while searching for items" });
+    res
+      .status(500)
+      .json({ message: "An error occurred while searching for items" });
   }
 }
-
 
 async function checkout(req, res) {
   const customerId = req.user.userId;
@@ -293,14 +299,24 @@ async function cancelOrder(req, res) {
     });
   } catch (err) {
     res.status(422).json({ message: err.message });
-  }}
+  }
+}
 async function viewAllItems(req, res) {
   try {
     const allItems = await Item.find({});
     res.json(allItems);
   } catch (err) {
     res.json(err.message);
+  }
+}
 
+async function getProfile(req, res) {
+  const customerId = req.user.userId;
+  try {
+    const customer = customerModel.findById(customerId);
+    res.status(200).json({ customerInfo: customer });
+  } catch (err) {
+    res.status(422).json(err.message);
   }
 }
 
@@ -316,5 +332,6 @@ module.exports = {
   deleteCart,
   checkout,
   cancelOrder,
-  viewAllItems
+  viewAllItems,
+  getProfile,
 };
