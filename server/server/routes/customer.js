@@ -14,22 +14,19 @@ router.post("/signin", customerController.signin);
 router.post("/signout", isAuthenticated, customerController.signout);
 
 // Items route - View all items
- router.get("/items", customerController.viewAllItems);
+router.get("/items", customerController.viewAllItems);
 
 // Search route
-router.get("/search",customerController.searchItems);
+router.get("/search", customerController.searchItems);
 
-// Filter route
-// router.get("/filter", customerController.filterItems);
-
-// router.get("/profile", customerController.getProfile);
+router.get("/profile", customerController.getProfile);
 // router.put("/profile", customerController.updateProfile);
 router.get("/basket", isAuthenticated, customerController.getCart);
 router.post("/basket/:id", isAuthenticated, customerController.addItem);
 router.put("/basket/:id", isAuthenticated, customerController.updateCart);
 router.delete("/basket", isAuthenticated, customerController.deleteCart);
 router.post("/checkout", isAuthenticated, customerController.checkout);
-// router.post("/cancelOrder", customerController.cancelOrder);
-// router.post("/checkout", isAuthenticated, customerController.checkout);
+router.post("/cancelOrder", customerController.cancelOrder);
+router.post("/checkout", isAuthenticated, customerController.checkout);
 router.post("/cancelOrder", isAuthenticated, customerController.cancelOrder);
 module.exports = router;
