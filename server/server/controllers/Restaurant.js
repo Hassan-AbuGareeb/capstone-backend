@@ -4,7 +4,6 @@ const Item = require("../models/item");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const generateToken = require("../middleware/generateToken");
-const { isJWT } = require("validator");
 const signedInUsers = {};
 
 async function restaurantSignUp(req, res) {
@@ -91,7 +90,6 @@ async function removeRestaurant(req, res) {
   const { id } = req.params;
   try {
     await Restaurant.findByIdAndDelete(id);
-    console.log(id)
     return res.status(200).json("Restaurant Deleted Successfully!");
   } catch (err) {
     res.json(err.message)
@@ -164,7 +162,6 @@ async function addItem(req, res) {
 async function updateMenuItem(req, res) {
   try {
     const restaurantId = req.user.userId
-    console.log(restaurantId)
     if (!restaurantId) {
       return res.status(403).json('Authentication Error')
     }
@@ -229,7 +226,6 @@ async function removeMenuItem(req, res) {
     if (!item) {
       return res.status(404).json('Item not found')
     }
-    console.log(item.restaurantId)
     
     if (item.restaurantId.toString() !== restaurantId) {
       return res.status(404).json('Incorrect Item ID')
