@@ -3,7 +3,7 @@ const Restaurant = require("../models/Restaurant");
 const Item = require("../models/item");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { generateToken } = require("../middleware/validateToken");
+const generateToken = require("../middleware/generateToken");
 const signedInUsers = {};
 
 async function restaurantSignUp(req, res) {
@@ -16,9 +16,7 @@ async function restaurantSignUp(req, res) {
     signUp.password = hashIt;
     await signUp.save();
 
-    return res
-      .status(201)
-      .json({ message: "Restaurant Created Successfuly!", signUp });
+    return res.status(201).json({ message: "Restaurant Created Successfuly!", signUp });
   } catch (err) {
     return res.status(422).json(err.message);
   }
@@ -28,42 +26,44 @@ async function restaurantSignIn(req, res) {
   const { email, password } = req.body;
   try {
     if (signedInUsers[email]) {
-      res.status(422).json({ message: "You are already signed in!" });
-      return;
+      return res.status(422).json({ message: "You are already signed in!" });
     }
 
     const admin = await Restaurant.findOne({ email });
+    if (!admin) {
+      return res.status(422).json({ message: "Wrong email or password" });
+    }
     const matchPassword = await bcrypt.compare(password, admin.password);
-
-    if (!admin || !matchPassword) {
+    if (!matchPassword) {
       return res.status(422).json({ message: "Wrong email or password" });
     }
     const token = await generateToken(admin);
     signedInUsers[email] = token;
 
-    return res
-      .status(200)
-      .json({ message: "Signed in successfully!", admin, token });
+    return res.status(200).json({ message: "Signed in successfully!", admin, token });
   } catch (err) {
-    res.status(422).json(err.message);
+    return res.status(422).json(err.message);
   }
 }
 
 async function restaurantSignOut(req, res) {
-  const token = req.headers.authorization;
   try {
-    const extractedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const email = extractedToken.email;
+    const email = req.user.email;
+    //to help with the testing
+    const token = req.user.userId
+    const header = req.headers.authorization
+    if (token !== header) {
+      return res.status(401).json({ message: "Unauthorized access" });
+    }
 
     if (!signedInUsers[email]) {
-      res.status(422).json({ message: "Already signed out" });
-      return;
+      return res.status(422).json({ message: "Already signed out" });
     }
 
     delete signedInUsers[email];
     return res.status(200).json({ message: "Signed out successfully!" });
   } catch (err) {
-    res.status(422).json(err.message);
+    return res.status(422).json(err.message);
   }
 }
 
@@ -76,7 +76,16 @@ async function getRestaurants(req, res) {
     res.json(err.message);
   }
 }
-
+//for testing purposes
+const allItems = async (req, res) => {
+  try {
+    const items = await Item.find({})
+    res.json(items)
+  } catch (err) {
+    res.json('nope')
+  }
+}
+//for testing purposes
 async function removeRestaurant(req, res) {
   const { id } = req.params;
   try {
@@ -88,48 +97,45 @@ async function removeRestaurant(req, res) {
   }
 }
 
-const searchRestaurantItems = async (req, res) => {
+const restaurantMenu = async (req, res) => {
   try {
-    const search = req.query;
+    //if no query provided, it will fetch all items
+    const restaurantId = req.user.userId
+    if (!restaurantId) {
+      return res.status(403).json('Authentication Failed')
+    }
+    const menu = await Item.find({ restaurantId });
+    if (menu.length === 0) {
+      return res.status(404).json('Menu is empty. No items have been added yet')
+    }
 
+    //if a query provided, it will search for an item
+    const { name, description, price, category } = req.query;
     let query = {};
-    if (search.name) {
-      query.name = { $regex: new RegExp(search.name, "i") };
+    if (name) {
+      query.name = { $regex: name, $options: 'i' };
     }
-    if (search.description) {
-      query.description = { $regex: new RegExp(search.description, "i") };
+    if (description) {
+      query.description = { $regex: description, $options: 'i' }; 
     }
-    if (search.category) {
-      query.category = Array.isArray(searchParams.category)
-        ? { $in: searchParams.category }
-        : searchParams.category;
+    if (category) {
+      query.category = category;
     }
-    const searchResults = await Item.find(query);
-    return res
-      .status(200)
-      .json({ message: "Search Results", items: searchResults });
+    if (price) {
+      query.price = parseFloat(price);
+    }
+    const menuItems = await Item.find(query);
+    return res.status(200).json(menuItems)
   } catch (err) {
-    res
-      .status(422)
-      .json({ message: "Error searching for items", error: err.message });
+    return res.status(422).json(err.message);
   }
-};
+}
 
 async function addItem(req, res) {
-  const token = req.headers.authorization;
-  if (!token) {
-    return res.json('/');
-  }
+ 
   const item = req.body;
   try {
-    jwt.verify(token, process.env.JWT_SECRET, async function(err, extractedToken) {
-      if (err) {
-        return res.json('Authentication Error');
-      } else {
-        if (!extractedToken) {
-          return res.json('token unverified');
-        }
-        const restaurantId = extractedToken.userId;
+        const restaurantId = req.user.userId;
         const restaurant = await Restaurant.findById(restaurantId);
         if (!restaurant) {
           return res.status(401).json({ message: "Authentication error" });
@@ -140,9 +146,7 @@ async function addItem(req, res) {
           restaurantId: restaurantId,
         });
         if (existingItem) {
-          return res
-            .status(422)
-            .json({ message: "Item with the same name has already been created!" });
+          return res.status(422).json({ message: "Item with the same name has already been created!" });
         }
   
         item.restaurantId = restaurantId;
@@ -154,48 +158,26 @@ async function addItem(req, res) {
         return res
           .status(201)
           .json({ newItem, message: "Item added to your menu successfully!" });
-      }
-    });
   } catch (err) {
     res.status(422).json(err.message);
   }
 }
 
 async function updateMenuItem(req, res) {
-  const token = req.headers.authorization;
-  const item = req.body;
+  const newitemDetails = req.body;
   try {
-    const extractedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const restaurantId = extractedToken.userId;
+    const restaurantId = req.user.userId;
+    const itemId = req.params
+    console.log(itemId)
+    console.log()
 
     const foundItem = await Item.findOne({
       restaurantId: restaurantId,
-      name: item.name,
+      itemId: Item._id,
     });
     if (!foundItem) {
       return res.status(404).json({ message: "Item not found" });
     }
-    console.log(item.price);
-    console.log(foundItem.price.toString());
-    if (
-      (item.name === foundItem.name ||
-        item.description === foundItem.description,
-      item.price.toString() === foundItem.price.toString())
-    ) {
-      return res.status(404).json({ message: "Nothing to change" });
-    }
-
-    const restaurant = await Restaurant.findById(restaurantId);
-    if (!restaurant) {
-      return res.status(401).json({ message: "Authentication error" });
-    }
-
-    const updatedItem = await Item.findByIdAndUpdate(foundItem._id, item, {
-      new: true,
-    });
-    return res
-      .status(201)
-      .json({ message: "Item updated successfully", updatedItem });
   } catch (err) {
     return res.status(422).json(err.message);
   }
@@ -242,7 +224,8 @@ module.exports = {
   restaurantSignOut,
   removeRestaurant,
   getRestaurants,
-  searchRestaurantItems,
+  restaurantMenu,
+  allItems,
   addItem,
   updateMenuItem,
   removeMenuItem,
