@@ -162,20 +162,49 @@ async function addItem(req, res) {
 }
 
 async function updateMenuItem(req, res) {
-  const newitemDetails = req.body;
   try {
-    const restaurantId = req.user.userId;
-    const itemId = req.params
-    console.log(itemId)
-    console.log()
-
-    const foundItem = await Item.findOne({
-      restaurantId: restaurantId,
-      itemId: Item._id,
-    });
-    if (!foundItem) {
-      return res.status(404).json({ message: "Item not found" });
+    const restaurantId = req.user.userId
+    console.log(restaurantId)
+    if (!restaurantId) {
+      return res.status(403).json('Authentication Error')
     }
+    const { itemId } = req.params;
+    if (!itemId || !mongoose.isValidObjectId(itemId)) { //handling an error caused by writing an incorrect itemId in params or leaving it empty
+      return res.status(422).json('Valid Item ID required');
+    }
+    const restaurant = await Restaurant.findById(restaurantId)
+    if (!restaurant.menu.includes(itemId)) {
+      return res.status(403).json('Item not found');
+    }    
+    const item = await Item.findById(itemId)
+    if (!item) {
+      return res.status(404).json('Item not found')
+    }
+
+    const { name, description, price, category } = req.body;
+    if (!name && !description && !price && !category) {
+      return res.status(422).json('No changes requested to be updated');
+    }
+    originalItem = {
+      name: item.name,
+      description: item.description,
+      price: parseFloat(item.price),
+      category: item.category
+    }
+    if (req.body.name === originalItem.name) {
+      return res.status(422).json('New item name matches the original item name')
+    }
+    if (req.body.description === originalItem.description) {
+      return res.status(422).json('New item description matches the original item description')
+    }
+    if (parseFloat(req.body.price) === originalItem.name) {
+      return res.status(422).json('New item price matches the original item price')
+    }
+    if (req.body.category === originalItem.category) {
+      return res.status(422).json('New item category matches the original item category')
+    }
+    const updatedItem = await Item.findByIdAndUpdate(itemId, req.body, {new: true})
+    res.status(200).json({message: 'Item updated successfully', updatedItem})
   } catch (err) {
     return res.status(422).json(err.message);
   }
@@ -188,8 +217,12 @@ async function removeMenuItem(req, res) {
       return res.status(403).json('Authentication Error')
     }
     const { itemId } = req.params;
-    if (!itemId || !mongoose.isValidObjectId(itemId)) { //handling an error caused by writing an incorrect itemId in params or leaving it empty
+    if (!itemId || !mongoose.isValidObjectId(itemId)) { //handling an error caused by writing an incorrect itemId in params or leaving
       return res.status(422).json('Valid Item ID required');
+    }
+    const restaurant = await Restaurant.findOne(restaurantId)
+    if (!restaurant.menu.includes(itemId)) {
+      return res.status(403).json('Authentication Error');
     }
 
     const item = await Item.findById(itemId)

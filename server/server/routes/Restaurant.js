@@ -12,7 +12,7 @@ router.get('/', restaurantController.getRestaurants) //وهاظ
 router.post('/', verifyToken, restaurantController.addItem);
 router.get('/get', restaurantController.allItems) //تستنج ما عليك
 router.get('/menu', verifyToken, restaurantController.restaurantMenu)
-// router.put('/updateitem', restaurantController.updateMenuItem);
+router.put('/menu/:itemId', verifyToken, restaurantController.updateMenuItem);
 router.delete('/menu/:itemId', verifyToken, restaurantController.removeMenuItem);
 // router.get('/profile', restaurantController.getRestaurantInfo);
 // router.put('/profile/update', restaurantController.updateRestaurantInfo);
