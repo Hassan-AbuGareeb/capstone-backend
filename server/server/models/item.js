@@ -21,6 +21,11 @@ const itemSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Decimal128,
     required: [true, 'Item price is required']
   },
+  category: {
+    type: [String],
+    enum: ["Asian", "Bakery", "Beverages", "Breakfast", "Brunch", "Burgers", "Cafe", "Desserts", "Donuts", "Fast Food", "Grill", "Ice Cream", "Indian", "Italian", "Juices", "Middle Eastern", "Mexican", "Pastries", "Pizza", "Salads", "Sandwiches", "Seafood", "Smoothies", "Snacks", "Soups", "Traditional", "Vegan", "Vegetarian", "Wraps"],
+    required: [true, 'Item needs to have at least 1 category']
+  },
   customFields: [
     {
       required: false,
@@ -30,7 +35,7 @@ const itemSchema = new mongoose.Schema({
       },
       fieldType: {
         type: String,
-        enum: ["required", "optional"],
+        enum: ["Required", "Optional"],
         required: true
       },
       minSelection: {
@@ -46,7 +51,7 @@ const itemSchema = new mongoose.Schema({
         required: true
       },
       additionalPrice: {
-        type: Number,
+        type: mongoose.Schema.Types.Decimal128,
         required: false
       }
     }
