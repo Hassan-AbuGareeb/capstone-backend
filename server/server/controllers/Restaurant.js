@@ -1,9 +1,10 @@
-const moongose = require("mongoose");
+const mongoose = require("mongoose");
 const Restaurant = require("../models/Restaurant");
 const Item = require("../models/item");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const generateToken = require("../middleware/generateToken");
+const { isJWT } = require("validator");
 const signedInUsers = {};
 
 async function restaurantSignUp(req, res) {
@@ -111,20 +112,17 @@ const restaurantMenu = async (req, res) => {
 
     //if a query provided, it will search for an item
     const { name, description, price, category } = req.query;
-    let query = {};
-    if (name) {
-      query.name = { $regex: name, $options: 'i' };
+
+    const menuItems = menu.filter(item => {
+      return (!name || item.name.match(new RegExp(name, 'i')))
+      && (!description || item.description.match(new RegExp(description, 'i')))
+      && (!category || item.category.includes(category))
+      && (!price || parseFloat(item.price) === parseFloat(price));
+    });
+
+    if (menuItems.length === 0) {
+      return res.status(404).json('No items found matching the query');
     }
-    if (description) {
-      query.description = { $regex: description, $options: 'i' }; 
-    }
-    if (category) {
-      query.category = category;
-    }
-    if (price) {
-      query.price = parseFloat(price);
-    }
-    const menuItems = await Item.find(query);
     return res.status(200).json(menuItems)
   } catch (err) {
     return res.status(422).json(err.message);
@@ -185,9 +183,27 @@ async function updateMenuItem(req, res) {
 
 async function removeMenuItem(req, res) {
   try {
+    const restaurantId = req.user.userId
+    if (!restaurantId) {
+      return res.status(403).json('Authentication Error')
+    }
     const { itemId } = req.params;
-    await itemSchema.findByIdAndRemove(itemId);
-    res.status(204).json("Item removed successfully");
+    if (!itemId || !mongoose.isValidObjectId(itemId)) { //handling an error caused by writing an incorrect itemId in params or leaving it empty
+      return res.status(422).json('Valid Item ID required');
+    }
+
+    const item = await Item.findById(itemId)
+    if (!item) {
+      return res.status(404).json('Item not found')
+    }
+    console.log(item.restaurantId)
+    
+    if (item.restaurantId.toString() !== restaurantId) {
+      return res.status(404).json('Incorrect Item ID')
+    }
+    await Item.findByIdAndRemove(itemId);
+    await Restaurant.findByIdAndRemove(itemId)
+    res.status(200).json("Item removed successfully");
   } catch (err) {
     res.status(422).json(err.message);
   }
