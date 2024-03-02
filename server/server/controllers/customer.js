@@ -320,6 +320,50 @@ async function getProfile(req, res) {
   }
 }
 
+async function updateProfile(req, res) {
+  try {
+    const customerId = req.user.userId
+    if (!customerId) {
+      return res.status(403).json('Authentication Error')
+    }
+    const customer = await customerModel.findById(customerId)
+
+    const {firstName, lastName, age, phoneNumber, location} = req.body
+    if (!firstName && !lastName && !age && !phoneNumber && !location) {
+      return res.status(422).json('No changes requested to be updated');
+    }
+    if (req.body.phoneNumber.length !== 10) {
+      return res.status(422).json('New phone number must be 10 digits')
+    }
+    originalCustomer = {
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+      age: customer.age,
+      phoneNumber: customer.phoneNumber,
+      location: customer.location
+    }
+    if (req.body.firstName === originalCustomer.firstName) {
+      return res.status(422).json('New first name matches the original first name')
+    }
+    if (req.body.lastName === originalCustomer.lastName) {
+      return res.status(422).json('New last name matches the original last name')
+    }
+    if (req.body.age === originalCustomer.age) {
+      return res.status(422).json('New age matches the original age')
+    }
+    if (req.body.phoneNumber === originalCustomer.phoneNumber) {
+      return res.status(422).json('New phone number matches the original phone number')
+    }
+    if (req.body.location === originalCustomer.location) {
+      return res.status(422).json('New location matches the original location')
+    }
+    const updatedprofile = await customerModel.findByIdAndUpdate(customerId, req.body, {new: true})
+    res.status(200).json({message: 'Profile updated successfully', updatedprofile})
+  } catch (err) {
+    return res.status(422).json(err.message)
+  }
+}
+
 module.exports = {
   signup,
   signin,
@@ -334,4 +378,5 @@ module.exports = {
   cancelOrder,
   viewAllItems,
   getProfile,
+  updateProfile
 };
