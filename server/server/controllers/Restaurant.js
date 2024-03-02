@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Restaurant = require("../models/Restaurant");
 const Item = require("../models/item");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const generateToken = require("../middleware/generateToken");
 const signedInUsers = {};
 
@@ -238,11 +237,12 @@ async function removeMenuItem(req, res) {
   }
 }
 
-async function getRestaurantInfo(req, res) {
-  const token = req.headers.authorization;
+async function restaurantProfile(req, res) {
   try {
-    const extractedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const restaurantId = extractedToken.userId;
+    const restaurantId = req.user.userId;
+    if (!restaurantId) {
+      return res.status(403).json('Authentication Error')
+    }
     const profile = await Restaurant.findById(restaurantId);
     res.status(200).json(profile);
   } catch (err) {
@@ -250,13 +250,47 @@ async function getRestaurantInfo(req, res) {
   }
 }
 
-async function updateRestaurantInfo(req, res) {
-  const token = req.headers.authorization;
+async function updateRestaurantProfile(req, res) {
   try {
-    const extractedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const restaurantId = extractedToken.userId;
+    const restaurantId = req.user.userId;
+    if (!restaurantId) {
+      return res.status(403).json('Authentication Error')
+    }
+
+    const restaurant = await Restaurant.findById(restaurantId)
+    const allowedCategories = ["Asian", "Bakery", "Beverages", "Breakfast", "Brunch", "Burgers", "Cafe", "Desserts", "Donuts", "Fast Food", "Grill", "Ice Cream", "Indian", "Italian", "Juices", "Middle Eastern", "Mexican", "Pastries", "Pizza", "Salads", "Sandwiches", "Seafood", "Smoothies", "Snacks", "Soups", "Traditional", "Vegan", "Vegetarian", "Wraps"]
+
+
+    const { title, location, phoneNumber, category } = req.body
+    if (!title && !location && !phoneNumber && !category) {
+      return res.status(422).json('No changes requested to be updated');
+    }
+    if (req.body.category && req.body.category.some(category => !allowedCategories.includes(category))) {
+      return res.status(422).json('Category is not allowed')
+    }
+    if (req.body.phoneNumber && req.body.phoneNumber.length !== 10) {
+      return res.status(422).json('New phone number must be 10 digits')
+    }
+    originalRestaurant = {
+      title: restaurant.title,
+      location: restaurant.location,
+      phoneNumber: restaurant.phoneNumber,
+      category: restaurant.category,
+    }
+    if (req.body.title === originalRestaurant.title) {
+      return res.status(422).json('New title matches the original title')
+    }
+    if (JSON.stringify(req.body.location) === JSON.stringify(originalRestaurant.location)) {
+      return res.status(422).json('New location matches the original location')
+    }
+    if (req.body.phoneNumber === originalRestaurant.phoneNumber) {
+      return res.status(422).json('New phone number matches the original phone number')
+    }
+    if (JSON.stringify(req.body.category) === JSON.stringify(originalRestaurant.category)) {
+      return res.status(422).json('New category matches the original category')
+    }
     const updatedProfile = await Restaurant.findByIdAndUpdate(restaurantId, req.body, { new: true });
-    res.status(201).json([updatedProfile, "Profile updated successfully"]);
+    res.status(201).json({message :"Profile updated successfully", updatedProfile});
 
   }catch(err){
     res.status(422).json(err.message);
@@ -274,6 +308,6 @@ module.exports = {
   addItem,
   updateMenuItem,
   removeMenuItem,
-  getRestaurantInfo,
-  updateRestaurantInfo,
+  restaurantProfile,
+  updateRestaurantProfile,
 };
