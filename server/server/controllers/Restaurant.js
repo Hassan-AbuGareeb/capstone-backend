@@ -1,4 +1,4 @@
-const moongose = require("mongoose");
+const mongoose = require("mongoose");
 const Restaurant = require("../models/Restaurant");
 const Item = require("../models/item");
 const bcrypt = require("bcrypt");
@@ -90,7 +90,6 @@ async function removeRestaurant(req, res) {
   const { id } = req.params;
   try {
     await Restaurant.findByIdAndDelete(id);
-    console.log(id)
     return res.status(200).json("Restaurant Deleted Successfully!");
   } catch (err) {
     res.json(err.message)
@@ -111,20 +110,17 @@ const restaurantMenu = async (req, res) => {
 
     //if a query provided, it will search for an item
     const { name, description, price, category } = req.query;
-    let query = {};
-    if (name) {
-      query.name = { $regex: name, $options: 'i' };
+
+    const menuItems = menu.filter(item => {
+      return (!name || item.name.match(new RegExp(name, 'i')))
+      && (!description || item.description.match(new RegExp(description, 'i')))
+      && (!category || item.category.includes(category))
+      && (!price || parseFloat(item.price) === parseFloat(price));
+    });
+
+    if (menuItems.length === 0) {
+      return res.status(404).json('No items found matching the query');
     }
-    if (description) {
-      query.description = { $regex: description, $options: 'i' }; 
-    }
-    if (category) {
-      query.category = category;
-    }
-    if (price) {
-      query.price = parseFloat(price);
-    }
-    const menuItems = await Item.find(query);
     return res.status(200).json(menuItems)
   } catch (err) {
     return res.status(422).json(err.message);
@@ -164,20 +160,48 @@ async function addItem(req, res) {
 }
 
 async function updateMenuItem(req, res) {
-  const newitemDetails = req.body;
   try {
-    const restaurantId = req.user.userId;
-    const itemId = req.params
-    console.log(itemId)
-    console.log()
-
-    const foundItem = await Item.findOne({
-      restaurantId: restaurantId,
-      itemId: Item._id,
-    });
-    if (!foundItem) {
-      return res.status(404).json({ message: "Item not found" });
+    const restaurantId = req.user.userId
+    if (!restaurantId) {
+      return res.status(403).json('Authentication Error')
     }
+    const { itemId } = req.params;
+    if (!itemId || !mongoose.isValidObjectId(itemId)) { //handling an error caused by writing an incorrect itemId in params or leaving it empty
+      return res.status(422).json('Valid Item ID required');
+    }
+    const restaurant = await Restaurant.findById(restaurantId)
+    if (!restaurant.menu.includes(itemId)) {
+      return res.status(403).json('Item not found');
+    }    
+    const item = await Item.findById(itemId)
+    if (!item) {
+      return res.status(404).json('Item not found')
+    }
+
+    const { name, description, price, category } = req.body;
+    if (!name && !description && !price && !category) {
+      return res.status(422).json('No changes requested to be updated');
+    }
+    originalItem = {
+      name: item.name,
+      description: item.description,
+      price: parseFloat(item.price),
+      category: item.category
+    }
+    if (req.body.name === originalItem.name) {
+      return res.status(422).json('New item name matches the original item name')
+    }
+    if (req.body.description === originalItem.description) {
+      return res.status(422).json('New item description matches the original item description')
+    }
+    if (parseFloat(req.body.price) === originalItem.name) {
+      return res.status(422).json('New item price matches the original item price')
+    }
+    if (req.body.category === originalItem.category) {
+      return res.status(422).json('New item category matches the original item category')
+    }
+    const updatedItem = await Item.findByIdAndUpdate(itemId, req.body, {new: true})
+    res.status(200).json({message: 'Item updated successfully', updatedItem})
   } catch (err) {
     return res.status(422).json(err.message);
   }
@@ -185,9 +209,30 @@ async function updateMenuItem(req, res) {
 
 async function removeMenuItem(req, res) {
   try {
+    const restaurantId = req.user.userId
+    if (!restaurantId) {
+      return res.status(403).json('Authentication Error')
+    }
     const { itemId } = req.params;
-    await itemSchema.findByIdAndRemove(itemId);
-    res.status(204).json("Item removed successfully");
+    if (!itemId || !mongoose.isValidObjectId(itemId)) { //handling an error caused by writing an incorrect itemId in params or leaving
+      return res.status(422).json('Valid Item ID required');
+    }
+    const restaurant = await Restaurant.findOne(restaurantId)
+    if (!restaurant.menu.includes(itemId)) {
+      return res.status(403).json('Authentication Error');
+    }
+
+    const item = await Item.findById(itemId)
+    if (!item) {
+      return res.status(404).json('Item not found')
+    }
+    
+    if (item.restaurantId.toString() !== restaurantId) {
+      return res.status(404).json('Incorrect Item ID')
+    }
+    await Item.findByIdAndRemove(itemId);
+    await Restaurant.findByIdAndRemove(itemId)
+    res.status(200).json("Item removed successfully");
   } catch (err) {
     res.status(422).json(err.message);
   }

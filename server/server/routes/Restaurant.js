@@ -10,10 +10,10 @@ router.post('/signout', verifyToken, restaurantController.restaurantSignOut);
 router.delete('/:id', restaurantController.removeRestaurant); //تستنج
 router.get('/', restaurantController.getRestaurants) //وهاظ
 router.post('/', verifyToken, restaurantController.addItem);
-router.get('/get', verifyToken, restaurantController.allItems) //تستنج ما عليك
+router.get('/get', restaurantController.allItems) //تستنج ما عليك
 router.get('/menu', verifyToken, restaurantController.restaurantMenu)
-// router.put('/updateitem', restaurantController.updateMenuItem);
-// router.delete('/removeItem/:itemId', restaurantController.removeMenuItem);
+router.put('/menu/:itemId', verifyToken, restaurantController.updateMenuItem);
+router.delete('/menu/:itemId', verifyToken, restaurantController.removeMenuItem);
 // router.get('/profile', restaurantController.getRestaurantInfo);
 // router.put('/profile/update', restaurantController.updateRestaurantInfo);
 
