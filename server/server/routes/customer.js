@@ -20,7 +20,7 @@ router.get("/items", customerController.viewAllItems);
 router.get("/search", customerController.searchItems);
 
 router.get("/profile", customerController.getProfile);
-// router.put("/profile", customerController.updateProfile);
+router.put("/profile", isAuthenticated, customerController.updateProfile);
 router.get("/basket", isAuthenticated, customerController.getCart);
 router.post("/basket/:id", isAuthenticated, customerController.addItem);
 router.put("/basket/:id", isAuthenticated, customerController.updateCart);
