@@ -14,7 +14,7 @@ router.get('/get', restaurantController.allItems) //تستنج ما عليك
 router.get('/menu', verifyToken, restaurantController.restaurantMenu)
 router.put('/menu/:itemId', verifyToken, restaurantController.updateMenuItem);
 router.delete('/menu/:itemId', verifyToken, restaurantController.removeMenuItem);
-// router.get('/profile', restaurantController.getRestaurantInfo);
-// router.put('/profile/update', restaurantController.updateRestaurantInfo);
+router.get('/profile', verifyToken, restaurantController.restaurantProfile);
+router.put('/profile', verifyToken, restaurantController.updateRestaurantProfile);
 
 module.exports = router;
