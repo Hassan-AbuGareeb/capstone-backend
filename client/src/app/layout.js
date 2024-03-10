@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Food ordering website",
+  title: "JorDinner",
 };
 
 export default function RootLayout({ children }) {
