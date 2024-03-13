@@ -10,6 +10,8 @@ export default function NavbarBefore() {
         <Link href='/customer'>Switch to customer</Link>
         <p></p>
         <Link href='/restaurant'>Home</Link>
+        <p></p>
+        <Link href='/SingleRestaurant/restaurentId'>menu</Link>
         </div>
     )
 }
