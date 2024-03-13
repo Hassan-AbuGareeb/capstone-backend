@@ -15,10 +15,16 @@ async function restaurantSignUp(req, res) {
     signUp.password = hashIt;
     await signUp.save();
 
-    return res.status(201).json({ message: "Restaurant Created Successfuly!", signUp });
+    return res.status(201).json({ message: "Restaurant Created Successfully!", signUp });
   } catch (err) {
+    if (err.name === 'ValidationError') {
+      const errorMessages = Object.values(err.errors).map(error => error.message);
+      return res.status(422).json({ errors: errorMessages });
+    } else {
+      console.error(err);
     return res.status(422).json(err.message);
   }
+}
 }
 
 async function restaurantSignIn(req, res) {
