@@ -9,9 +9,7 @@ export default function CustomerNav() {
   async function handleSearchChange(event) {
     const searchValue = event.target.value;
     setSearch(searchValue);
-    console.log(searchValue);
-    getDishes(searchValue);
-    getRestaurants(searchValue);
+
     //fetch data from database
   }
 
@@ -36,7 +34,10 @@ export default function CustomerNav() {
     setrestaurants([...filteredRestaurants]);
   }
 
-  useEffect(() => {});
+  useEffect(() => {
+    getDishes(search);
+    getRestaurants(search);
+  }, [search]);
 
   return (
     <div className="flex justify-between">
@@ -54,17 +55,29 @@ export default function CustomerNav() {
               value={search}
               onChange={handleSearchChange}
             />
-            <div>
-              {dishes.map((dish) => {
-                return (
-                  <>
-                    <h1>
-                      {dish.name} {dish.price.$numberDecimal}
-                    </h1>
-                  </>
-                );
-              })}
-            </div>
+            {search && (
+              <div>
+                {search &&
+                  dishes.map((dish) => {
+                    return (
+                      <div key={dish.name}>
+                        <h1>
+                          {dish.name} {dish.price.$numberDecimal}
+                        </h1>
+                      </div>
+                    );
+                  })}
+                <hr />
+                {search &&
+                  restaurants.map((restaurant) => {
+                    return (
+                      <div key={restaurant.name}>
+                        <h1>{restaurant.name}</h1>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
           </div>
           {/* needs conditional rendering if the user isn't signed in */}
           <Link href="/customer/cart">Cart </Link>
