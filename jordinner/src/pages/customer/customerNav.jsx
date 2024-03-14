@@ -29,8 +29,10 @@ export default function CustomerNav() {
     );
     const restaurantsData = await restaurantsResponse.json();
     const filteredRestaurants = restaurantsData.filter((restaurant) => {
-      return restaurant.name.includes(searchValue);
+      return restaurant.title.toLowerCase().includes(searchValue.toLowerCase());
     });
+    console.log(filteredRestaurants);
+
     setrestaurants([...filteredRestaurants]);
   }
 
@@ -71,8 +73,8 @@ export default function CustomerNav() {
                 {search &&
                   restaurants.map((restaurant) => {
                     return (
-                      <div key={restaurant.name}>
-                        <h1>{restaurant.name}</h1>
+                      <div key={restaurant.title}>
+                        <h1>{restaurant.title}</h1>
                       </div>
                     );
                   })}
