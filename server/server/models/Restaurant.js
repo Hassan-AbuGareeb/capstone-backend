@@ -83,6 +83,10 @@ const restaurantSchema = new mongoose.Schema({
         enum: ["Asian", "Bakery", "Beverages", "Breakfast", "Brunch", "Burgers", "Cafe", "Desserts", "Donuts", "Fast Food", "Grill", "Ice Cream", "Indian", "Italian", "Juices", "Middle Eastern", "Mexican", "Pastries", "Pizza", "Salads", "Sandwiches", "Seafood", "Smoothies", "Snacks", "Soups", "Traditional", "Vegan", "Vegetarian", "Wraps"],
         required: [true, 'Restaurant needs to have at least 1 category']
     },
+    image: {
+        type: String,
+        default: null
+    },
     rating: {
         type: Number,
         default: 0
