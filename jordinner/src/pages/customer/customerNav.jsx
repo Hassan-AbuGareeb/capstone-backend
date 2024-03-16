@@ -5,6 +5,14 @@ export default function CustomerNav() {
   const [search, setSearch] = useState("");
   const [dishes, setDishes] = useState([]);
   const [restaurants, setrestaurants] = useState([]);
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) setToken(token);
+  }, []);
+
+  //use effect to validate token
 
   async function handleSearchChange(event) {
     const searchValue = event.target.value;
@@ -48,6 +56,7 @@ export default function CustomerNav() {
         <Link href="/customer/alldishes">Dishes </Link>
         <Link href="/customer/restaurants">Restaurants </Link>
       </div>
+      {/* search*/}
       <div className="flex">
         <div className="flex gap-5">
           <div className="flex flex-col">
@@ -82,8 +91,19 @@ export default function CustomerNav() {
             )}
           </div>
           {/* needs conditional rendering if the user isn't signed in */}
-          <Link href="/customer/cart">Cart </Link>
-          <Link href="/customer/profile">Profile </Link>
+          {token && (
+            <>
+              <Link href="/customer/cart">Cart </Link>
+              <Link href="/customer/profile">Profile </Link>
+              <Link href="/">Sign Out </Link>
+            </>
+          )}
+          {!token && (
+            <>
+              <Link href="/restaurant">Switch to restaurant </Link>
+              <Link href="/customer/signUpIn">Sign In </Link>
+            </>
+          )}
         </div>
       </div>
       {/* search, cart, profile*/}
