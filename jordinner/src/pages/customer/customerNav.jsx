@@ -1,17 +1,26 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { TokenContext } from "../_app";
+import { useRouter } from "next/router";
 export default function CustomerNav() {
   const [search, setSearch] = useState("");
   const [dishes, setDishes] = useState([]);
   const [restaurants, setrestaurants] = useState([]);
 
+  //haveToken context
+  const { haveToken, setHaveToken } = useContext(TokenContext);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    getDishes(search);
+    getRestaurants(search);
+  }, [search]);
+
   async function handleSearchChange(event) {
     const searchValue = event.target.value;
     setSearch(searchValue);
-    console.log(searchValue);
-    getDishes(searchValue);
-    getRestaurants(searchValue);
+
     //fetch data from database
   }
 
@@ -31,12 +40,20 @@ export default function CustomerNav() {
     );
     const restaurantsData = await restaurantsResponse.json();
     const filteredRestaurants = restaurantsData.filter((restaurant) => {
-      return restaurant.name.includes(searchValue);
+      return restaurant.title.toLowerCase().includes(searchValue.toLowerCase());
     });
+    console.log(filteredRestaurants);
+
     setrestaurants([...filteredRestaurants]);
   }
 
-  useEffect(() => {});
+  function handleSignOut() {
+    localStorage.removeItem("token");
+    setHaveToken(false);
+    setTimeout(() => {
+      router.push("/");
+    }, 2000);
+  }
 
   return (
     <div className="flex justify-between">
@@ -45,6 +62,7 @@ export default function CustomerNav() {
         <Link href="/customer/alldishes">Dishes </Link>
         <Link href="/customer/restaurants">Restaurants </Link>
       </div>
+      {/* search*/}
       <div className="flex">
         <div className="flex gap-5">
           <div className="flex flex-col">
@@ -54,24 +72,46 @@ export default function CustomerNav() {
               value={search}
               onChange={handleSearchChange}
             />
-            <div>
-              {dishes.map((dish) => {
-                return (
-                  <>
-                    <h1>
-                      {dish.name} {dish.price.$numberDecimal}
-                    </h1>
-                  </>
-                );
-              })}
-            </div>
+            {search && (
+              <div>
+                {search &&
+                  dishes.map((dish) => {
+                    return (
+                      <div key={dish.name}>
+                        <h1>
+                          {dish.name} {dish.price.$numberDecimal}
+                        </h1>
+                      </div>
+                    );
+                  })}
+                <hr />
+                {search &&
+                  restaurants.map((restaurant) => {
+                    return (
+                      <div key={restaurant.title}>
+                        <h1>{restaurant.title}</h1>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
           </div>
           {/* needs conditional rendering if the user isn't signed in */}
-          <Link href="/customer/cart">Cart </Link>
-          <Link href="/customer/profile">Profile </Link>
+          {haveToken && (
+            <>
+              <Link href="/customer/cart">Cart </Link>
+              <Link href="/customer/profile">Profile </Link>
+              <button onClick={handleSignOut}>Sign Out </button>
+            </>
+          )}
+          {!haveToken && (
+            <>
+              <Link href="/restaurant">Switch to restaurant </Link>
+              <Link href="/customer/signUpIn">Sign In </Link>
+            </>
+          )}
         </div>
       </div>
-      {/* search, cart, profile*/}
     </div>
   );
 }
