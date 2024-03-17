@@ -28,7 +28,7 @@ export default function Signin() {
       password: formData.password,
     };
     const signinResponse = await fetch(
-      "http://localhost:3001/customer/signin",
+      "http://localhost:3002/customer/signin",
       {
         method: "POST",
         headers: {

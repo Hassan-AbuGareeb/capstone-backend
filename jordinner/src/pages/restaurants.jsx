@@ -4,7 +4,7 @@ export default function Landing() {
     const [restaurants, setRestaurants] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3001/restaurants/')
+        fetch('http://localhost:3002/restaurants/')
             .then(res => res.json())
             .then(data => {
                 setRestaurants(data);
