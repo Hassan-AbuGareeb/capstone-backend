@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SegoeUI", Roboto, Helvetica, Arial, sans-serif, "AppleColorEmoji", "SegoeUIEmoji", "SegoeUISymbol";
+    background: linear-gradient(white, rgb(117, 209, 117), rgb(54, 133, 54), rgb(8, 85, 8))
+}
+  
+.container{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 100px;
+    width: 550px;
+    background: white;
+    padding-bottom: 0;
+}
+        
+.header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    margin-top: 30px;
+}
+        
+.text{
+    color: rgb(54, 133, 54);
+    font-size: 30px;
+    font-weight: 700;
+}
+        
+.underline{
+    width: 61px;
+    height: 6px;
+    background: rgb(54, 133, 54);
+    border-radius: 9px;
+}
+        
+.inputs{
+    margin-top: 55px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+        
+.input{
+    display: flex;
+    align-items: center;
+    margin: auto;
+    width: 400px;
+    height: 70px;
+    background: #dbdada;
+    border-radius: 9px;
+}
+        
+.input input{
+    height: 50px;
+    width: 400px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    margin: 10px;
+}
+
+.forgot-password{
+    padding-left: 78px;
+    margin-top: 27px;
+    color: #a1a0a0;
+    font-size: 15px;
+}
+
+.forgot-password span{
+    color: rgb(54, 133, 54);
+    cursor: pointer;
+}
+
+.submit-container{
+    display: flex;
+    gap: 30px;
+    margin: 60px auto
+}
+    
+.submit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 59px;
+    color: white;
+    background: rgb(54, 133, 54);
+    border-radius: 50px;
+    font-size: 19px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.gray{
+    background: #dbdada;
+    color: gray
+}
+
+.icon{
+    margin: 20px;
+    width: 20px;
+    color: black;
+}
+
+.terms{
+    display: flex;
+    color: #7f7e7e;
+    align-self: center;
+    gap: 5px;
+    width: 400px;
+    position: relative;
+    bottom: -70px;
+}
+.error{
+    padding-left: 78px;
+    position: relative;
+    top: -270px;
+    color: red;
+    margin-right: 55px;
+}
+
+.location-dropdown{
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    margin: 10px;
+    width: 280px;
+}
+
+
