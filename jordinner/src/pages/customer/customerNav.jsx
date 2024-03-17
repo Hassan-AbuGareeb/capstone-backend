@@ -6,7 +6,6 @@ export default function CustomerNav() {
   const [search, setSearch] = useState("");
   const [dishes, setDishes] = useState([]);
   const [restaurants, setrestaurants] = useState([]);
-  const [token, setToken] = useState("");
 
   //haveToken context
   const { haveToken, setHaveToken } = useContext(TokenContext);
@@ -14,11 +13,9 @@ export default function CustomerNav() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) setToken(token);
-  }, []);
-
-  //use effect to validate token
+    getDishes(search);
+    getRestaurants(search);
+  }, [search]);
 
   async function handleSearchChange(event) {
     const searchValue = event.target.value;
@@ -57,11 +54,6 @@ export default function CustomerNav() {
       router.push("/");
     }, 2000);
   }
-
-  useEffect(() => {
-    getDishes(search);
-    getRestaurants(search);
-  }, [search]);
 
   return (
     <div className="flex justify-between">
@@ -105,14 +97,14 @@ export default function CustomerNav() {
             )}
           </div>
           {/* needs conditional rendering if the user isn't signed in */}
-          {token && (
+          {haveToken && (
             <>
               <Link href="/customer/cart">Cart </Link>
               <Link href="/customer/profile">Profile </Link>
               <button onClick={handleSignOut}>Sign Out </button>
             </>
           )}
-          {!token && (
+          {!haveToken && (
             <>
               <Link href="/restaurant">Switch to restaurant </Link>
               <Link href="/customer/signUpIn">Sign In </Link>
@@ -120,7 +112,6 @@ export default function CustomerNav() {
           )}
         </div>
       </div>
-      <div className="text-5xl text-green-500">{haveToken}</div>
     </div>
   );
 }
