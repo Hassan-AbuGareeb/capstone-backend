@@ -1,11 +1,17 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { TokenContext } from "../_app";
+import { useRouter } from "next/router";
 export default function CustomerNav() {
   const [search, setSearch] = useState("");
   const [dishes, setDishes] = useState([]);
   const [restaurants, setrestaurants] = useState([]);
   const [token, setToken] = useState("");
+
+  //haveToken context
+  const { haveToken, setHaveToken } = useContext(TokenContext);
+
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -42,6 +48,14 @@ export default function CustomerNav() {
     console.log(filteredRestaurants);
 
     setrestaurants([...filteredRestaurants]);
+  }
+
+  function handleSignOut() {
+    localStorage.removeItem("token");
+    setHaveToken(false);
+    setTimeout(() => {
+      router.push("/");
+    }, 2000);
   }
 
   useEffect(() => {
@@ -95,7 +109,7 @@ export default function CustomerNav() {
             <>
               <Link href="/customer/cart">Cart </Link>
               <Link href="/customer/profile">Profile </Link>
-              <Link href="/">Sign Out </Link>
+              <button onClick={handleSignOut}>Sign Out </button>
             </>
           )}
           {!token && (
@@ -106,7 +120,7 @@ export default function CustomerNav() {
           )}
         </div>
       </div>
-      {/* search, cart, profile*/}
+      <div className="text-5xl text-green-500">{haveToken}</div>
     </div>
   );
 }
