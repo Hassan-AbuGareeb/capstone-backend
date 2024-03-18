@@ -91,17 +91,18 @@ async function restaurantSignIn(req, res) {
 
 async function restaurantSignOut(req, res) {
   try {
-    const email = req.user.email;
+    const email = req.headers.email;
+    console.log(email)
     //to help with the testing
-    const token = req.user.userId
-    const header = req.headers.authorization
-    if (token !== header) {
-      return res.status(401).json({ message: "Unauthorized access" });
-    }
+    // const token = req.user.userId
+    // const header = req.headers.authorization
+    // if (token !== header) {
+    //   return res.status(401).json({ message: "Unauthorized access" });
+    // }
 
-    if (!signedInUsers[email]) {
-      return res.status(422).json({ message: "Already signed out" });
-    }
+    // if (!signedInUsers[email]) {
+    //   return res.status(422).json({ message: "Already signed out" });
+    // }
 
     delete signedInUsers[email];
     return res.status(200).json({ message: "Signed out successfully!" });
