@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from 'react'
-import Link from 'next/link'
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function SignUp() {
-
 const [image, setImage] = useState()
 const [admin, setAdmin] = useState({
     ein: '',
@@ -14,6 +13,7 @@ const [admin, setAdmin] = useState({
     category: [],
     image: ''
 })
+
 const [successMessage, setSuccessMessage] = useState('');
 const [redirect, setRedirect] = useState(false);
 const [location, setLocation] = useState([])
@@ -37,13 +37,13 @@ useEffect(()=> {
     getEnums()
 }, [])
 
-function handleChange(event) {
-    const {name, value} = event.target
-    setAdmin(prevState => ({
-        ...prevState,
-        [name]: value
-    }))
-}
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setAdmin((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
 function handleImage(event) {
     const file = event.target.files[0];
@@ -115,9 +115,9 @@ for (let [key, value] of formData.entries()) {
        console.error(err.message)
        setSuccessMessage('An error occurred while signing up. Please try again.')
     }
-}
+  };
 
-useEffect(() => {
+  useEffect(() => {
     if (redirect) {
       const timer = setTimeout(() => {
         setRedirect(false);
@@ -128,7 +128,6 @@ useEffect(() => {
       return () => clearTimeout(timer);
     }
   }, [redirect]);
-
 
   function handleLocationChange(event) {
     const { value, checked } = event.target;
