@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import NavbarBefore from '@/components/navbar-before';
 
 export default function SignUp() {
 const [image, setImage] = useState()
@@ -14,6 +15,7 @@ const [admin, setAdmin] = useState({
     image: ''
 })
 
+const [isAuthenticated, setIsAuthenticated] = useState(false)
 const [successMessage, setSuccessMessage] = useState('');
 const [redirect, setRedirect] = useState(false);
 const [location, setLocation] = useState([])
@@ -30,6 +32,10 @@ useEffect(()=> {
         const {location, category} = await res.json()
         setLocation(location)
         setCategory(category)
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    }
         } catch (err) {
         return err.message
         }
@@ -122,9 +128,8 @@ for (let [key, value] of formData.entries()) {
       const timer = setTimeout(() => {
         setRedirect(false);
         setSuccessMessage('');
-    //     window.location.href = '/restaurants';
-    //   }, 5000);
-    })
+        window.location.href = '/restaurants/signin';
+      }, 5000)
       return () => clearTimeout(timer);
     }
   }, [redirect]);
@@ -156,6 +161,7 @@ function toggleCategory() {
 
     return (
         <div>
+            <NavbarBefore/>
             <p>Sign Up</p>
             <form onSubmit={handleSubmit}>
                 <label>Employer Identification Number</label>
