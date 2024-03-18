@@ -16,16 +16,6 @@ export default function SignIn() {
       return;
     }
 
-    if (!email.includes('@') || !email.includes('.')) {
-      setSuccessMessage('Please enter a valid email address.');
-      return;
-    }
-
-    if (password.length < 6) {
-      setSuccessMessage('Password must be at least 6 characters long.');
-      return;
-    }
-
     // Post request to your API endpoint
     try {
       const response = await fetch('http://localhost:3001/restaurants/signin', {
@@ -40,10 +30,9 @@ export default function SignIn() {
         setSuccessMessage('Sign In Successful!');
         console.log('Signed in:', { email, password });
         // Redirect the user to the specific page after successful sign-in
-        router.push('/SingleRestaurant/restaurantId'); // Corrected path
+        router.push('/restaurants/[restaurantId]');
       } else {
-        const errorMessage = await response.text();
-        setSuccessMessage(errorMessage);
+        setSuccessMessage('Invalid email or password. Please try again.');
       }
     } catch (error) {
       setSuccessMessage('An error occurred while signing in. Please try again.');
