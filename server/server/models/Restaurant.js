@@ -6,7 +6,7 @@ const restaurantSchema = new mongoose.Schema({
     ein: { //employer identification number
             type: String,
             required: [true, 'Employer Identification Number is required'],
-            unique: true
+            unique: [true, 'Employer Identification Number has to be unique']
     },
     title: {
             type: String,
@@ -60,7 +60,7 @@ const restaurantSchema = new mongoose.Schema({
     },
     location: {
         type: [String],
-        required: [true, 'Location is required']
+        required: [true, 'Restaurant needs to serve at least 1 location needs to be selected']
     },
     phoneNumber: {
         type: String,
@@ -80,12 +80,10 @@ const restaurantSchema = new mongoose.Schema({
     }],
     category: {
         type: [String],
-        enum: ["Asian", "Bakery", "Beverages", "Breakfast", "Brunch", "Burgers", "Cafe", "Desserts", "Donuts", "Fast Food", "Grill", "Ice Cream", "Indian", "Italian", "Juices", "Middle Eastern", "Mexican", "Pastries", "Pizza", "Salads", "Sandwiches", "Seafood", "Smoothies", "Snacks", "Soups", "Traditional", "Vegan", "Vegetarian", "Wraps"],
         required: [true, 'Restaurant needs to have at least 1 category']
     },
     image: {
         type: String,
-        default: null
     },
     rating: {
         type: Number,
