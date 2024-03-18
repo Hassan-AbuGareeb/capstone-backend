@@ -1,25 +1,28 @@
-import React, { useEffect } from 'react'; // Importing useEffect
+import React, { useState, useEffect } from 'react'; // Added import for useState
 import { useRouter } from 'next/router';
+import NavbarAfter from "@/components/navbar-after";
 
 const SingleRestaurant = () => {
   const router = useRouter();
   const { restaurantId } = router.query;
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Added useState hook
 
-  // Fetch restaurant data based on restaurantId
-  // For example, you can use useEffect to fetch data from an API
   useEffect(() => {
-    // Fetch restaurant data using restaurantId
-    // Example: fetch(`/api/restaurants/${restaurantId}`)
-    // Once the data is fetched, update the state to render the content
-  }, [restaurantId]);
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   return (
-    <div>
+    <>
+      {isAuthenticated && <NavbarAfter />}
       <h1> Restaurant page: {restaurantId}</h1>
       {/* Render the page content here */}
-    </div>
+    </>
   );
 };
 
 export default SingleRestaurant;
+
 
