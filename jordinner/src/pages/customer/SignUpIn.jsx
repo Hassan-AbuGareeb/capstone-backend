@@ -8,9 +8,14 @@ import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
 import { BsCalendarDate } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import CustomerNav from "./customerNav";
+import { TokenContext } from "../_app";
+
 
 function SignUpIn() {
+
+  const { haveToken, setHaveToken } = useContext(TokenContext);
   const router = useRouter();
+
   const [action, setAction] = useState("Sign Up");
   const [signInFormData, setSignInFormData] = useState({
     email: "",
@@ -42,6 +47,7 @@ function SignUpIn() {
 
   const handleSignInSubmit = async (event) => {
     try {
+      
       const response = await axios.post(
         "http://localhost:3001/customer/signin",
         signInFormData
@@ -52,8 +58,9 @@ function SignUpIn() {
       localStorage.setItem("token", token);
       setErrorMessage(""); // clear any previous error messages
       console.log("Signed in successfully");
+      setHaveToken(true);
       // redirect to customer's profile
-      router.push("/profile");
+      router.push("/customer/profile");
     } catch (error) {
       console.error("Error occurred during sign in:", error);
       setErrorMessage("Wrong username or password.");
@@ -72,8 +79,9 @@ function SignUpIn() {
       localStorage.setItem("token", token);
       setErrorMessage(""); // clear any previous error messages
       console.log("Signed up successfully");
+      setHaveToken(true);
       // redirect to customer's profile
-      router.push("/profile");
+      router.push("/customer/profile");
     } catch (error) {
       console.error("Error occurred during sign up:", error);
       setErrorMessage(
@@ -94,7 +102,7 @@ function SignUpIn() {
   ];
 
   return (
-    <div className="container">
+    <section className="container">
       <div className="header">
         <CustomerNav />
         <div className="text">{action}</div>
@@ -259,7 +267,7 @@ function SignUpIn() {
         </div>
         <div className="error">{errorMessage}</div>
       </div>
-    </div>
+    </section>
   );
 }
 
