@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const verifyToken = require('../middleware/validateToken')
-
+const upload = require('../middleware/upload')
 const restaurantController = require("../controllers/Restaurant");
 
-router.post('/signup', restaurantController.restaurantSignUp);
+router.get('/enums', restaurantController.schemaEnums)
+router.post('/signup', upload.single('image'), restaurantController.restaurantSignUp);
 router.post('/signin', restaurantController.restaurantSignIn);
-router.post('/signout', verifyToken, restaurantController.restaurantSignOut);
+router.post('/signout', restaurantController.restaurantSignOut);
 router.delete('/:id', restaurantController.removeRestaurant); //تستنج
 router.get('/', restaurantController.getRestaurants) //وهاظ
 router.post('/', verifyToken, restaurantController.addItem);

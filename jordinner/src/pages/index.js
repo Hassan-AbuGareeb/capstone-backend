@@ -1,5 +1,10 @@
+import CustomerNav from "./customer/customerNav"
+
 export default function Home() {
-  return (
-    <p>Finally</p>
-  )
+  return <>
+  <CustomerNav />
+  <p>
+    Finally
+    </p>;
+    </>
 }

@@ -4,25 +4,63 @@ const Item = require("../models/item");
 const bcrypt = require("bcrypt");
 const generateToken = require("../middleware/generateToken");
 const signedInUsers = {};
+const Location = require('../models/location')
+const Category = require('../models/category')
+const fs = require('fs');
+const path = require('path');
+
+async function schemaEnums(req, res) {
+  try {
+    const enums = {
+      location: Location.schema.obj.location.enum,
+      category: Category.schema.obj.category.enum
+    };
+    res.json(enums);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
 
 async function restaurantSignUp(req, res) {
   const admin = req.body;
+  const image = req.file;
 
   try {
+
+    if (typeof admin.location === 'string') {
+      admin.location = JSON.parse(admin.location);
+    }
+    if (typeof admin.category === 'string') {
+      admin.category = JSON.parse(admin.category);
+    }
+
     const signUp = await Restaurant.create(admin);
 
     const hashIt = await bcrypt.hash(admin.password, 10);
     signUp.password = hashIt;
     await signUp.save();
 
+    if (image) {
+      const destinationDirectory = path.join(__dirname, '../uploads');
+      
+      if (!fs.existsSync(destinationDirectory)) {
+        fs.mkdirSync(destinationDirectory, { recursive: true });
+    }
+      const imagePath = path.join(destinationDirectory, image.filename);
+      fs.copyFileSync(image.path, imagePath); //to manually copy the file to destination
+      console.log(imagePath);
+  } else {
+      console.log('No image uploaded.');
+  }
     return res.status(201).json({ message: "Restaurant Created Successfully!", signUp });
   } catch (err) {
     if (err.name === 'ValidationError') {
-      const errorMessages = Object.values(err.errors).map(error => error.message);
-      return res.status(422).json({ errors: errorMessages });
+      const errors = Object.values(err.errors).map(error => error.message);
+      return res.status(422).json({ errors });
     } else {
       console.error(err);
-    return res.status(422).json(err.message);
+      return res.status(422).json({ error: err.message })
   }
 }
 }
@@ -53,17 +91,18 @@ async function restaurantSignIn(req, res) {
 
 async function restaurantSignOut(req, res) {
   try {
-    const email = req.user.email;
+    const email = req.headers.email;
+    console.log(email)
     //to help with the testing
-    const token = req.user.userId
-    const header = req.headers.authorization
-    if (token !== header) {
-      return res.status(401).json({ message: "Unauthorized access" });
-    }
+    // const token = req.user.userId
+    // const header = req.headers.authorization
+    // if (token !== header) {
+    //   return res.status(401).json({ message: "Unauthorized access" });
+    // }
 
-    if (!signedInUsers[email]) {
-      return res.status(422).json({ message: "Already signed out" });
-    }
+    // if (!signedInUsers[email]) {
+    //   return res.status(422).json({ message: "Already signed out" });
+    // }
 
     delete signedInUsers[email];
     return res.status(200).json({ message: "Signed out successfully!" });
@@ -304,6 +343,7 @@ async function updateRestaurantProfile(req, res) {
 }
 
 module.exports = {
+  schemaEnums,
   restaurantSignIn,
   restaurantSignUp,
   restaurantSignOut,

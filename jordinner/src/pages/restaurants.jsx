@@ -1,22 +1,29 @@
-import { useState, useEffect } from "react"
+import NavbarBefore from "@/components/navbar-before";
+import { useState, useEffect } from "react";
 
-export default function landing() {
-
-    const [restaurants, setRestaurants] = useState([])
+export default function Landing() {
+    const [restaurants, setRestaurants] = useState([]);
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
 
     useEffect(() => {
         fetch('http://localhost:3001/restaurants/')
-    .then(res=>{return res.json()})
-    .then(data=>{
-        setRestaurants(data)});
-    }, [])
+            .then(res => res.json())
+            .then(data => {
+                setRestaurants(data);
+            });
+        const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    }
+    }, []);
 
     return (
         <div>
-        <p>HOME SWEET HOME</p>
-        {restaurants.map(restaurant => (
-            <h2>{restaurant.title}</h2>
-        ))}
+            <NavbarBefore/>
+            <p>HOME SWEET HOME</p>
+            {restaurants.map((restaurant, index) => (
+                <h2 key={index}>{restaurant.title}</h2>
+            ))}
         </div>
-    )
+    );
 }
