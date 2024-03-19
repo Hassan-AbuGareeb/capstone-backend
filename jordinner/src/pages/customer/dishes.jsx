@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import CustomerNav from "./customerNav";
+import { TokenContext } from "../_app";
+import { useRouter } from "next/router";
 
 export default function Dishes() {
   const [dishes, setDishes] = useState([]);
@@ -6,6 +9,8 @@ export default function Dishes() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
 
+  const { haveToken, setHaveToken } = useContext(TokenContext);
+  const router = useRouter();
   //dishes categories
   const categories = [
     "All",
@@ -71,19 +76,27 @@ export default function Dishes() {
   async function addToCart(dishId) {
     try {
       const token = localStorage.getItem("token");
-      const addResponse = fetch(
+      const body = { quantity: 1 };
+      const addResponse = await fetch(
         `http://localhost:3001/customer/basket/${dishId}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            token: token,
+            authorization: token,
           },
+          body: JSON.stringify(body),
         }
       );
-      alert((await addResponse).json().message);
+      const message = await addResponse.json();
+      alert(message.message);
     } catch (err) {
       alert(err.message);
+      localStorage.removeItem("token");
+      setHaveToken(false);
+      setTimeout(() => {
+        router.push("/customer/SignUpIn");
+      }, 3000);
     }
   }
 
@@ -93,13 +106,15 @@ export default function Dishes() {
         {/* dish image */}
         <h1>{dish.name}</h1>
         <h1>{dish.price.$numberDecimal}</h1>
-        <button
-          onClick={() => {
-            addToCart(dish._id);
-          }}
-        >
-          Add to Cart
-        </button>
+        {haveToken && (
+          <button
+            onClick={() => {
+              addToCart(dish._id);
+            }}
+          >
+            Add to Cart
+          </button>
+        )}
       </div>
     );
   });
@@ -107,6 +122,7 @@ export default function Dishes() {
   // const filteredDishes
   return (
     <div>
+      <CustomerNav />
       <div>{/* some big image here with text on it */}</div>
       {/* search modifiers */}
       <div className="flex justify-around"></div>
