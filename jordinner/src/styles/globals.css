@@ -25,7 +25,7 @@ body{
 }
 
 .text{
-    color: rgb(54, 133, 54);
+    color: rgb(96, 155, 7);
     font-size: 30px;
     font-weight: 700;
 }
@@ -33,7 +33,7 @@ body{
 .underline{
     width: 61px;
     height: 6px;
-    background: rgb(54, 133, 54);
+    background: rgb(96, 155, 7);
     border-radius: 9px;
 }
 
@@ -72,7 +72,7 @@ body{
 }
 
 .forgot-password span{
-    color: rgb(54, 133, 54);
+    color: rgb(96, 155, 7);
     cursor: pointer;
 }
 
@@ -89,7 +89,7 @@ body{
     width: 200px;
     height: 59px;
     color: white;
-    background: rgb(54, 133, 54);
+    background: rgb(96, 155, 7);
     border-radius: 50px;
     font-size: 19px;
     font-weight: 700;
