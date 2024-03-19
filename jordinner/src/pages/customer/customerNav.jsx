@@ -59,7 +59,7 @@ export default function CustomerNav() {
     <div className="flex justify-between">
       <div className="flex gap-5">
         <Link href="/">JorDinner </Link>
-        <Link href="/customer/alldishes">Dishes </Link>
+        <Link href="/customer/dishes">Dishes </Link>
         <Link href="/customer/restaurants">Restaurants </Link>
       </div>
       {/* search*/}
@@ -107,7 +107,7 @@ export default function CustomerNav() {
           {!haveToken && (
             <>
               <Link href="/restaurant">Switch to restaurant </Link>
-              <Link href="/customer/signUpIn">Sign In </Link>
+              <Link href="/customer/SignUpIn">Sign In </Link>
             </>
           )}
         </div>
