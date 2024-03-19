@@ -1,7 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-// import foodImage from "../../public/big-food-image.jpg";
+import homepage1 from "/src/assets/homepage1.png";
+import Link from "next/link";
+// import homepage2 from "/src/assets/homepage2.png";
+import { IoArrowForwardCircleOutline } from "react-icons/io5";
+import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 
 export default function Home() {
   const [dishes, setDishes] = useState([]);
@@ -28,49 +32,56 @@ export default function Home() {
   }, []);
 
   const dishesCards = dishes.map((dish) => (
-    <div key={dish.name} className="flex flex-col border-2 border-black gap-4">
-      {/* dish image */}
+    <div key={dish.name} className="dishInfo">
+      <Image className="dishImage" src={dish.image} alt="" objectFit="contain"></Image>
       <p>{dish.name}</p>
       <p>{dish.description}</p> {/* Fixing the typo here */}
-      {/* <p>{dish.price.$numberDecimal}</p> */}
+      <p>{dish.price.$numberDecimal}</p>
+      <Link href="/customer/signUpIn"><buttn className="addToCart"> <span>Add to cart</span></buttn></Link>
     </div>
   ));
 
   const restaurantsCards = restaurants.map((restaurant) => (
     <div
       key={restaurant.title}
-      className="flex flex-col border-2 border-black gap-4"
+      className="restaurantInfo"
     >
-      {/* restaurant image */}
+      {/* restaurant image */} //we dont have images for restaurants though???
       <p>{restaurant.title}</p>
       <p>{restaurant.location[0]}</p> {/* Fixing the typo here */}
+      
     </div>
   ));
 
   return (
-    <div className="flex">
-      <header className="my-64">
-        {/* <Image
-          src={foodImage}
-          alt="food image"
-          width={700}
-          height={700}
-          className="w-full h-[600px]"
-        /> */}
-        <p className="text-8xl absolute top-[85%] text-white left-[7%]">
-          JoDinner
-        </p>
-      </header>
-      <div className="flex mx-32">
-        {/* Render the dishes here */}
-        {dishesCards}
+    <section className="flex">
+      <div className="welcomeContainer">
+        <h1 className="welcomingHeader">Life tastes better with <span className="title">Jordinner!</span></h1>
+        <h2 className="welcomingText">Craving your next delicious Jordanaian adventure?</h2>
+        <br></br>
+        <Link href="/customer/signUpIn"><button className="orderNow">ORDER NOW!<IoArrowForwardCircleOutline className="orderArrow"/></button></Link>
+        <p className="partnerClick"><Link href="/restaurants//signup">Are you a restaurant?<IoArrowForwardCircleOutline className="restaurantArrow"/></Link></p>
+
       </div>
-      <hr />
-      <div className="flex mx-32">
+      <div className="homepage-1">
+        <Image src={homepage1} alt="" layout={"fill"} objectFit="contain"></Image>
+      </div>
+       {/* <div className="homepage-2">
+        <Image src={homepage2} alt="" layout={"fill"} objectFit="contain"></Image>
+      </div> */}
+      <div><h3 className="popularDishes">POPULAR DISHES</h3></div>
+      <div className="dishCards">
+        {/* Render the dishes here */}
+        <MdKeyboardArrowLeft className="dishArrow"/>
+        {dishesCards}
+        {/* <buttn className="addToCart"><span>Add to cart</span></buttn> */}<MdKeyboardArrowRight className="dishArrow"/>
+      </div>
+      <div><h3 className="popularRestaurants">POPULAR RESTAURANTS</h3></div>
+      <div className="restaurantCards">
         {restaurantsCards}
         {/* popular restaurants */}
       </div>
       {/* footer */}
-    </div>
+    </section>
   );
 }

@@ -1,0 +1,147 @@
+body{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.welcomeContainer{
+    display: inline-block;
+    margin: 55px;
+    gap: 70px;
+}
+.welcomingHeader{
+    color: black;
+    font-size: 40px;
+}
+
+.title{
+    color: rgb(96, 155, 7);
+    font-size: 40px;
+}
+.welcomingText{
+    font-size: 24px;
+}
+
+.homepage-1 {
+    position: relative;
+    width: 400px;
+    height: 200px;
+    display: inline-block;
+    text-align: right;
+    padding-bottom: 40px;
+
+}
+
+/* .homepage-2{
+    display: inline-block;
+    text-align: right;
+    justify-self: flex-start;
+    width: 200px;
+    height: 200px;
+    position: relative;
+    margin: auto;
+} */
+
+.orderNow{
+    cursor: pointer;
+    font-size: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    height: 40px;
+    color: white;
+    background: rgb(96, 155, 7);
+    border-radius: 50px;
+    font-weight: 700;
+    text-underline-offset: none;
+}
+
+.orderArrow{
+    margin-left: 6px;
+    align-items: center;
+}
+
+.partnerClick{
+    font-size: 17px;
+    font-weight: 40px;
+    font-style: oblique;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.restaurantArrow{
+    margin-left: 6px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.addToCart{
+    font-weight: 100px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 95px;
+    height: 30px;
+    color: white;
+    background: rgb(96, 155, 7);
+    border-radius: 50px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.dishCards{
+    justify-content: space-evenly;
+    align-items: auto;
+    display: flex
+}
+
+.dishImage{
+    width: 250px;
+    height: 350px;
+    position: relative;
+}
+
+.dishInfo{
+    text-align: center;
+    font-style: italic;
+    font-weight: 200;
+}
+
+.dishArrow{
+    width: 250px;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    color: rgb(96, 155, 7);
+    cursor: pointer;
+}
+
+.popularDishes{
+    text-align: center;
+    padding-bottom: 100px;
+    font-style: italic;
+    font-size: large;
+}
+
+.restaurantCards{
+    justify-content: space-evenly;
+    align-items: auto;
+    display: flex;
+}
+
+.popularRestaurants{
+    text-align: center;
+    padding-bottom: 100px;
+    padding-top: 40px;
+
+}
+
+.restaurantInfo{
+    text-align: center;
+    font-weight: 200;
+}
+
+a:-webkit-any-link{text-decoration: none; color: unset;}
