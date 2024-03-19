@@ -68,12 +68,38 @@ export default function Dishes() {
     ]);
   }, [category]);
 
+  async function addToCart(dishId) {
+    try {
+      const token = localStorage.getItem("token");
+      const addResponse = fetch(
+        `http://localhost:3001/customer/basket/${dishId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+        }
+      );
+      alert((await addResponse).json().message);
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
   const filteredDishesCards = filteredDishes.map((dish) => {
     return (
       <div className="flex flex-col border-2 border-green-400 rounded-md">
         {/* dish image */}
         <h1>{dish.name}</h1>
         <h1>{dish.price.$numberDecimal}</h1>
+        <button
+          onClick={() => {
+            addToCart(dish._id);
+          }}
+        >
+          Add to Cart
+        </button>
       </div>
     );
   });
@@ -90,7 +116,11 @@ export default function Dishes() {
       </div>
       {/* search bar */}
       <div>
-        <select name="categories">
+        <select
+          name="categories"
+          defaultValue={"All"}
+          onChange={(event) => setCategory(event.target.value)}
+        >
           {categories.map((category) => {
             return (
               <option value={category} key={category}>
@@ -99,7 +129,7 @@ export default function Dishes() {
             );
           })}
         </select>
-      </div>{" "}
+      </div>
       {/* filter by categories */}
       {/* actual dishes */}
       <div className="flex gap-5">{filteredDishesCards}</div>
