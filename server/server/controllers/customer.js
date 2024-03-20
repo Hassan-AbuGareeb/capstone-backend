@@ -301,6 +301,7 @@ async function cancelOrder(req, res) {
     res.status(422).json({ message: err.message });
   }
 }
+
 async function viewAllItems(req, res) {
   try {
     const allItems = await Item.find({});

@@ -9,7 +9,6 @@ import { BsCalendarDate } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import CustomerNav from "./customerNav";
 import { TokenContext } from "../_app";
-import checkToken from "@/util/checkToken";
 
 function SignUpIn() {
   const { setHaveToken } = useContext(TokenContext);
@@ -104,7 +103,7 @@ function SignUpIn() {
       console.log("Signed up successfully");
       setHaveToken(true);
       // redirect to customer's profile
-      router.push("/customer/profile");
+      router.push("/");
     } catch (error) {
       console.error("Error occurred during sign up:", error);
       setErrorMessage(
