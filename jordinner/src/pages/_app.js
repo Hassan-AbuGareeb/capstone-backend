@@ -8,7 +8,7 @@ import CustomerNav from "./customer/customerNav";
 export const TokenContext = createContext();
 
 export default function App({ Component, pageProps }) {
-  const [haveToken, setHaveToken] = useState(false);
+  const [haveToken, setHaveToken] = useState(true);
 
   //create a use effect to validate token
   return (

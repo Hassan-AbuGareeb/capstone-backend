@@ -56,59 +56,30 @@ export default function CustomerNav() {
   }
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between m-4 px-10 py-3 rounded-full shadow-lg items-center bg-green-500 z-10 text-lg">
       <div className="flex gap-5">
-        <Link href="/">JorDinner </Link>
+        <Link href="/" className="italic">
+          JorDinner{" "}
+        </Link>
         <Link href="/customer/dishes">Dishes </Link>
         <Link href="/customer/restaurants">Restaurants </Link>
       </div>
       {/* search*/}
       <div className="flex">
         <div className="flex gap-5">
-          <div className="flex flex-col">
-            <input
-              type="text"
-              placeholder="Search"
-              value={search}
-              onChange={handleSearchChange}
-            />
-            {search && (
-              <div>
-                {search &&
-                  dishes.map((dish) => {
-                    return (
-                      <div key={dish.name}>
-                        <h1>
-                          {dish.name} {dish.price.$numberDecimal}
-                        </h1>
-                      </div>
-                    );
-                  })}
-                <hr />
-                {search &&
-                  restaurants.map((restaurant) => {
-                    return (
-                      <div key={restaurant.title}>
-                        <h1>{restaurant.title}</h1>
-                      </div>
-                    );
-                  })}
-              </div>
-            )}
-          </div>
           {/* needs conditional rendering if the user isn't signed in */}
           {haveToken && (
-            <>
-              <Link href="/customer/cart">Cart </Link>
+            <div className="self-center flex justify-between gap-5">
+              <Link href="/customer/cart">🛒 </Link>
               <Link href="/customer/profile">Profile </Link>
               <button onClick={handleSignOut}>Sign Out </button>
-            </>
+            </div>
           )}
           {!haveToken && (
-            <>
+            <div className="self-center flex justify-between gap-5">
               <Link href="/restaurant">Switch to restaurant </Link>
               <Link href="/customer/SignUpIn">Sign In </Link>
-            </>
+            </div>
           )}
         </div>
       </div>
