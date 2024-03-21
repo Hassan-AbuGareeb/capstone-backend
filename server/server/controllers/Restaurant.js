@@ -34,6 +34,13 @@ async function restaurantSignUp(req, res) {
     if (typeof admin.category === 'string') {
       admin.category = JSON.parse(admin.category);
     }
+    admin.image = image.filename
+
+    if (!admin.location || admin.location.length === 0) {
+      return res.status(400).json({ error: 'Location is required.' });
+    } else if (!admin.category || admin.category.length === 0) {
+      return res.status(400).json({ error: 'Category is required.' });
+    } else {
 
     const signUp = await Restaurant.create(admin);
 
@@ -50,8 +57,7 @@ async function restaurantSignUp(req, res) {
       const imagePath = path.join(destinationDirectory, image.filename);
       fs.copyFileSync(image.path, imagePath); //to manually copy the file to destination
       console.log(imagePath);
-  } else {
-      console.log('No image uploaded.');
+  }
   }
     return res.status(201).json({ message: "Restaurant Created Successfully!", signUp });
   } catch (err) {
