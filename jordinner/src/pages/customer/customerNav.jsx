@@ -78,6 +78,7 @@ export default function CustomerNav() {
           {!haveToken && (
             <div className="self-center flex justify-between gap-5">
               <Link href="/restaurant">Switch to restaurant </Link>
+              <Link href="/restaurants">Switch to restaurant </Link>
               <Link href="/customer/SignUpIn">Sign In </Link>
             </div>
           )}
