@@ -124,7 +124,7 @@ function SignUpIn() {
   ];
 
   return (
-    <>
+    <div>
       <CustomerNav />
       <section className="container">
         <div className="header">
@@ -293,7 +293,7 @@ function SignUpIn() {
           <div className="error">{errorMessage}</div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
 
