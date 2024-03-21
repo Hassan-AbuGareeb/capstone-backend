@@ -6,6 +6,7 @@ import CustomerNav from "./customer/customerNav";
 export const TokenContext = createContext();
 
 export default function App({ Component, pageProps }) {
+
   const [haveToken, setHaveToken] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,7 +33,6 @@ export default function App({ Component, pageProps }) {
       setHaveToken(true);
     }
   }
-
   return (
     <>
       {/* <NavbarBefore /> */}
