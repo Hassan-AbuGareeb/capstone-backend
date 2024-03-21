@@ -67,7 +67,7 @@ export default function Home() {
   
 
   return (
-    <section className="flex">
+    <section>
       <CustomerNav />
       <div className="homepage-2">
         <Image src={homepage2} alt="" layout={"fill"} objectFit="contain"></Image>
