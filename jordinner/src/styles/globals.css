@@ -1,8 +1,262 @@
 body{
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "SegoeUI", Roboto, Helvetica, Arial, sans-serif, "AppleColorEmoji", "SegoeUIEmoji", "SegoeUISymbol";
-    background: whitesmoke;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}  
+
+/* ---------------------------HOME PAGE--------------------------------- */
+.welcomeContainer{
+    display: inline-block;
+    margin: 56px;
+    gap: 70px;
 }
+
+.welcomingHeader{
+    color: black;
+    font-size: 40px;
+}
+
+.title{
+    color: rgb(96, 155, 7);
+    font-size: 40px;
+}
+
+.welcomingText{
+    font-size: 24px;
+}
+
+.homepage-1 {
+    position: relative;
+    width: 520px;
+    height: 660px;
+    display: inline-block;
+    text-align: right;
+    margin-bottom: -210px;
+    margin-left: 0;
+
+}
+
+.homepage-2{
+    width: 350px;
+    height: 300px;
+    position: relative;
+    margin-bottom: -300px;
+    margin-left: -9px;    
+}
+
+.orderNow{
+    cursor: pointer;
+    font-size: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    height: 40px;
+    color: white;
+    background: rgb(96, 155, 7);
+    border-radius: 50px;
+    font-weight: 700;
+    text-underline-offset: none;
+}
+
+.orderNow:hover{
+    background-color: rgb(60, 97, 3);
+}
+
+.orderArrow{
+    margin-left: 6px;
+    align-items: center;
+}
+
+.partnerClick{
+    font-size: 17px;
+    font-weight: 40px;
+    font-style: oblique;
+    justify-content: center;
+    align-items: center;
+}
+
+.partnerClick:hover{
+    color: rgb(96, 155, 7);
+}
+
+.viewButton{
+    align-items: center;
+    justify-content: center;
+    width: 700;
+    height: 60px;
+    color: white;
+    background: rgb(96, 155, 7);
+    border-radius: 15px;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 3px 6px;
+}
+
+.viewButton:hover{
+    background-color: rgb(60, 97, 3);
+}
+
+.dishCards{
+    justify-content: space-between;
+    align-items: auto;
+    display: flex;
+    position: relative;
+    gap: 30px;
+    flex-direction: row;
+    overflow: hidden;
+    margin: 0;
+    width: 100%;
+}
+
+.dishInfo:hover{
+    box-shadow: 0px 1px 12px 3px rgba(97,92,92,0.82);
+    transform: scale(1.05, 1.05);
+    transition: box-shadow 1s;
+}
+
+.dishImage{
+    width: 250px;
+    height: 200px;
+    position: relative;
+    margin-top: 20px;
+    border-radius: 30px;
+}
+
+.dishInfo{
+    text-align: center;
+    background-color: whitesmoke;
+    margin: 10px 20px;
+    border-color: rgb(96, 155, 7);
+    border-radius: 30px;
+    margin-right: 10px;
+    flex: 0 0 calc(33.333% - 30px);
+    margin-right: 20px;
+    padding: 15px;
+}
+
+.dishArrow{
+    width: 150px;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    color: rgb(96, 155, 7);
+    cursor: pointer;
+    margin-block: auto;
+    z-index: 50;
+    position: relative;
+}
+
+.space{
+    width: 140px;
+    display: flex;
+}
+
+
+
+.popularDishes{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 30px;
+    font-style: italic;
+    font-size: large;
+    font-size: 25px;
+    margin: 150px auto 20px;
+    width: fit-content;
+    padding-top: 60px;
+    
+}
+
+.popularDishes:hover{
+    color: rgb(96, 155, 7);
+}
+
+.dishName{
+   font-size: 20px;
+   font-weight: 400;
+}
+
+.restaurantCards{
+    justify-content: space-between;
+    align-items: auto;
+    display: flex;
+    position: relative;
+    gap: 40px;
+    flex-direction: row;
+    overflow: hidden;
+    margin: 0;
+    width: 100%;
+}
+
+.CardsWrapper{
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 10px;
+    overflow: hidden;
+    z-index: 9;
+} 
+
+.popularRestaurants{
+    text-align: center;
+    padding-bottom: 15px;
+    padding-top: 25px;
+    font-style: italic;
+    font-size: 25px;
+    cursor: pointer;
+    margin: 100px auto 20px;
+    width: fit-content;
+}
+
+.popularRestaurants:hover{
+    color: rgb(96, 155, 7);
+}
+
+.restaurantImg{
+    width: 250px;
+    height: 200px;
+    position: relative;
+    margin-top: 20px;
+    border-radius: 30px;
+}
+
+.restaurantInfo{
+    text-align: center;
+    background-color: whitesmoke;
+    margin: 10px 20px;
+    border-color: rgb(96, 155, 7);
+    border-radius: 30px;
+    flex: 0 0 calc(33.333% - 20px);
+    padding: 15px;
+}
+
+.restaurantInfo:hover{
+    box-shadow: 0px 1px 12px 3px rgba(97,92,92,0.82);
+    transform: scale(1.05, 1.05);
+    transition: box-shadow 1s;
+
+}
+
+.ratingStar{
+    color: rgb(96, 155, 7);
+    border-color: black;
+    align-items: center;
+    margin-right: 6px;
+    padding-bottom: -20px;
+}
+
+.rating{
+    justify-content: center;
+    gap: 6px;
+}
+
+.restuarantTitle{
+    font-size: 20px;
+    font-weight: 400;
+}
+
+a:-webkit-any-link{text-decoration: none; color: unset;}
+
+/* ---------------------------Sign up sign in PAGE--------------------------------- */
 
 .container{
     display: flex;
