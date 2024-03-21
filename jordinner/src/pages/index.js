@@ -7,6 +7,8 @@ import homepage2 from "/src/assets/homepage2.png";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import { AiFillStar } from "react-icons/ai";
+import CustomerNav from "./customer/customerNav"
+
 
 export default function Home() {
   const [dishes, setDishes] = useState([]);
@@ -66,6 +68,7 @@ export default function Home() {
 
   return (
     <section className="flex">
+      <CustomerNav />
       <div className="homepage-2">
         <Image src={homepage2} alt="" layout={"fill"} objectFit="contain"></Image>
       </div>
@@ -104,4 +107,6 @@ export default function Home() {
       {/* footer */}
     </section>
   );
+
+
 }

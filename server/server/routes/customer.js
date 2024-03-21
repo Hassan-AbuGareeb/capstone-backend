@@ -29,4 +29,6 @@ router.post("/checkout", isAuthenticated, customerController.checkout);
 router.post("/cancelOrder", customerController.cancelOrder);
 router.post("/checkout", isAuthenticated, customerController.checkout);
 router.post("/cancelOrder", isAuthenticated, customerController.cancelOrder);
+
+router.get("/checktoken", isAuthenticated, customerController.checkToken);
 module.exports = router;
