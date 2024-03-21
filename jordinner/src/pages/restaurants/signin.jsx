@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import NavbarBefore from '@/components/navbar-before';
+import NavbarAfter from '@/components/navbar-after';
 
 export default function SignIn() {
 
@@ -12,13 +13,17 @@ export default function SignIn() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    const collection = localStorage.getItem('collection');
+    const newCollection = JSON.parse(collection)
+    if (newCollection) {
       setIsAuthenticated(true);
-    }
-  }, []);
-
-
+      setSuccessMessage('Already signed in! Redirecting you to your page')
+      const timer = setTimeout(() => {
+        window.location.href = `/restaurants/${newCollection.restaurantId}`;
+      }, 1000)
+      return () => clearTimeout(timer)
+  }}, []);
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -33,6 +38,10 @@ export default function SignIn() {
     })
     const restaurant = await res.json()
     const thisRestaurant = restaurant.find(restaurant => restaurant.email === email)
+    if (!thisRestaurant) {
+      setSuccessMessage('Wrong email or password')
+      return
+    }
     const restaurantId = thisRestaurant._id
     console.log(restaurantId)
      
@@ -51,18 +60,22 @@ export default function SignIn() {
       if (response.status === 200) {
         setSuccessMessage('Sign In Successful!');
         console.log('Signed in:', { email, password });
-        const collection = {'email': email, 'token': token} 
+        const collection = {'email': email, 'restaurantId':restaurantId, 'token': token} 
         localStorage.setItem('collection', JSON.stringify(collection))
         window.location.href = `/restaurants/${restaurantId}`;
         console.log(restaurantId)
 
       } else {
-        setSuccessMessage('Invalid email or password. Please try again.');
+        setSuccessMessage('Wrong email or password');
       }
     } catch (error) {
       setSuccessMessage('An error occurred while signing in..', error);
     }
   };
+
+  if (isAuthenticated) {
+    return <h2 style={{ color: 'red' }}>{successMessage}</h2>
+  } else {
 
   return (
     <div>
@@ -90,4 +103,5 @@ export default function SignIn() {
       <h2>{successMessage}</h2>
     </div>
   );
-}
+  }
+  }

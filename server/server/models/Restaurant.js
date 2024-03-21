@@ -19,7 +19,7 @@ const restaurantSchema = new mongoose.Schema({
         unique: true,
         validate: {
             validator: value => validator.isEmail(value),
-            message: 'Invalid email format'
+            message: 'Invalid Email format'
         }
     },
     password: {
@@ -84,6 +84,7 @@ const restaurantSchema = new mongoose.Schema({
     },
     image: {
         type: String,
+        required: [true, 'Restaurant needs a logo']
     },
     rating: {
         type: Number,
