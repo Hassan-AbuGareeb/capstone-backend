@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { BiUser } from "react-icons/bi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineMail } from "react-icons/ai";
@@ -10,11 +10,34 @@ import { CiLocationOn } from "react-icons/ci";
 import CustomerNav from "./customerNav";
 import { TokenContext } from "../_app";
 
-
 function SignUpIn() {
-
-  const { haveToken, setHaveToken } = useContext(TokenContext);
+  const { setHaveToken } = useContext(TokenContext);
   const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      check(token);
+    }
+  }, []); //check if the user is already signed in and has valid token
+
+  async function check(token) {
+    const isTokenValidResponse = await fetch(
+      "http://localhost:3001/customer/checktoken",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: token,
+        },
+      }
+    );
+    if (isTokenValidResponse.status !== 200) {
+      localStorage.removeItem("token");
+      setHaveToken(false);
+    }
+    router.push("/");
+  }
 
   const [action, setAction] = useState("Sign Up");
   const [signInFormData, setSignInFormData] = useState({
@@ -47,7 +70,6 @@ function SignUpIn() {
 
   const handleSignInSubmit = async (event) => {
     try {
-      
       const response = await axios.post(
         "http://localhost:3001/customer/signin",
         signInFormData
@@ -60,7 +82,7 @@ function SignUpIn() {
       console.log("Signed in successfully");
       setHaveToken(true);
       // redirect to customer's profile
-      router.push("/customer/profile");
+      router.push("/");
     } catch (error) {
       console.error("Error occurred during sign in:", error);
       setErrorMessage("Wrong username or password.");
@@ -81,7 +103,7 @@ function SignUpIn() {
       console.log("Signed up successfully");
       setHaveToken(true);
       // redirect to customer's profile
-      router.push("/customer/profile");
+      router.push("/");
     } catch (error) {
       console.error("Error occurred during sign up:", error);
       setErrorMessage(
