@@ -32,9 +32,9 @@ export default function NavbarAfter() {
 
   return (
     <div style={styles.navbar}> {/* Apply styles directly */}
-      <Link href='/profile' style={styles.navlink}>Profile</Link>
+      <Link href='/restaurants/profile' style={styles.navlink}>Profile</Link>
       <p></p>
-      <Link href='/menu' style={styles.navlink}>Menu</Link>
+      <Link href='/restaurants/menu' style={styles.navlink}>Menu</Link>
       <p></p>
       <button onClick={handleSignOut}  style={styles.navlink}>Sign Out</button>
       <p></p>

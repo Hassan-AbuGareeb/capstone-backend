@@ -19,11 +19,14 @@ export default function Landing() {
 
     return (
         <div>
-            <NavbarBefore/>
-            <p>HOME SWEET HOME</p>
-            {restaurants.map((restaurant, index) => (
-                <h2 key={index}>{restaurant.title}</h2>
-            ))}
-        </div>
+        <NavbarBefore/>
+        <p>HOME SWEET HOME</p>
+        {restaurants.map((restaurant, index) => (
+            <div key={index}>
+                <h2>{restaurant.title}</h2>
+                <img src={`http://localhost:3001/restaurants/images/${restaurant.image}`} alt={`Image of ${restaurant.title}`} />
+            </div>
+        ))}
+    </div>
     );
 }

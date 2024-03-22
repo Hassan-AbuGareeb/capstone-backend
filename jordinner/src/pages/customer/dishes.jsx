@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import CustomerNav from "./customerNav";
 import { TokenContext } from "../_app";
 import { useRouter } from "next/router";
+import Footer from "./Footer";
 
 export default function Dishes() {
   const [dishes, setDishes] = useState([]);
@@ -74,29 +75,33 @@ export default function Dishes() {
   }, [category]);
 
   async function addToCart(dishId) {
-    try {
-      const token = localStorage.getItem("token");
-      const body = { quantity: 1 };
-      const addResponse = await fetch(
-        `http://localhost:3001/customer/basket/${dishId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: token,
-          },
-          body: JSON.stringify(body),
-        }
-      );
-      const message = await addResponse.json();
-      alert(message.message);
-    } catch (err) {
-      alert(err.message);
-      localStorage.removeItem("token");
-      setHaveToken(false);
-      setTimeout(() => {
-        router.push("/customer/SignUpIn");
-      }, 3000);
+    const token = localStorage.getItem("token");
+    const body = { quantity: 1 };
+    const addResponse = await fetch(
+      `http://localhost:3001/customer/basket/${dishId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: token,
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    if (addResponse.status !== 200) {
+      if (addResponse.stats === 500) {
+        alert("Internal server error, please try again later");
+      } else {
+        //bad token
+        alert("your session ended, please sign in again");
+        localStorage.removeItem("token");
+        setHaveToken(false);
+        setTimeout(() => {
+          router.push("/customer/SignUpIn");
+        }, 3000);
+      }
+    } else {
+      alert("item added successfully!");
     }
   }
 
@@ -149,6 +154,8 @@ export default function Dishes() {
       {/* filter by categories */}
       {/* actual dishes */}
       <div className="flex gap-5">{filteredDishesCards}</div>
+      <Footer/>
+
     </div>
   );
 
