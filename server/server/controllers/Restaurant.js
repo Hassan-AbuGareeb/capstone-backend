@@ -9,6 +9,42 @@ const Category = require('../models/category')
 const fs = require('fs');
 const path = require('path');
 
+async function getImages(req, res) {
+  try {
+    const { filename } = req.params;
+    const imagePath = path.join(__dirname, '../uploads', filename);
+
+    if (!fs.existsSync(imagePath)) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    const contentType = getContentType(filename);
+    res.setHeader('Content-Type', contentType);
+
+    fs.createReadStream(imagePath).pipe(res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// Determine Content-Type based on file extension
+function getContentType(filename) {
+  const extension = path.extname(filename).toLowerCase();
+  switch (extension) {
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    case '.png':
+      return 'image/png';
+    case '.gif':
+      return 'image/gif';
+    default:
+      return 'application/octet-stream';
+  }
+}
+
+
 async function schemaEnums(req, res) {
   try {
     const enums = {
@@ -347,6 +383,7 @@ async function updateRestaurantProfile(req, res) {
 }
 
 module.exports = {
+  getImages,
   schemaEnums,
   restaurantSignIn,
   restaurantSignUp,
