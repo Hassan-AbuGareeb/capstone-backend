@@ -15,7 +15,7 @@ const [admin, setAdmin] = useState({
     image: ''
 })
 
-const [isAuthenticated, setIsAuthenticated] = useState(false)
+const [isAuthenticated, setIsAuthenticated] = useState(true)
 const [successMessage, setSuccessMessage] = useState('');
 const [redirect, setRedirect] = useState(false);
 const [location, setLocation] = useState([])
@@ -27,13 +27,14 @@ useEffect(() => {
     const collection = localStorage.getItem('collection');
     const newCollection = JSON.parse(collection)
     if (newCollection) {
-      setIsAuthenticated(true);
       setSuccessMessage('Already signed in! Redirecting you to your page')
       const timer = setTimeout(() => {
         window.location.href = `/restaurants/${newCollection.restaurantId}`;
       }, 1000)
       return () => clearTimeout(timer)
-  }}, []);
+  } else {
+    setIsAuthenticated(false)
+  } }, []);
 
 
 useEffect(()=> {
@@ -45,10 +46,7 @@ useEffect(()=> {
         const {location, category} = await res.json()
         setLocation(location)
         setCategory(category)
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsAuthenticated(true);
-    }
+
         } catch (err) {
         return err.message
         }
@@ -103,7 +101,7 @@ for (let [key, value] of formData.entries()) {
 }
 
 if (admin.location.length === 0) {
-    setSuccessMessage("Please select at least one location and one category.");
+    setSuccessMessage("Please select at least one location.");
     return;
 } else if (admin.category.length === 0) {
     setSuccessMessage("Please select at least one category.");
@@ -190,8 +188,6 @@ function toggleCategory() {
 if (isAuthenticated) {
     return <h2 style={{ color: 'red' }}>{successMessage}</h2>
   } else {
-
-
     return (
         <div>
             <NavbarBefore/>

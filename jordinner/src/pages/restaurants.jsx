@@ -21,6 +21,7 @@ export default function Landing() {
         <div>
             <NavbarBefore/>
             <p>HOME SWEET HOME</p>
+                {/* <img src={`http://localhost:3001/uploads/1711108364853CRUD.png`} alt="Restaurant Image" /> */}
             {restaurants.map((restaurant, index) => (
                 <h2 key={index}>{restaurant.title}</h2>
             ))}
