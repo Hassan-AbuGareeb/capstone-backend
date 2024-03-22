@@ -8,6 +8,7 @@ import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import { AiFillStar } from "react-icons/ai";
 import CustomerNav from "./customer/customerNav"
+import Footer from "./customer/Footer";
 
 
 export default function Home() {
@@ -67,7 +68,7 @@ export default function Home() {
   
 
   return (
-    <section>
+    <div>
       <CustomerNav />
       <div className="homepage-2">
         <Image src={homepage2} alt="" layout={"fill"} objectFit="contain"></Image>
@@ -76,7 +77,7 @@ export default function Home() {
         <h1 className="welcomingHeader">Life tastes better with <span className="title">Jordinner!</span></h1>
         <h2 className="welcomingText">Craving your next delicious Jordanian adventure?</h2>
         <br></br>
-        <Link href="/customer/signUpIn"><button className="orderNow">ORDER NOW!<IoArrowForwardCircleOutline className="orderArrow"/></button></Link>
+        <Link href="/customer/restaurants"><button className="orderNow">ORDER NOW!<IoArrowForwardCircleOutline className="orderArrow"/></button></Link>
         <p className="partnerClick"><Link href="/restaurants/signup">Are you a restaurant?<IoArrowForwardCircleOutline className="restaurantArrow"/></Link></p>
       </div>
       <div className="homepage-1">
@@ -104,8 +105,7 @@ export default function Home() {
         </div>
         <MdKeyboardArrowRight className="dishArrow" onClick={() => scrollSlider("restaurantSlider", 1)}/>
       </div>
-      {/* footer */}
-    </section>
+    </div>
   );
 
 

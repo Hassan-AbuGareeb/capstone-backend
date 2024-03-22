@@ -9,6 +9,7 @@ import { BsCalendarDate } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import CustomerNav from "./customerNav";
 import { TokenContext } from "../_app";
+import Link from "next/link";
 
 function SignUpIn() {
   const { setHaveToken } = useContext(TokenContext);
@@ -263,8 +264,8 @@ function SignUpIn() {
           {action === "Sign Up" && (
             <div className="terms">
               <input type="checkbox" required />
-              <p>
-                By proceeding, I agree to the terms of use and privacy policies.
+              <p><Link href='/customer/Policies'>
+                By proceeding, I agree to the <span className="policy">terms of use and privacy policies.</span></Link>
               </p>
             </div>
           )}
