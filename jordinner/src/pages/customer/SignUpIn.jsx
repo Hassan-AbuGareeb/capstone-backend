@@ -10,6 +10,7 @@ import { CiLocationOn } from "react-icons/ci";
 import CustomerNav from "./customerNav";
 import { TokenContext } from "../_app";
 import Link from "next/link";
+import Footer from "./Footer";
 
 function SignUpIn() {
   const { setHaveToken } = useContext(TokenContext);
@@ -294,6 +295,8 @@ function SignUpIn() {
           <div className="error">{errorMessage}</div>
         </div>
       </section>
+      <Footer/>
+
     </div>
   );
 }
