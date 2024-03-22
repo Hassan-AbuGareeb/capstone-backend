@@ -1,4 +1,5 @@
 const moongose = require("mongoose");
+const Restaurant = require("../models/Restaurant");
 const customerModel = require("../models/customer");
 const itemModel = require("../models/item");
 const tokenBlackListModel = require("../models/tokenBlackList");
@@ -381,6 +382,24 @@ async function checkToken(req, res) {
   res.status(200).json({ message: "authenticated" });
 }
 
+async function getRestaurantData(req, res) {
+  try {
+    const customerId = req.user.userId;
+    const restaurantId = req.params.restaurantId;
+    if (!customerId) {
+      return res.status(403).json("Authentication Error");
+    }
+
+    if (!restaurantId) {
+      return res.status(403).json("send a proper id");
+    }
+    const restaurantData = await Restaurant.findById(restaurantId).populate("menu");
+    res.status(200).json(restaurantData);
+  } catch (err) {
+    res.status(422).json({ message: err.message });
+  }
+}
+
 module.exports = {
   signup,
   signin,
@@ -397,4 +416,5 @@ module.exports = {
   getProfile,
   updateProfile,
   checkToken,
+  getRestaurantData
 };
