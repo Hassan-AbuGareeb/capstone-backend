@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { createContext, useEffect, useState } from "react";
 import NavbarBefore from "@/components/navbar-before";
 import CustomerNav from "./customer/customerNav";
+import Footer from "./customer/Footer";
 // import ReactDOM from 'react-dom';
 export const TokenContext = createContext();
 
@@ -39,6 +40,8 @@ export default function App({ Component, pageProps }) {
       <TokenContext.Provider value={{ haveToken, setHaveToken }}>
         {/* <CustomerNav /> */}
         <Component {...pageProps} />
+        <Footer/>
+
       </TokenContext.Provider>
     </>
   );

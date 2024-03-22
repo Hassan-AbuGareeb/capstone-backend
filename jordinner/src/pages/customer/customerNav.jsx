@@ -25,7 +25,7 @@ export default function CustomerNav() {
         <div className='nav-options'>
           <h1 className='logo'>
           <Link href="/"><MdFoodBank className='logoImg'/>| jordinner</Link></h1>
-          <span><Link href="customer/dishes">Dishes</Link></span>
+          <span><Link href="/customer/dishes">Dishes</Link></span>
           <span ><Link href="/customer/restaurants">Restaurants</Link></span>
         {/* needs conditional rendering if the user isn't signed in */}
         {haveToken && (

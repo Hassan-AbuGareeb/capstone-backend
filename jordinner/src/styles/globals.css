@@ -20,7 +20,6 @@ body {
   ::-webkit-scrollbar-track {
       background: rgba(163, 162, 162, 0.105);
   }
-   
   
   /* ---------------------------HOME PAGE--------------------------------- */
   .welcomeContainer{
@@ -398,7 +397,12 @@ body {
     width: 400px;
     position: relative;
   }
-  
+
+  .policy:hover{
+    color: rgb(96, 155, 7);
+    text-decoration: underline;
+    cursor: pointer;
+  }
   .error {
     padding-left: 78px;
     position: relative;
@@ -501,3 +505,56 @@ body {
   .signInButton:hover{
       background-color: rgb(60, 97, 3);
   }
+
+  /* =============================== FOOTER ================================== */
+
+  .footerContainer{
+    width: 100%;
+    margin-bottom: auto;
+    /* padding: 0px 0px; */
+    height: 400px;
+    background-color: black;
+    display: flex;
+    flex-direction: column; 
+    text-align: right;
+  }
+
+  .footerImg{
+    width: 400px;
+    height: 80px;
+    margin-top: 20px;
+    padding-left: 20px;
+
+  }
+
+  .footerContainer span{
+    color: white;
+    text-align: center;
+    display: flex;
+    padding-left: 35px;
+
+  }
+
+
+  .footerContainer span:hover{
+    color: gray;
+    text-decoration: underline;
+  }
+
+  .copyRights{
+    margin-top: 60px;
+    color: white;
+    align-items: center;
+    padding-left: -10px;
+  }
+
+  /* =================== TERMS AND CONDITIONS ============================== */
+
+  .conditions{
+    margin: 20px;
+    padding: 50px;
+    line-height: 2;
+
+  }
+
+  
