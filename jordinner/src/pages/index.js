@@ -105,6 +105,8 @@ export default function Home() {
         </div>
         <MdKeyboardArrowRight className="dishArrow" onClick={() => scrollSlider("restaurantSlider", 1)}/>
       </div>
+      <Footer/>
+
     </div>
   );
 
