@@ -78,15 +78,12 @@ function SignUpIn() {
       );
       const token = response.data;
       // store the token in local storage
-      console.log(token);
       localStorage.setItem("token", token);
       setErrorMessage(""); // clear any previous error messages
-      console.log("Signed in successfully");
       setHaveToken(true);
       // redirect to customer's profile
       router.push("/");
     } catch (error) {
-      console.error("Error occurred during sign in:", error);
       setErrorMessage("Wrong username or password.");
     }
   };
@@ -99,15 +96,12 @@ function SignUpIn() {
       );
       const token = response.data;
       // store the token in local storage
-      console.log(token);
       localStorage.setItem("token", token);
       setErrorMessage(""); // clear any previous error messages
-      console.log("Signed up successfully");
       setHaveToken(true);
       // redirect to customer's profile
       router.push("/");
     } catch (error) {
-      console.error("Error occurred during sign up:", error);
       setErrorMessage(
         error.response.data.message ||
           "An error occurred. Please try again later."

@@ -18,7 +18,6 @@ export default function Home() {
   async function getDishes() {
     const dishesResponse = await fetch("http://localhost:3001/restaurants/get");
     const dishesData = await dishesResponse.json();
-    console.log(dishesData);
     setDishes([...dishesData]);
   }
 
@@ -63,7 +62,6 @@ export default function Home() {
     const slider = document.getElementById(sliderId);
     const scrollAmount = direction * 300;
     slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    console.log(scrollAmount);
   }
   
 
