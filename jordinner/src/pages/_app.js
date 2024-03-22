@@ -2,10 +2,12 @@ import "@/styles/globals.css";
 import { createContext, useEffect, useState } from "react";
 import NavbarBefore from "@/components/navbar-before";
 import CustomerNav from "./customer/customerNav";
+import Footer from "./customer/Footer";
 // import ReactDOM from 'react-dom';
 export const TokenContext = createContext();
 
 export default function App({ Component, pageProps }) {
+
   const [haveToken, setHaveToken] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,7 +34,6 @@ export default function App({ Component, pageProps }) {
       setHaveToken(true);
     }
   }
-
   return (
     <>
       {/* <NavbarBefore /> */}

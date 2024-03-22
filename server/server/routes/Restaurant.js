@@ -4,6 +4,7 @@ const verifyToken = require('../middleware/validateToken')
 const upload = require('../middleware/upload')
 const restaurantController = require("../controllers/Restaurant");
 
+router.get('/images/:filename', restaurantController.getImages)
 router.get('/enums', restaurantController.schemaEnums)
 router.post('/signup', upload.single('image'), restaurantController.restaurantSignUp);
 router.post('/signin', restaurantController.restaurantSignIn);

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import CustomerNav from "./customerNav";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Footer from "./Footer";
+
 export default function Dishes() {
   const [dishes, setDishes] = useState([]);
   const [filteredDishes, setFilteredDishes] = useState([]);
@@ -113,6 +115,8 @@ export default function Dishes() {
       {/* filter by categories */}
       {/* actual dishes */}
       <div className="flex gap-5">{filteredDishesCards}</div>
+      <Footer/>
+
     </div>
   );
 

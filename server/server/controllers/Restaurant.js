@@ -9,6 +9,42 @@ const Category = require('../models/category')
 const fs = require('fs');
 const path = require('path');
 
+async function getImages(req, res) {
+  try {
+    const { filename } = req.params;
+    const imagePath = path.join(__dirname, '../uploads', filename);
+
+    if (!fs.existsSync(imagePath)) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    const contentType = getContentType(filename);
+    res.setHeader('Content-Type', contentType);
+
+    fs.createReadStream(imagePath).pipe(res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// Determine Content-Type based on file extension
+function getContentType(filename) {
+  const extension = path.extname(filename).toLowerCase();
+  switch (extension) {
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    case '.png':
+      return 'image/png';
+    case '.gif':
+      return 'image/gif';
+    default:
+      return 'application/octet-stream';
+  }
+}
+
+
 async function schemaEnums(req, res) {
   try {
     const enums = {
@@ -34,6 +70,7 @@ async function restaurantSignUp(req, res) {
     if (typeof admin.category === 'string') {
       admin.category = JSON.parse(admin.category);
     }
+    admin.image = image.filename
 
     const signUp = await Restaurant.create(admin);
 
@@ -50,11 +87,14 @@ async function restaurantSignUp(req, res) {
       const imagePath = path.join(destinationDirectory, image.filename);
       fs.copyFileSync(image.path, imagePath); //to manually copy the file to destination
       console.log(imagePath);
-  } else {
-      console.log('No image uploaded.');
   }
+  if (!admin.location || admin.location.length === 0) {
+    return res.status(400).json({ error: 'Location is required.' });
+  } else if (!admin.category || admin.category.length === 0) {
+    return res.status(400).json({ error: 'Category is required.' });
+  } else {
     return res.status(201).json({ message: "Restaurant Created Successfully!", signUp });
-  } catch (err) {
+  }} catch (err) {
     if (err.name === 'ValidationError') {
       const errors = Object.values(err.errors).map(error => error.message);
       return res.status(422).json({ errors });
@@ -343,6 +383,7 @@ async function updateRestaurantProfile(req, res) {
 }
 
 module.exports = {
+  getImages,
   schemaEnums,
   restaurantSignIn,
   restaurantSignUp,

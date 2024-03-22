@@ -8,6 +8,8 @@ import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import { AiFillStar } from "react-icons/ai";
 import CustomerNav from "./customer/customerNav";
+import Footer from "./customer/Footer";
+
 
 export default function Home() {
   const [dishes, setDishes] = useState([]);
@@ -79,7 +81,7 @@ export default function Home() {
   }
 
   return (
-    <section className="flex">
+    <div>
       <CustomerNav />
       <div className="homepage-2">
         <Image
@@ -158,7 +160,8 @@ export default function Home() {
           onClick={() => scrollSlider("restaurantSlider", 1)}
         />
       </div>
-      {/* footer */}
-    </section>
+      <Footer/>
+
+    </div>
   );
 }

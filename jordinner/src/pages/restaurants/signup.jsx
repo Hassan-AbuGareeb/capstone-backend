@@ -15,13 +15,27 @@ const [admin, setAdmin] = useState({
     image: ''
 })
 
-const [isAuthenticated, setIsAuthenticated] = useState(false)
+const [isAuthenticated, setIsAuthenticated] = useState(true)
 const [successMessage, setSuccessMessage] = useState('');
 const [redirect, setRedirect] = useState(false);
 const [location, setLocation] = useState([])
 const [category, setCategory] = useState([])
 const [showLocations, setShowLocations] = useState(false);
 const [showCategories, setShowCategories] = useState(false);
+
+useEffect(() => {
+    const collection = localStorage.getItem('collection');
+    const newCollection = JSON.parse(collection)
+    if (newCollection) {
+      setSuccessMessage('Already signed in! Redirecting you to your page')
+      const timer = setTimeout(() => {
+        window.location.href = `/restaurants/${newCollection.restaurantId}`;
+      }, 1000)
+      return () => clearTimeout(timer)
+  } else {
+    setIsAuthenticated(false)
+  } }, []);
+
 
 useEffect(()=> {
     async function getEnums() {
@@ -32,10 +46,7 @@ useEffect(()=> {
         const {location, category} = await res.json()
         setLocation(location)
         setCategory(category)
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsAuthenticated(true);
-    }
+
         } catch (err) {
         return err.message
         }
@@ -88,6 +99,15 @@ for (let [key, value] of formData.entries()) {
     dataObject[key] = value;
   }
 }
+
+if (admin.location.length === 0) {
+    setSuccessMessage("Please select at least one location.");
+    return;
+} else if (admin.category.length === 0) {
+    setSuccessMessage("Please select at least one category.");
+    return
+}
+
     try {
         const res = await fetch('http://localhost:3001/restaurants/signup', {
             method: 'POST',
@@ -97,9 +117,18 @@ for (let [key, value] of formData.entries()) {
             setSuccessMessage("Restaurant Created Successfully!"); 
             setRedirect(true);
           } else {
-            const errorMessage = await res.text(); 
+
+            const contentType = res.headers.get('content-type');
+            let errorMessage;
+
+            if (contentType && contentType.includes('application/json')) {
+                errorMessage = await res.json();  
+            } else {
+                errorMessage = await res.text(); 
+            }
+
             console.error(errorMessage); 
-            if (errorMessage.includes('duplicate key error')) {
+            if (typeof errorMessage === 'string' && errorMessage.includes('duplicate key error')) {
                 if (errorMessage.includes('ein_1')) {
                     setSuccessMessage('Employer Identification Number has to be unique')
                 } else if (errorMessage.includes('title_1')) {
@@ -108,14 +137,12 @@ for (let [key, value] of formData.entries()) {
                     setSuccessMessage('Restaurant Email has to be unique')
                 }
             } else {
-               const errorObject = JSON.parse(errorMessage);
 
-        // Check if the 'errors' key exists and if it's an array chat gpt
-        if (errorObject.errors && Array.isArray(errorObject.errors) && errorObject.errors.length > 0) {
-            // Get the first error message from the array
-            const firstErrorMessage = errorObject.errors[0];
-            setSuccessMessage(firstErrorMessage);
-
+                if (typeof errorMessage === 'object' && errorMessage.errors && errorMessage.errors.length > 0) {
+                    const firstErrorMessage = errorMessage.errors[0];
+                    setSuccessMessage(firstErrorMessage);
+                } else {
+                    setSuccessMessage('An error occurred while signing up. Please try again.');
             }}}
     } catch (err) {
        console.error(err.message)
@@ -158,7 +185,9 @@ function toggleCategory() {
     setShowCategories(!showCategories)
 }
 
-
+if (isAuthenticated) {
+    return <h2 style={{ color: 'red' }}>{successMessage}</h2>
+  } else {
     return (
         <div>
             <NavbarBefore/>
@@ -179,14 +208,14 @@ function toggleCategory() {
                         {location.map(loc => (
                             <div key={loc}>
                                 <input type='checkbox'name='location' value={loc} checked={admin.location.includes(loc)}
-                                onChange={handleLocationChange}/>
+                                onChange={handleLocationChange} required/>
                                 <label>{loc}</label>
                             </div>
                         ))}
                     </div>
                 )}
                 <label>Phone Number</label>
-                <input type='text' name='phoneNumber' value={admin.phoneNumber} onChange={handleChange} required />
+                <input type='text' name='phoneNumber' value={admin.phoneNumber} onChange={handleChange} />
                 <label>Categories</label>
                 <button type='button' onClick={toggleCategory}>Select Category</button>
                 {showCategories && (
@@ -194,7 +223,7 @@ function toggleCategory() {
                         {category.map(categ => (
                            <div key={categ}>
                                 <input type='checkbox' name='category' value={categ} checked={admin.category.includes(categ)}
-                                onChange={handleCategoryChange}/>
+                                onChange={handleCategoryChange} />
                                 <label>{categ}</label>
                             </div>
                         ))}
@@ -208,4 +237,5 @@ function toggleCategory() {
             <h2>{successMessage}</h2>
         </div>
     )
+}
 }
