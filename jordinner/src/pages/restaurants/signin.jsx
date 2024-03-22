@@ -9,19 +9,20 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
   const router = useRouter();
 
   useEffect(() => {
     const collection = localStorage.getItem('collection');
     const newCollection = JSON.parse(collection)
     if (newCollection) {
-      setIsAuthenticated(true);
       setSuccessMessage('Already signed in! Redirecting you to your page')
       const timer = setTimeout(() => {
         window.location.href = `/restaurants/${newCollection.restaurantId}`;
       }, 1000)
       return () => clearTimeout(timer)
+  } else {
+    setIsAuthenticated(false)
   }}, []);
   
   const handleSubmit = async (event) => {

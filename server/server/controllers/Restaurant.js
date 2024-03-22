@@ -36,12 +36,6 @@ async function restaurantSignUp(req, res) {
     }
     admin.image = image.filename
 
-    if (!admin.location || admin.location.length === 0) {
-      return res.status(400).json({ error: 'Location is required.' });
-    } else if (!admin.category || admin.category.length === 0) {
-      return res.status(400).json({ error: 'Category is required.' });
-    } else {
-
     const signUp = await Restaurant.create(admin);
 
     const hashIt = await bcrypt.hash(admin.password, 10);
@@ -58,9 +52,13 @@ async function restaurantSignUp(req, res) {
       fs.copyFileSync(image.path, imagePath); //to manually copy the file to destination
       console.log(imagePath);
   }
-  }
+  if (!admin.location || admin.location.length === 0) {
+    return res.status(400).json({ error: 'Location is required.' });
+  } else if (!admin.category || admin.category.length === 0) {
+    return res.status(400).json({ error: 'Category is required.' });
+  } else {
     return res.status(201).json({ message: "Restaurant Created Successfully!", signUp });
-  } catch (err) {
+  }} catch (err) {
     if (err.name === 'ValidationError') {
       const errors = Object.values(err.errors).map(error => error.message);
       return res.status(422).json({ errors });
