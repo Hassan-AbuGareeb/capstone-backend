@@ -1,9 +1,6 @@
 import React from 'react'
 import CustomerNav from './customerNav'
 import Footer from './Footer'
-import { BiUser } from "react-icons/bi";
-import { AiOutlineFunction, AiOutlineMail } from "react-icons/ai";
-import { BiMessageSquareDetail } from "react-icons/bi";
 import { useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
