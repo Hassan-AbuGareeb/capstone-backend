@@ -11,7 +11,7 @@ function Footer() {
     <div className='footerContainer'>
        <Image className="footerImg" src={LogoFooter} alt=""></Image><br></br><br></br>
       <div className='footer'>
-         <Link href='/customer/About Us'><span>About Us</span></Link><br></br>
+         <Link href='/customer/AboutUs'><span>About Us</span></Link><br></br>
          <Link href='/customer/Policies'><span>Terms, Conditions & Privacy Policy</span></Link><br></br>
          <Link href='/customer/ContactUs'><span>Contact Us</span></Link><br></br><br></br>
         </div>
