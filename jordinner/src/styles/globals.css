@@ -561,4 +561,42 @@ body {
 
   }
 
+  /* ============================== ABOUT US ========================================= */
+
+  .about-section{
+    margin-top: 200px;
+    text-align: center;
+    }
+
+  .team{
+      text-align: center;
+      justify-content: center;
+      background-color: whitesmoke;
+      /* margin-top: 50px;
+      margin-bottom: 200px; */
+      border-radius: 30px;
+      padding: 15px;
+      gap: 50px;
+      cursor: pointer;
+  }
+
+  .team:hover:hover{
+    background-color:  rgba(96, 155, 7, 0.532);
+    /* box-shadow: 0px 1px 12px 3px rgba(97,92,92,0.82); */
+    transform: scale(1.05, 1.05);
+    /* transition: box-shadow 1s; */
+  }
+
+  .teamCards{
+    display: flex;
+    grid: 30px;
+    align-items: center;
+    margin: 150px;
+    /* margin-bottom: 100px; */
+    margin-top: 30px;
+    gap: 2rem;
+  }
   
+  .linkedin{
+margin-right: 3px;
+}
