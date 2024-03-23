@@ -1,35 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import AddItem from './menu/additem';
-import Item from './menu/[item]';
+import Link from 'next/link'
+import NavbarAfter from '@/components/navbar-after';
 
 
 const Menu = () => {
-  const [itemId, setItemId] = useState(null);
 
-  useEffect(() => {
-    const id = location.pathname.split('/')[2];
-    if (id) {
-      setItemId(id);
-    }
-  }, []);
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [message, setMessage] = useState('')
 
+  useEffect(()=> {
+    const collection = localStorage.getItem('collection')
+    const newCollection = JSON.parse(collection)
+    if (!newCollection) {
+      setMessage('Unauthorized Access. Please sign in first!')
+      const timer = setTimeout(() => {
+        window.location.href = `/restaurants/signin`;
+      }, 1000)
+      return () => clearTimeout(timer)
+  } else {
+    setIsAuthenticated(true)
+  } }, []);
+
+  if (!isAuthenticated) {
+    return <h2 style={{ color: 'red' }}>{message}</h2>
+  } else {
   return (
     <div>
-     <AddItem />
-    <Item id={itemId} />
-
+      <NavbarAfter />
+      <Link href='/restaurants/menu/additem'>Add Items</Link>
+      <h2>{message}</h2>
     </div>
   );
+  }
 };
 
 export default Menu;
-=======
-import NavbarAfter from '../../components/navbar-after'
-
-
-export default function Menu() {
-    return <div>
-        <NavbarAfter></NavbarAfter>
-        <p>Menu </p>
-    </div>
-}
