@@ -18,10 +18,6 @@ const UpdateCustomerProfile = ({ customerData, setUpdateProfile }) => {
   ];
 
   function handleFieldChange(event) {
-    if (event.target.name === "phone") {
-      const phoneRegex = /^\d{10}$/;
-      setInvalidPhoneNumber(!phoneRegex.test(event.target.value));
-    }
     setUpdatedCustomerData({
       ...updatedCustomerData,
       [event.target.name]: event.target.value,
@@ -30,17 +26,29 @@ const UpdateCustomerProfile = ({ customerData, setUpdateProfile }) => {
 
   function handleFormSubmit(event) {
     event.preventDefault();
+    const phoneRegex = /^\d{10}$/;
+    let tempErrors = {};
     for (let property in updatedCustomerData)
-      if (updatedCustomerData[property].length < 1) {
-        setErrorMessages({
-          ...errorMessages,
+      if (
+        !updatedCustomerData[property] ||
+        updatedCustomerData[property].length < 1
+      ) {
+        tempErrors[property] = {
+          ...tempErrors,
           [property]: `Invalid ${property}`,
-        });
+        };
+        // console.log(tempErrors);
       } else {
         let tempErrors = { ...errorMessages };
         delete tempErrors[property];
         setErrorMessages({ ...tempErrors });
       }
+    setErrorMessages({ ...tempErrors });
+    console.log(errorMessages);
+    if (!phoneRegex.test(updatedCustomerData.phoneNumber)) {
+      setInvalidPhoneNumber(true);
+      return;
+    }
     if (Object.keys(errorMessages) > 0) {
       return;
     }
@@ -83,6 +91,7 @@ const UpdateCustomerProfile = ({ customerData, setUpdateProfile }) => {
             value={updatedCustomerData.firstName}
             onChange={handleFieldChange}
           />
+          {errorMessages.firstName && <span>invalid first name</span>}
         </div>
         <div>
           <label>last name:</label>
@@ -92,6 +101,7 @@ const UpdateCustomerProfile = ({ customerData, setUpdateProfile }) => {
             value={updatedCustomerData.lastName}
             onChange={handleFieldChange}
           />
+          {errorMessages.lastName && <span>invalid last name</span>}
         </div>
         <div>
           <label>Phone number:</label>
