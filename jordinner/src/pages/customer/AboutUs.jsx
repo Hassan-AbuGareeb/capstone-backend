@@ -22,30 +22,28 @@ function AboutUs() {
         <div class="team">
             <h4>Rinad Abu Qauod</h4>
             <h5>Fullstack Web Developer</h5>
-            {/* <p>ABA therapist, biomedical scientist,<br></br>
-            artist & a design enthusiast</p> */}
             <a href="https://www.linkedin.com/in/rinad-abu-qauod/"><BsLinkedin className='linkedin'/></a>
-            <a href="github"><BsGithub /></a>
+            <a href="https://github.com/rinadaq"><BsGithub /></a>
         </div>
         <div class="team">
             <h4>Hassan Abu Gareeb</h4>
             <h5>Fullstack Web Developer</h5>
-            <a href="linkedin"><BsLinkedin className='linkedin'/></a>
-            <a href="github"><BsGithub /></a>
+            <a href="https://www.linkedin.com/in/hassan-abu-gareeb-a13b1126a/"><BsLinkedin className='linkedin'/></a>
+            <a href="https://github.com/Hassan-AbuGareeb"><BsGithub /></a>
 
         </div>
         <div class="team">
-            <h4>Ahmad Mash</h4>
+            <h4>Ahmad Almashagbah</h4>
             <h5>Fullstack Web Developer</h5>
-            <a href="linkedin"><BsLinkedin className='linkedin'/></a>
-            <a href="github"><BsGithub /></a>
+            <a href="https://www.linkedin.com/in/ahmad-almashagbah-4293b3166?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><BsLinkedin className='linkedin'/></a>
+            <a href="https://github.com/Shwarzar"><BsGithub /></a>
 
         </div>
         <div class="team">
             <h4>Lujain Mansour</h4>
             <h5>Fullstack Web Developer</h5>
-            <a href="linkedin"><BsLinkedin className='linkedin'/></a>
-            <a href="github"><BsGithub /></a>
+            <a href="https://jo.linkedin.com/in/lujain-mansour-b17390219   "><BsLinkedin className='linkedin'/></a>
+            <a href="https://github.com/luj00 "><BsGithub /></a>
         </div>
   </div>
 </div>
