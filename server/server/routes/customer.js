@@ -31,4 +31,9 @@ router.post("/checkout", isAuthenticated, customerController.checkout);
 router.post("/cancelOrder", isAuthenticated, customerController.cancelOrder);
 
 router.get("/checktoken", isAuthenticated, customerController.checkToken);
+router.get(
+  "/restaurant/:restaurantId",
+  isAuthenticated,
+  customerController.getRestaurantData
+);
 module.exports = router;
