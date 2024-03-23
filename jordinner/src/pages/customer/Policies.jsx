@@ -87,8 +87,9 @@ function Policies() {
              8. **Changes to Privacy Policy:** We may update this Privacy Policy from time to time. If we make material changes, we will notify you by email or by posting a notice on our website prior to the change becoming effective. Your continued use of the Service after the effective date of the revised Privacy Policy constitutes your acceptance of the terms.
             </p>
         </div>
+        <Footer/>
     </div>
   )
 }
 
-export default Policies;
+export default Policies

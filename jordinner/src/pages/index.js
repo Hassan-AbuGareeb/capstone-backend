@@ -46,7 +46,7 @@ export default function Home() {
   ));
 
   const restaurantsCards = restaurants.map((restaurant) => (
-    <Link href={`/customer/restaurants/${restaurant._id}`}>
+    <Link href={`/customer/Restaurants/${restaurant._id}`}>
     <div
       key={restaurant.title} className="restaurantInfo">
       <Image className="restaurantImg" src={restaurant.image} alt="" objectFit="contain"></Image>
@@ -77,7 +77,7 @@ export default function Home() {
         <h1 className="welcomingHeader">Life tastes better with <span className="title">Jordinner!</span></h1>
         <h2 className="welcomingText">Craving your next delicious Jordanian adventure?</h2>
         <br></br>
-        <Link href="/customer/restaurants"><button className="orderNow">ORDER NOW!<IoArrowForwardCircleOutline className="orderArrow"/></button></Link>
+        <Link href="/customer/Restaurants"><button className="orderNow">ORDER NOW!<IoArrowForwardCircleOutline className="orderArrow"/></button></Link>
         <p className="partnerClick"><Link href="/restaurants/signup">Are you a restaurant?<IoArrowForwardCircleOutline className="restaurantArrow"/></Link></p>
       </div>
       <div className="homepage-1">
@@ -93,7 +93,7 @@ export default function Home() {
         </div>
           <MdKeyboardArrowRight className="dishArrow" onClick={() => scrollSlider("dishSlider", 1)}/> 
         </div>
-      <div><h3 className="popularRestaurants"><Link href="/customer/restaurants">EXPLORE RESTAURANTS</Link></h3></div>
+      <div><h3 className="popularRestaurants"><Link href="/customer/Restaurants">EXPLORE RESTAURANTS</Link></h3></div>
       <div className="restaurantCards">
         <MdKeyboardArrowLeft className="dishArrow" onClick={() => scrollSlider("restaurantSlider", -1)}/>
         <div className="CardsWrapper"  id="restaurantSlider">
