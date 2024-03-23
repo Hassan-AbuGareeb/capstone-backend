@@ -98,6 +98,7 @@ export default function Home() {
           Craving your next delicious Jordanian adventure?
         </h2>
         <br></br>
+
         <Link href="/customer/signUpIn">
           <button className="orderNow">
             ORDER NOW!
@@ -134,6 +135,7 @@ export default function Home() {
         <div className="CardsWrapper" id="dishSlider">
           {dishesCards}
         </div>
+
         <MdKeyboardArrowRight
           className="dishArrow"
           onClick={() => scrollSlider("dishSlider", 1)}

@@ -4,6 +4,7 @@ import { createContext, useEffect, useState } from "react";
 import NavbarBefore from "@/components/navbar-before";
 import CustomerNav from "./customer/customerNav";
 import Footer from "./customer/Footer";
+import Restaurants from "./customer/Restaurants";
 // import ReactDOM from 'react-dom';
 export const TokenContext = createContext();
 
