@@ -37,6 +37,7 @@ function ContactUs() {
         <section className="container">
         <div className="contactHeader">
         <div className="text"><p>Contact Us</p></div>
+        <div className="Contactunderline"></div>
         <form className="inputs" ref={form} onSubmit={sendEmail}>
             <input className="input" type="text" name="name" placeholder=' Full Name' required />
             <input className="input" type="email" name="email" placeholder=' Email' required/>
