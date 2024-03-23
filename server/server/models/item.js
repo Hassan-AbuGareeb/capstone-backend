@@ -15,7 +15,7 @@ const itemSchema = new mongoose.Schema({
     required: [true, 'Item description is required'],
   },
   image: {
-    type: Buffer,
+    type: String,
   },
   price: {
     type: mongoose.Schema.Types.Decimal128,

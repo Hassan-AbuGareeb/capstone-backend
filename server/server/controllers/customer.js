@@ -1,4 +1,5 @@
 const moongose = require("mongoose");
+const Restaurant = require("../models/Restaurant");
 const customerModel = require("../models/customer");
 const itemModel = require("../models/item");
 const tokenBlackListModel = require("../models/tokenBlackList");
@@ -314,7 +315,7 @@ async function viewAllItems(req, res) {
 async function getProfile(req, res) {
   const customerId = req.user.userId;
   try {
-    const customer = customerModel.findById(customerId);
+    const customer = await customerModel.findById(customerId);
     res.status(200).json({ customerInfo: customer });
   } catch (err) {
     res.status(422).json(err.message);
@@ -336,34 +337,34 @@ async function updateProfile(req, res) {
     if (req.body.phoneNumber.length !== 10) {
       return res.status(422).json("New phone number must be 10 digits");
     }
-    originalCustomer = {
-      firstName: customer.firstName,
-      lastName: customer.lastName,
-      age: customer.age,
-      phoneNumber: customer.phoneNumber,
-      location: customer.location,
-    };
-    if (req.body.firstName === originalCustomer.firstName) {
-      return res
-        .status(422)
-        .json("New first name matches the original first name");
-    }
-    if (req.body.lastName === originalCustomer.lastName) {
-      return res
-        .status(422)
-        .json("New last name matches the original last name");
-    }
-    if (req.body.age === originalCustomer.age) {
-      return res.status(422).json("New age matches the original age");
-    }
-    if (req.body.phoneNumber === originalCustomer.phoneNumber) {
-      return res
-        .status(422)
-        .json("New phone number matches the original phone number");
-    }
-    if (req.body.location === originalCustomer.location) {
-      return res.status(422).json("New location matches the original location");
-    }
+    // originalCustomer = {
+    //   firstName: customer.firstName,
+    //   lastName: customer.lastName,
+    //   age: customer.age,
+    //   phoneNumber: customer.phoneNumber,
+    //   location: customer.location,
+    // };
+    // if (req.body.firstName === originalCustomer.firstName) {
+    //   return res
+    //     .status(422)
+    //     .json("New first name matches the original first name");
+    // }
+    // if (req.body.lastName === originalCustomer.lastName) {
+    //   return res
+    //     .status(422)
+    //     .json("New last name matches the original last name");
+    // }
+    // if (req.body.age === originalCustomer.age) {
+    //   return res.status(422).json("New age matches the original age");
+    // }
+    // if (req.body.phoneNumber === originalCustomer.phoneNumber) {
+    //   return res
+    //     .status(422)
+    //     .json("New phone number matches the original phone number");
+    // }
+    // if (req.body.location === originalCustomer.location) {
+    //   return res.status(422).json("New location matches the original location");
+    // }
     const updatedprofile = await customerModel.findByIdAndUpdate(
       customerId,
       req.body,
@@ -379,6 +380,24 @@ async function updateProfile(req, res) {
 
 async function checkToken(req, res) {
   res.status(200).json({ message: "authenticated" });
+}
+
+async function getRestaurantData(req, res) {
+  try {
+    const customerId = req.user.userId;
+    const restaurantId = req.params.restaurantId;
+    if (!customerId) {
+      return res.status(403).json("Authentication Error");
+    }
+
+    if (!restaurantId) {
+      return res.status(403).json("send a proper id");
+    }
+    const restaurantData = await Restaurant.findById(restaurantId).populate("menu");
+    res.status(200).json(restaurantData);
+  } catch (err) {
+    res.status(422).json({ message: err.message });
+  }
 }
 
 module.exports = {
@@ -397,4 +416,5 @@ module.exports = {
   getProfile,
   updateProfile,
   checkToken,
+  getRestaurantData
 };

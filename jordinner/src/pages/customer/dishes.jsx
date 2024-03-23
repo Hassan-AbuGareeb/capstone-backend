@@ -1,7 +1,7 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import CustomerNav from "./customerNav";
-import { TokenContext } from "../_app";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import Footer from "./Footer";
 
 export default function Dishes() {
@@ -10,7 +10,6 @@ export default function Dishes() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
 
-  const { haveToken, setHaveToken } = useContext(TokenContext);
   const router = useRouter();
   //dishes categories
   const categories = [
@@ -74,53 +73,15 @@ export default function Dishes() {
     ]);
   }, [category]);
 
-  async function addToCart(dishId) {
-    const token = localStorage.getItem("token");
-    const body = { quantity: 1 };
-    const addResponse = await fetch(
-      `http://localhost:3001/customer/basket/${dishId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: token,
-        },
-        body: JSON.stringify(body),
-      }
-    );
-    if (addResponse.status !== 200) {
-      if (addResponse.stats === 500) {
-        alert("Internal server error, please try again later");
-      } else {
-        //bad token
-        alert("your session ended, please sign in again");
-        localStorage.removeItem("token");
-        setHaveToken(false);
-        setTimeout(() => {
-          router.push("/customer/SignUpIn");
-        }, 3000);
-      }
-    } else {
-      alert("item added successfully!");
-    }
-  }
-
   const filteredDishesCards = filteredDishes.map((dish) => {
     return (
+      <Link href={`/customer/${dish.restaurantId}`}>
       <div className="flex flex-col border-2 border-green-400 rounded-md">
         {/* dish image */}
         <h1>{dish.name}</h1>
         <h1>{dish.price.$numberDecimal}</h1>
-        {haveToken && (
-          <button
-            onClick={() => {
-              addToCart(dish._id);
-            }}
-          >
-            Add to Cart
-          </button>
-        )}
       </div>
+      </Link>
     );
   });
 

@@ -84,7 +84,6 @@ const restaurantSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: [true, 'Restaurant needs a logo']
     },
     rating: {
         type: Number,

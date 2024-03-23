@@ -19,12 +19,18 @@ export default function Landing() {
 
     return (
         <div>
-            <NavbarBefore/>
-            <p>HOME SWEET HOME</p>
-                {/* <img src={`http://localhost:3001/uploads/1711108364853CRUD.png`} alt="Restaurant Image" /> */}
-            {restaurants.map((restaurant, index) => (
-                <h2 key={index}>{restaurant.title}</h2>
-            ))}
+            <NavbarBefore />
+            <div className="menu-header">
+                <h1>Jordinner's Restaurants</h1>
+            </div>
+            <div className='cardContainer'>
+                {restaurants.map((restaurant, index) => (
+                    <div key={index} className='card'>
+                        <h2>{restaurant.title}</h2>
+                        <img src={`http://localhost:3001/restaurants/images/${restaurant.image}`} alt={`Image of ${restaurant.title}`} />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

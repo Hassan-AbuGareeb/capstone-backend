@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import '@/styles/menu.css'
 import { createContext, useEffect, useState } from "react";
 import NavbarBefore from "@/components/navbar-before";
 import CustomerNav from "./customer/customerNav";

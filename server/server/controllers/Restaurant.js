@@ -9,6 +9,77 @@ const Category = require('../models/category')
 const fs = require('fs');
 const path = require('path');
 
+async function getImages(req, res) {
+  try {
+    const { filename } = req.params;
+    const imagePath = path.join(__dirname, '../uploads', filename);
+
+    if (!fs.existsSync(imagePath)) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    const contentType = getContentType(filename);
+    res.setHeader('Content-Type', contentType);
+
+    fs.createReadStream(imagePath).pipe(res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// Determine Content-Type based on file extension
+function getContentType(filename) {
+  const extension = path.extname(filename).toLowerCase();
+  switch (extension) {
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    case '.png':
+      return 'image/png';
+    case '.gif':
+      return 'image/gif';
+    default:
+      return 'application/octet-stream';
+  }
+}
+
+async function getItemImages(req, res) {
+  try {
+    const { filename } = req.params;
+    const imagePath = path.join(__dirname, '../uploadItem', filename);
+
+    if (!fs.existsSync(imagePath)) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    const contentType = getContentType(filename);
+    res.setHeader('Content-Type', contentType);
+
+    fs.createReadStream(imagePath).pipe(res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// Determine Content-Type based on file extension
+function getContentType(filename) {
+  const extension = path.extname(filename).toLowerCase();
+  switch (extension) {
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    case '.png':
+      return 'image/png';
+    case '.gif':
+      return 'image/gif';
+    default:
+      return 'application/octet-stream';
+  }
+}
+
+
 async function schemaEnums(req, res) {
   try {
     const enums = {
@@ -178,7 +249,20 @@ const restaurantMenu = async (req, res) => {
 async function addItem(req, res) {
  
   const item = req.body;
+  const image = req.file
+
+  if (!req.user || !req.user.userId) {
+    return res.status(401).json({ message: 'Unauthorized: Missing or invalid token' });
+  }
+
+
   try {
+
+    if (typeof item.category === 'string') {
+      item.category = JSON.parse(item.category);
+    }
+    item.image = image.filename
+    console.log(item)
         const restaurantId = req.user.userId;
         const restaurant = await Restaurant.findById(restaurantId);
         if (!restaurant) {
@@ -198,14 +282,26 @@ async function addItem(req, res) {
         const newItem = await Item.create(item);
         restaurant.menu.push(newItem._id);
         await restaurant.save();
-  
-        return res
-          .status(201)
-          .json({ newItem, message: "Item added to your menu successfully!" });
-  } catch (err) {
-    res.status(422).json(err.message);
+
+        if (image) {
+          const destinationDirectory = path.join(__dirname, '../uploadItem');
+          
+          if (!fs.existsSync(destinationDirectory)) {
+            fs.mkdirSync(destinationDirectory, { recursive: true });
+        }
+          const imagePath = path.join(destinationDirectory, image.filename);
+          fs.copyFileSync(image.path, imagePath); //to manually copy the file to destination
+          console.log(imagePath);
+      }
+      if (!item.category || item.category.length === 0) {
+        return res.status(400).json({ error: 'Category is required.' });
+      } else {
+        return res.status(201).json({ newItem, message: "Item added to your menu successfully!" });
+  }} catch (err) {
+      console.error(err);
+      return res.status(422).json({ error: err.message })
+    }
   }
-}
 
 async function updateMenuItem(req, res) {
   try {
@@ -347,6 +443,8 @@ async function updateRestaurantProfile(req, res) {
 }
 
 module.exports = {
+  getItemImages,
+  getImages,
   schemaEnums,
   restaurantSignIn,
   restaurantSignUp,
