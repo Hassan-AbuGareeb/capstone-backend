@@ -113,6 +113,7 @@ try {
       setMessage("Item Created Successfully!"); 
       setRedirect(true);
     } else {
+      console.log(res.status)
       const contentType = res.headers.get('content-type');
       let errorMessage;
       if (contentType && contentType.includes('application/json')) {
