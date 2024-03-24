@@ -7,7 +7,7 @@ export default function NavbarBefore() {
             <p></p>
             <Link href='/restaurants/signup' style={styles.navbutton}>Sign Up</Link>
             <p></p>
-            <Link href='/customer' style={styles.navbutton}>Switch to customer</Link>
+            <Link href='/' style={styles.navbutton}>Switch to customer</Link>
             <p></p>
             <Link href='/restaurants' style={styles.navbutton}>Home</Link>
             <p></p>
