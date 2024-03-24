@@ -99,7 +99,7 @@ export default function Home() {
         </h2>
         <br></br>
 
-        <Link href="/customer/signUpIn">
+        <Link href="/customer/Restaurants">
           <button className="orderNow">
             ORDER NOW!
             <IoArrowForwardCircleOutline className="orderArrow" />
