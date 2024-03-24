@@ -601,8 +601,8 @@ body {
   
   .linkedin{
 margin-right: 3px;
-=======
-  /* =============================== ALL RESTAURANTS PAGE ======================================== */
+    }
+/* =============================== ALL RESTAURANTS PAGE ======================================== */
 
   .allRestaurants{
      text-align: center;
@@ -665,6 +665,50 @@ margin-right: 3px;
   font-size: 15px;
   padding-top: 20px;
 }
+/* ================================ ALL DISHES PAGE======================================== */
+.searchDish{
+  display: flex;
+  padding-right: 30px;
+  margin-left: 60px;
+  padding-right: 50px;
+  border: none;
+  outline: none;
+  font-style: italic;
+  font-size: 15px;
+  padding-top: 20px;
+}
+
+.allDishesCards{
+ display: flex;
+ flex-wrap: wrap;
+ align-items: center;
+ margin: 170px;;
+ margin-bottom: 100px;
+ margin-top: 10px;
+ gap: 2rem;
+}
+
+.allDishesInfo{
+  text-align: center;
+  background-color: whitesmoke;
+  flex-wrap: wrap;
+  border-color: rgb(96, 155, 7);
+  border-radius: 30px;
+  margin-bottom: 30px;
+  padding: 15px;
+}
+
+.allDishesInfo:hover{
+box-shadow: 0px 1px 12px 3px rgba(97,92,92,0.82);
+transform: scale(1.05, 1.05);
+transition: box-shadow 1s;
+
+}
+
+.info p{
+align-items: center;
+justify-content: center;
+}
 
 /* =============================== CONTACT US ================================ */
 
@@ -711,3 +755,4 @@ textarea
    font-size: 14px;   
 
 }
+

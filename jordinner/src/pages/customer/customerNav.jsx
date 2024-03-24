@@ -37,7 +37,7 @@ export default function CustomerNav() {
           )}
           {!haveToken && (
             <div className="nav-options">
-            <span><Link href="/restaurant">Switch To Restaurant </Link></span>
+            <span><Link href="/restaurants">Switch To Restaurant </Link></span>
             <button className='signInButton'><Link href="/customer/SignUpIn">Sign In </Link></button>
             </div>
           )}

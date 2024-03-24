@@ -3,6 +3,7 @@ import CustomerNav from "./customerNav";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Footer from "./Footer";
+import Image from "next/image";
 
 export default function Dishes() {
   const [dishes, setDishes] = useState([]);
@@ -76,12 +77,15 @@ export default function Dishes() {
   const filteredDishesCards = filteredDishes.map((dish) => {
     return (
       <Link href={`/customer/${dish.restaurantId}`}>
-      <div className="flex flex-col border-2 border-green-400 rounded-md">
-        {/* dish image */}
-        <h1>{dish.name}</h1>
-        <h1>{dish.price.$numberDecimal}</h1>
+      <div className="allDishesInfo">
+      <Image className="dishImage" src={dish.image} alt="" objectFit="contain" />
+      <div className='info'>
+      <p className="dishName">{dish.name}</p>
+      <p>JOD {dish.price.$numberDecimal}</p>
+      </div>
       </div>
       </Link>
+
     );
   });
 
@@ -89,16 +93,14 @@ export default function Dishes() {
   return (
     <div>
       <CustomerNav />
-      <div>{/* some big image here with text on it */}</div>
+      <div className="allDishesCards"></div>
       {/* search modifiers */}
-      <div className="flex justify-around"></div>
-      <div className="flex felx-row gap-3">
-        <label>search</label>
-        <input type="text" value={search} onChange={handleSearchChange} />
-      </div>
+      <div></div>
+        <input className="searchDish" type="text" value={search} onChange={handleSearchChange} placeholder="Search Dish Here..."/>
       {/* search bar */}
       <div>
         <select
+          className="searchDish"
           name="categories"
           defaultValue={"All"}
           onChange={(event) => setCategory(event.target.value)}
@@ -114,9 +116,10 @@ export default function Dishes() {
       </div>
       {/* filter by categories */}
       {/* actual dishes */}
-      <div className="flex gap-5">{filteredDishesCards}</div>
+      <div>
+        <div className="allDishesCards">{filteredDishesCards}</div>
+        </div>
       <Footer/>
-
     </div>
   );
 
