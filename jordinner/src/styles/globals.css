@@ -236,10 +236,9 @@ body {
   }
   
   .restaurantImg{
-      width: 250px;
-      height: 200px;
+      width: 300px;
+      height: 225px;
       position: relative;
-      margin-top: 20px;
       border-radius: 30px;
   }
   
