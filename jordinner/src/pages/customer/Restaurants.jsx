@@ -20,7 +20,7 @@ function Restaurants() {
   .map((restaurant) => (
     <Link key={restaurant._id} href={`/customer/Restaurants/${restaurant._id}`}>
       <div className="allRestaurantInfo">
-        <Image className="allRestaurantsImg" src={restaurant.image} alt="" objectFit="contain" />
+      <img className="allRestaurantsImg" src="http://localhost:3001/restaurants/images/${restaurant.image} alt={}"/>
         <div className='info'>
           <p className="restuarantTitle">{restaurant.title}</p>
           <p>{restaurant.location[0]}</p>
