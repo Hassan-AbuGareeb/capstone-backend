@@ -55,12 +55,7 @@ export default function Home() {
       pathname: `/customer/${restaurant._id}`,
     }}>
       <div key={restaurant.title} className="restaurantInfo">
-        <Image
-          className="restaurantImg"
-          src={restaurant.image}
-          alt=""
-          objectFit="contain"
-        ></Image>
+       <img className="restaurantImg" src="http://localhost:3001/restaurants/images/${restaurant.image} alt={}"/>
         <p className="restuarantTitle">{restaurant.title}</p>
         <p>{restaurant.location[0]}</p>
         <p className="rating">
