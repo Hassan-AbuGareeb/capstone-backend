@@ -43,11 +43,10 @@ export default function App({ Component, pageProps }) {
   }
   return (
     <>
-      {/* <NavbarBefore /> */}
       <TokenContext.Provider value={{ haveToken, setHaveToken }}>
-        {/* <CustomerNav /> */}
         <Component {...pageProps} />
       </TokenContext.Provider>
+      <Footer />
     </>
   );
 }

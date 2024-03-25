@@ -43,7 +43,6 @@ function ContactUs() {
        </form>
        </div>
        </section>
-       <Footer/>
   </div>
 );
 };

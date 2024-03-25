@@ -47,16 +47,25 @@ const Profile = () => {
       <div>
         <CustomerNav />
       </div>
+      
       {!updateProfile && (
-        <div style={{ margin: "100px auto" }}>
-          <h1>Profile</h1>
-          <h3>first name:{firstName}</h3>
-          <h3>last name: {lastName}</h3>
-          <h3>age: {age}</h3>
-          <h3>phone: {phoneNumber}</h3>
-          <h3>location: {location}</h3>
-          <h3>orders: {orders}</h3>
+        <section className="container">
+        <div className="header">
+          <div className="text">Profile</div>
+          <div className="underline"></div>
+        </div>
+        <div className="inputs" style={{margin:"0px 0px 0px 250px"}} >
+          <p>first name: {firstName}</p>
+          <p>last name: {lastName}</p>
+          <p>age: {age}</p>
+          <p>phone: {phoneNumber}</p>
+          <p>location: {location}</p>
+          <p>orders: {orders &&orders.map(order=>{
+            return <h1>order</h1>
+          })}</p>
+
           <button
+          className="submit"
             onClick={() => {
               setUpdateProfile(true);
             }}
@@ -64,6 +73,8 @@ const Profile = () => {
             Update profile
           </button>
         </div>
+
+      </section>
       )}
       {updateProfile && (
         <UpdateCustomerProfile
@@ -72,6 +83,7 @@ const Profile = () => {
         />
       )}
     </div>
+    
   );
 };
 

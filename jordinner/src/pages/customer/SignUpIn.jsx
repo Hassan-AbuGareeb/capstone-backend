@@ -294,7 +294,6 @@ function SignUpIn() {
           <div className="error">{errorMessage}</div>
         </div>
       </section>
-      <Footer />
     </div>
   );
 }

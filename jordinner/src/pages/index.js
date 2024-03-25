@@ -35,7 +35,7 @@ export default function Home() {
 
   const dishesCards = dishes.map((dish) => (
     <Link href={`/customer/${dish.restaurantId}`}>
-      <div key={dish.name} className="dishInfo">
+      <div key={dish.name} className="dishInfo"  style={{maxWidth:"300px", height: "400px"}}>
         <img
           className="dishImage"
           src={`http://localhost:3001/restaurants/itemimages/${dish.image}`}
@@ -55,7 +55,7 @@ export default function Home() {
         pathname: `/customer/${restaurant._id}`,
       }}
     >
-      <div key={restaurant.title} className="restaurantInfo">
+      <div key={restaurant.title} className="restaurantInfo"  style={{maxWidth:"300px", height: "400px"}}>
         <img
           className="restaurantImg"
           src={`http://localhost:3001/restaurants/images/${restaurant.image}`}
@@ -68,8 +68,8 @@ export default function Home() {
           {restaurant.rating}/5
         </p>
         <p style={{ lineBreak: "auto" }}>
-          {restaurant.category.map((category,index) => {
-            return <span>{category}{index===category.length-1?"":', '}</span>;
+          {restaurant.category.map((category) => {
+            return <span>{category}, </span>
           })}
         </p>
       </div>
