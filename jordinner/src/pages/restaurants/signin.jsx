@@ -81,9 +81,11 @@ export default function SignIn() {
   return (
     <div>
       <NavbarBefore/>
-      <p>Sign In</p>
-      <form onSubmit={handleSubmit}>
-        <label>Email</label>
+      <div className='container'>
+      <div className='form-container-signin'></div>
+      <p className='word'>Sign In</p>
+      <form className='forming' onSubmit={handleSubmit}>
+        <label className='labelsall'>Email:</label>
         <input
           type="email"
           name="email"
@@ -91,7 +93,7 @@ export default function SignIn() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <label>Password</label>
+        <label className='labelsall'>Password:</label>
         <input
           type="password"
           name="password"
@@ -101,7 +103,8 @@ export default function SignIn() {
         />
         <button type="submit">Sign In</button>
       </form>
-      <h2>{successMessage}</h2>
+      <h2 className='error-message'>{successMessage}</h2>
+      </div>
     </div>
   );
   }

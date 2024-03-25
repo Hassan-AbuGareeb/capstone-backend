@@ -191,6 +191,7 @@ if (isAuthenticated) {
     return (
         <div>
             <NavbarBefore/>
+            <div className='form-container'>
             <p>Sign Up</p>
             <form onSubmit={handleSubmit}>
                 <label>Employer Identification Number</label>
@@ -200,13 +201,13 @@ if (isAuthenticated) {
                 <label>Email</label>
                 <input type='text' name='email' value={admin.email} onChange={handleChange} required />
                 <label>Password</label>
-                <input type='text' name='password' value={admin.password} onChange={handleChange} required />
+                <input type='password' name='password' value={admin.password} onChange={handleChange} required />
                 <label>Location</label>
                 <button type="button" onClick={toggleLocation}>Select Location</button>
                 {showLocations && (
-                    <div>
+                    <div className='checkbox-container'>
                         {location.map(loc => (
-                            <div key={loc}>
+                            <div className='something' key={loc}>
                                 <input type='checkbox'name='location' value={loc} checked={admin.location.includes(loc)}
                                 onChange={handleLocationChange} required/>
                                 <label>{loc}</label>
@@ -219,9 +220,9 @@ if (isAuthenticated) {
                 <label>Categories</label>
                 <button type='button' onClick={toggleCategory}>Select Category</button>
                 {showCategories && (
-                    <div>
+                    <div className='checkbox-container'>
                         {category.map(categ => (
-                           <div key={categ}>
+                           <div className='something' key={categ}>
                                 <input type='checkbox' name='category' value={categ} checked={admin.category.includes(categ)}
                                 onChange={handleCategoryChange} />
                                 <label>{categ}</label>
@@ -235,6 +236,7 @@ if (isAuthenticated) {
                 <button type='submit'>Sign Up</button>
             </form>
             <h2>{successMessage}</h2>
+            </div>
         </div>
     )
 }
