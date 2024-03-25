@@ -384,12 +384,7 @@ async function checkToken(req, res) {
 
 async function getRestaurantData(req, res) {
   try {
-    const customerId = req.user.userId;
     const restaurantId = req.params.restaurantId;
-    if (!customerId) {
-      return res.status(403).json("Authentication Error");
-    }
-
     if (!restaurantId) {
       return res.status(403).json("send a proper id");
     }

@@ -18,14 +18,16 @@ function Restaurants() {
     restaurant.title.toLowerCase().includes(search.toLowerCase())
   )
   .map((restaurant) => (
-    <Link key={restaurant._id} href={`/customer/Restaurants/${restaurant._id}`}>
-      <div className="allRestaurantInfo">
-      <img className="allRestaurantsImg" src="http://localhost:3001/restaurants/images/${restaurant.image} alt={}"/>
+    <Link key={restaurant._id} href={`/customer/${restaurant._id}`}>
+      <div className="allRestaurantInfo" style={{maxWidth:"300px", height: "400px"}}>
+      <img className="allRestaurantsImg" src={`http://localhost:3001/restaurants/images/${restaurant.image}`} alt={""}/>
         <div className='info'>
           <p className="restuarantTitle">{restaurant.title}</p>
           <p>{restaurant.location[0]}</p>
           <p className="rating"><AiFillStar className="ratingStar" />{restaurant.rating}/5</p>
-          <p>{restaurant.category}</p>
+          <p>{restaurant.category&& restaurant.category.map((category)=>{
+            return <span>{category}, </span>
+          })}</p>
         </div>
       </div>
     </Link>
@@ -54,7 +56,7 @@ function Restaurants() {
       <div><h1 className="allRestaurants"></h1></div>
       
       <div className="allRestaurantsCards" >
-      <div><div >
+      <div><div>
           <input
             className='searchRestaurants'
             type="text"
@@ -67,7 +69,6 @@ function Restaurants() {
          {/* Render restuarants here */}
           {restaurantsCards.length > 0 ? restaurantsCards : <p>No restaurants found.</p>}
         </div>
-        <Footer/>
     </div>
     
   )

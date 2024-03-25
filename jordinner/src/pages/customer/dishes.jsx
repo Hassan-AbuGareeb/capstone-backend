@@ -77,8 +77,8 @@ export default function Dishes() {
   const filteredDishesCards = filteredDishes.map((dish) => {
     return (
       <Link href={`/customer/${dish.restaurantId}`}>
-      <div className="allDishesInfo">
-      <Image className="dishImage" src={dish.image} alt="" objectFit="contain" />
+      <div className="allDishesInfo" style={{maxWidth:"300px", height: "400px"}}>
+      <img className="dishImage" src={`http://localhost:3001/restaurants/itemimages/${dish.image}`} alt="" objectFit="contain" />
       <div className='info'>
       <p className="dishName">{dish.name}</p>
       <p>JOD {dish.price.$numberDecimal}</p>
@@ -119,7 +119,6 @@ export default function Dishes() {
       <div>
         <div className="allDishesCards">{filteredDishesCards}</div>
         </div>
-      <Footer/>
     </div>
   );
 
