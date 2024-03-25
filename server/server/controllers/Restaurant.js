@@ -121,7 +121,6 @@ async function restaurantSignUp(req, res) {
     }
       const imagePath = path.join(destinationDirectory, image.filename);
       fs.copyFileSync(image.path, imagePath); //to manually copy the file to destination
-      console.log(imagePath);
   }
   if (!admin.location || admin.location.length === 0) {
     return res.status(400).json({ error: 'Location is required.' });
@@ -167,18 +166,6 @@ async function restaurantSignIn(req, res) {
 async function restaurantSignOut(req, res) {
   try {
     const email = req.headers.email;
-    console.log(email)
-    //to help with the testing
-    // const token = req.user.userId
-    // const header = req.headers.authorization
-    // if (token !== header) {
-    //   return res.status(401).json({ message: "Unauthorized access" });
-    // }
-
-    // if (!signedInUsers[email]) {
-    //   return res.status(422).json({ message: "Already signed out" });
-    // }
-
     delete signedInUsers[email];
     return res.status(200).json({ message: "Signed out successfully!" });
   } catch (err) {
@@ -262,7 +249,6 @@ async function addItem(req, res) {
       item.category = JSON.parse(item.category);
     }
     item.image = image.filename
-    console.log(item)
         const restaurantId = req.user.userId;
         const restaurant = await Restaurant.findById(restaurantId);
         if (!restaurant) {
@@ -291,7 +277,6 @@ async function addItem(req, res) {
         }
           const imagePath = path.join(destinationDirectory, image.filename);
           fs.copyFileSync(image.path, imagePath); //to manually copy the file to destination
-          console.log(imagePath);
       }
       if (!item.category || item.category.length === 0) {
         return res.status(400).json({ error: 'Category is required.' });

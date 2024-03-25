@@ -20,7 +20,6 @@ const Menu = () => {
   } else {
     setIsAuthenticated(true)
     const token = newCollection.token
-    console.log(token)
     fetch('http://localhost:3001/restaurants/menu', {
     method: 'GET',
     headers: {
@@ -36,7 +35,6 @@ const Menu = () => {
     });
   }
 }, []);
-console.log(items)
   if (!isAuthenticated) {
     return <h2 style={{ color: 'red' }}>{message}</h2>
   } else {

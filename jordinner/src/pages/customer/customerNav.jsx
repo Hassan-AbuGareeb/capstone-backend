@@ -24,7 +24,7 @@ export default function CustomerNav() {
       <div className="nav-options">
         <h1 className="logo">
           <Link href="/">
-            <MdFoodBank className="logoImg" />| jordinner
+            <MdFoodBank className="logoImg" />| JorDinner
           </Link>
         </h1>
         <span>

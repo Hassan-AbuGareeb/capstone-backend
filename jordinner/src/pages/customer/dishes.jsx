@@ -89,7 +89,6 @@ export default function Dishes() {
     );
   });
 
-  // const filteredDishes
   return (
     <div>
       <CustomerNav />
@@ -114,8 +113,6 @@ export default function Dishes() {
           })}
         </select>
       </div>
-      {/* filter by categories */}
-      {/* actual dishes */}
       <div>
         <div className="allDishesCards">{filteredDishesCards}</div>
         </div>

@@ -95,10 +95,10 @@ export default function Home() {
       </div>
       <div className="welcomeContainer">
         <h1 className="welcomingHeader">
-          Life tastes better with <span className="title">Jordinner!</span>
+          Life Tastes Better With <span className="title">JorDinner!</span>
         </h1>
         <h2 className="welcomingText">
-          Craving your next delicious Jordanian adventure?
+          Jordan's Finest Restaurants!
         </h2>
         <br></br>
 

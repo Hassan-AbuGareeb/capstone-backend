@@ -37,14 +37,12 @@ const UpdateCustomerProfile = ({ customerData, setUpdateProfile }) => {
           ...tempErrors,
           [property]: `Invalid ${property}`,
         };
-        // console.log(tempErrors);
       } else {
         let tempErrors = { ...errorMessages };
         delete tempErrors[property];
         setErrorMessages({ ...tempErrors });
       }
     setErrorMessages({ ...tempErrors });
-    console.log(errorMessages);
     if (!phoneRegex.test(updatedCustomerData.phoneNumber)) {
       setInvalidPhoneNumber(true);
       return;
@@ -71,7 +69,6 @@ const UpdateCustomerProfile = ({ customerData, setUpdateProfile }) => {
         }
       );
       const respCheck = await updateResponse.json();
-      console.log(respCheck);
       alert("profile updated successfully");
       setUpdateProfile(false);
     } catch (err) {

@@ -44,7 +44,6 @@ export default function SignIn() {
       return
     }
     const restaurantId = thisRestaurant._id
-    console.log(restaurantId)
      
     try {
       const response = await fetch('http://localhost:3001/restaurants/signin', {
@@ -56,15 +55,12 @@ export default function SignIn() {
       });
       const data = await response.json()
       const token = data.token
-      console.log(token)
 
       if (response.status === 200) {
         setSuccessMessage('Sign In Successful!');
-        console.log('Signed in:', { email, password });
         const collection = {'email': email, 'restaurantId':restaurantId, 'token': token} 
         localStorage.setItem('collection', JSON.stringify(collection))
         window.location.href = `/restaurants/${restaurantId}`;
-        console.log(restaurantId)
 
       } else {
         setSuccessMessage('Wrong email or password');

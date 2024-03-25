@@ -65,8 +65,6 @@ function handleImage(event) {
           ...prevState,
           image: file.name
       }))
-  } else {
-      console.log('hello')
   }
 }
 
@@ -101,7 +99,6 @@ try {
   const collection = localStorage.getItem('collection')
   const newCollection = JSON.parse(collection)
   const token = newCollection.token
-  console.log(token)
   const res = await fetch('http://localhost:3001/restaurants/menu/additem', {
       method: 'POST',
       body: formData,
@@ -113,7 +110,6 @@ try {
       setMessage("Item Created Successfully!"); 
       setRedirect(true);
     } else {
-      console.log(res.status)
       const contentType = res.headers.get('content-type');
       let errorMessage;
       if (contentType && contentType.includes('application/json')) {
@@ -170,7 +166,6 @@ function toggleCategory() {
   if (!isAuthenticated) {
     return <h2 style={{ color: 'red' }}>{message}</h2>
   } else {
-    console.log(item)
   return (
     <div>
       <NavbarAfter/>

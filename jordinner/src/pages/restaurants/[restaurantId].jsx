@@ -9,8 +9,8 @@ const SingleRestaurant = () => {
   const { restaurantId } = router.query;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [message, setMessage] = useState('');
-  const [hasCreatedItem, setHasCreatedItem] = useState(false); // Initialize hasCreatedItem state
-  const [isReadyToTakeOrders, setIsReadyToTakeOrders] = useState(false); // Initialize isReadyToTakeOrders state
+  const [hasCreatedItem, setHasCreatedItem] = useState(false); 
+  const [isReadyToTakeOrders, setIsReadyToTakeOrders] = useState(false); 
 
   useEffect(() => {
     const collection = localStorage.getItem('collection');

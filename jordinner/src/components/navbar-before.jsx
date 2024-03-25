@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function NavbarBefore() {
     return (
-        <div style={styles.navbar}> {/* Apply styles directly */}
+        <div style={styles.navbar}>
             <Link href='/restaurants/signin' style={styles.navbutton}>Sign In</Link>
             <p></p>
             <Link href='/restaurants/signup' style={styles.navbutton}>Sign Up</Link>

@@ -35,19 +35,19 @@ function Policies() {
 
 
              <br></br>
-             5. **Third-Party Links:** The Service may contain links to third-party websites or services that are not owned or controlled by Jordinner. Jordinner has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third-party websites or services. You further acknowledge and agree that Jordinner shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods, or services available on or through any such websites or services.
+             5. **Third-Party Links:** The Service may contain links to third-party websites or services that are not owned or controlled by JorDinner. JorDinner has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third-party websites or services. You further acknowledge and agree that Jordinner shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods, or services available on or through any such websites or services.
 
 
              <br></br>
-             6. **Disclaimer of Warranties:** The Service is provided on an "as is" and "as available" basis, without any warranties of any kind, either express or implied. Jordinner does not warrant that the Service will be uninterrupted or error-free, that defects will be corrected, or that the Service is free of viruses or other harmful components.
+             6. **Disclaimer of Warranties:** The Service is provided on an "as is" and "as available" basis, without any warranties of any kind, either express or implied. JorDinner does not warrant that the Service will be uninterrupted or error-free, that defects will be corrected, or that the Service is free of viruses or other harmful components.
 
 
              <br></br>
-             7. **Limitation of Liability:** In no event shall Jordinner, its officers, directors, employees, or agents be liable to you for any indirect, incidental, special, consequential, or punitive damages arising out of or relating to your use of or inability to use the Service.
+             7. **Limitation of Liability:** In no event shall JorDinner, its officers, directors, employees, or agents be liable to you for any indirect, incidental, special, consequential, or punitive damages arising out of or relating to your use of or inability to use the Service.
 
 
              <br></br>
-             8. **Changes to Terms:** Jordinner reserves the right to modify or replace these Terms of Use at any time. If a revision is material, Jordinner will provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at Jordinner's sole discretion.
+             8. **Changes to Terms:** JorDinner reserves the right to modify or replace these Terms of Use at any time. If a revision is material, JorDinner will provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at Jordinner's sole discretion.
 
 
              <br></br>

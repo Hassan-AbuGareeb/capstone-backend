@@ -70,15 +70,11 @@ function handleImage(event) {
             ...prevState,
             image: file.name
         }))
-    } else {
-        console.log('hello')
     }
 }
 
 async function handleSubmit(event) {
     event.preventDefault()
-
-    console.log(admin)
 
     const formData = new FormData()
     formData.append('ein', admin.ein);
