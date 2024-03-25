@@ -62,7 +62,7 @@ export default function RestaurantPage() {
 
   const menuItemsCards=menu &&menu.map(dish=>{
     return(
-      <div className="dishInfo"  style={{maxWidth:"300px", height: "400px"}}>
+      <div className="dishInfo"  style={{maxWidth:"300px", height: "450px"}}>
         <img
           className="dishImage"
           src={`http://localhost:3001/restaurants/itemimages/${dish.image}`}
@@ -78,7 +78,7 @@ export default function RestaurantPage() {
         {haveToken && (
           <button
           className="submit"
-          style={{marginLeft:"90px"}}
+          style={{marginLeft:"75px", marginTop:"15px"}}
             onClick={() => {
               addToCart(dish._id);
             }}
