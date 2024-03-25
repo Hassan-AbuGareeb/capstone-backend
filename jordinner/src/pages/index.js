@@ -164,7 +164,6 @@ export default function Home() {
           onClick={() => scrollSlider("restaurantSlider", 1)}
         />
       </div>
-      <Footer />
     </div>
   );
 }
