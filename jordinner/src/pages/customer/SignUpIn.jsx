@@ -209,7 +209,7 @@ function SignUpIn() {
             <div className="input">
               <HiMiniDevicePhoneMobile className="icon" />
               <input
-                type="number"
+                type="text"
                 name="phoneNumber"
                 placeholder="Phone Number"
                 required
@@ -259,8 +259,13 @@ function SignUpIn() {
           {action === "Sign Up" && (
             <div className="terms">
               <input type="checkbox" required />
-              <p><Link href='/customer/Policies'>
-                By proceeding, I agree to the <span className="policy">terms of use and privacy policies.</span></Link>
+              <p>
+                <Link href="/customer/Policies">
+                  By proceeding, I agree to the{" "}
+                  <span className="policy">
+                    terms of use and privacy policies.
+                  </span>
+                </Link>
               </p>
             </div>
           )}
@@ -289,8 +294,7 @@ function SignUpIn() {
           <div className="error">{errorMessage}</div>
         </div>
       </section>
-      <Footer/>
-
+      <Footer />
     </div>
   );
 }

@@ -5,6 +5,7 @@ export default function NavbarAfter() {
   async function handleSignOut() {
       const collection = localStorage.getItem('collection');
       const newCollection = JSON.parse(collection)
+      const restaurantId = newCollection.restaurantId
       const email = newCollection.email
       console.log(email)
 

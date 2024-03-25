@@ -31,7 +31,7 @@ export default function CustomerNav() {
           <Link href="/customer/dishes">Dishes</Link>
         </span>
         <span>
-          <Link href="/customer/restaurants">Restaurants</Link>
+          <Link href="/customer/Restaurants">Restaurants</Link>
         </span>
         {/* needs conditional rendering if the user isn't signed in */}
         {haveToken && (
@@ -50,11 +50,11 @@ export default function CustomerNav() {
         {!haveToken && (
           <div className="nav-options">
             <span>
-              <Link href="/restaurant">Switch To Restaurant </Link>
+              <Link href="/restaurants">Switch To Restaurant </Link>
             </span>
-            <button className="signInButton">
-              <Link href="/customer/SignUpIn">Sign In </Link>
-            </button>
+            <Link href="/customer/SignUpIn">
+              <button className="signInButton">Sign In </button>
+            </Link>
           </div>
         )}
       </div>

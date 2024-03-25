@@ -10,7 +10,6 @@ import { AiFillStar } from "react-icons/ai";
 import CustomerNav from "./customer/customerNav";
 import Footer from "./customer/Footer";
 
-
 export default function Home() {
   const [dishes, setDishes] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
@@ -37,12 +36,12 @@ export default function Home() {
   const dishesCards = dishes.map((dish) => (
     <Link href={`/customer/${dish.restaurantId}`}>
       <div key={dish.name} className="dishInfo">
-        <Image
+        <img
           className="dishImage"
-          src={dish.image}
+          src={`http://localhost:3001/restaurants/itemimages/${dish.image}`}
           alt=""
           objectFit="contain"
-        ></Image>
+        ></img>
         <p className="dishName">{dish.name}</p>
         <p>{dish.description}</p>
         <p>JOD {dish.price.$numberDecimal}</p>
@@ -51,23 +50,28 @@ export default function Home() {
   ));
 
   const restaurantsCards = restaurants.map((restaurant) => (
-    <Link  href={{
-      pathname: `/customer/${restaurant._id}`,
-    }}>
+    <Link
+      href={{
+        pathname: `/customer/${restaurant._id}`,
+      }}
+    >
       <div key={restaurant.title} className="restaurantInfo">
-        <Image
+        <img
           className="restaurantImg"
-          src={restaurant.image}
-          alt=""
-          objectFit="contain"
-        ></Image>
+          src={`http://localhost:3001/restaurants/images/${restaurant.image}`}
+          alt={`${restaurant.image}`}
+        />
         <p className="restuarantTitle">{restaurant.title}</p>
         <p>{restaurant.location[0]}</p>
         <p className="rating">
           <AiFillStar className="ratingStar" />
           {restaurant.rating}/5
         </p>
-        <p>{restaurant.category}</p>
+        <p style={{ lineBreak: "auto" }}>
+          {restaurant.category.map((category,index) => {
+            return <span>{category}{index===category.length-1?"":', '}</span>;
+          })}
+        </p>
       </div>
     </Link>
   ));
@@ -75,8 +79,7 @@ export default function Home() {
   function scrollSlider(sliderId, direction) {
     const slider = document.getElementById(sliderId);
     const scrollAmount = direction * 300;
-    slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-
+    slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
   }
 
   return (
@@ -98,7 +101,8 @@ export default function Home() {
           Craving your next delicious Jordanian adventure?
         </h2>
         <br></br>
-        <Link href="/customer/signUpIn">
+
+        <Link href="/customer/Restaurants">
           <button className="orderNow">
             ORDER NOW!
             <IoArrowForwardCircleOutline className="orderArrow" />
@@ -134,6 +138,7 @@ export default function Home() {
         <div className="CardsWrapper" id="dishSlider">
           {dishesCards}
         </div>
+
         <MdKeyboardArrowRight
           className="dishArrow"
           onClick={() => scrollSlider("dishSlider", 1)}
@@ -159,8 +164,7 @@ export default function Home() {
           onClick={() => scrollSlider("restaurantSlider", 1)}
         />
       </div>
-      <Footer/>
-
+      <Footer />
     </div>
   );
 }

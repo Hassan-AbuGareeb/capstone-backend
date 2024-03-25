@@ -1,8 +1,14 @@
 import "@/styles/globals.css";
+import '@/styles/menu.css'
 import { createContext, useEffect, useState } from "react";
 import NavbarBefore from "@/components/navbar-before";
 import CustomerNav from "./customer/customerNav";
 import Footer from "./customer/Footer";
+import AboutUs from "./customer/AboutUs";
+
+import Restaurants from "./customer/Restaurants";
+import ContactUs from "./customer/ContactUs";
+
 // import ReactDOM from 'react-dom';
 export const TokenContext = createContext();
 
