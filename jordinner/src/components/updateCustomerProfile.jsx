@@ -18,10 +18,6 @@ const UpdateCustomerProfile = ({ customerData, setUpdateProfile }) => {
   ];
 
   function handleFieldChange(event) {
-    if (event.target.name === "phone") {
-      const phoneRegex = /^\d{10}$/;
-      setInvalidPhoneNumber(!phoneRegex.test(event.target.value));
-    }
     setUpdatedCustomerData({
       ...updatedCustomerData,
       [event.target.name]: event.target.value,
@@ -30,17 +26,29 @@ const UpdateCustomerProfile = ({ customerData, setUpdateProfile }) => {
 
   function handleFormSubmit(event) {
     event.preventDefault();
+    const phoneRegex = /^\d{10}$/;
+    let tempErrors = {};
     for (let property in updatedCustomerData)
-      if (updatedCustomerData[property].length < 1) {
-        setErrorMessages({
-          ...errorMessages,
+      if (
+        !updatedCustomerData[property] ||
+        updatedCustomerData[property].length < 1
+      ) {
+        tempErrors[property] = {
+          ...tempErrors,
           [property]: `Invalid ${property}`,
-        });
+        };
+        // console.log(tempErrors);
       } else {
         let tempErrors = { ...errorMessages };
         delete tempErrors[property];
         setErrorMessages({ ...tempErrors });
       }
+    setErrorMessages({ ...tempErrors });
+    console.log(errorMessages);
+    if (!phoneRegex.test(updatedCustomerData.phoneNumber)) {
+      setInvalidPhoneNumber(true);
+      return;
+    }
     if (Object.keys(errorMessages) > 0) {
       return;
     }
@@ -72,59 +80,118 @@ const UpdateCustomerProfile = ({ customerData, setUpdateProfile }) => {
   }
 
   return (
-    <div style={{ margin: "100px auto" }}>
-      <form onSubmit={handleFormSubmit}>
-        <h1>Update Profile</h1>
-        <div>
-          <label>first name:</label>
-          <input
-            type="text"
-            name="firstName"
-            value={updatedCustomerData.firstName}
-            onChange={handleFieldChange}
-          />
-        </div>
-        <div>
-          <label>last name:</label>
-          <input
-            type="text"
-            name="lastName"
-            value={updatedCustomerData.lastName}
-            onChange={handleFieldChange}
-          />
-        </div>
-        <div>
-          <label>Phone number:</label>
-          <input
-            type="text"
-            name="phoneNumber"
-            value={updatedCustomerData.phoneNumber}
-            onChange={handleFieldChange}
-          />
-          {invalidPhoneNumber && <span>invalid phone number</span>}
-        </div>
-        <div>
-          <label>Location:</label>
-          <select
-            defaultValue={updatedCustomerData.location}
-            name="location"
-            onChange={handleFieldChange}
+    <section className="container">
+      <div className="header">
+        <div className="text">Update Profile</div>
+        <div className="underline"></div>
+      </div>
+      <div>
+        <form
+          className="inputs"
+          style={{ padding: "0px 20px" }}
+          onSubmit={handleFormSubmit}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+            }}
           >
-            {locations.map((location) => {
-              return <option value={location}>{location}</option>;
-            })}
-          </select>
-        </div>
-        <input type="submit" />
-      </form>
-      <button
-        onClick={() => {
-          setUpdateProfile(false);
-        }}
-      >
-        Go back
-      </button>
-    </div>
+            <label style={{ fontSize: "17px" }}>first name:</label>
+            <input
+              type="text"
+              name="firstName"
+              className="input"
+              style={{ paddingLeft: "20px", fontSize: "17px" }}
+              value={updatedCustomerData.firstName}
+              onChange={handleFieldChange}
+            />
+            {errorMessages.firstName && <span>invalid first name</span>}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+            }}
+          >
+            <label style={{ fontSize: "17px" }}>last name:</label>
+            <input
+              type="text"
+              name="lastName"
+              className="input"
+              style={{ paddingLeft: "20px", fontSize: "17px" }}
+              value={updatedCustomerData.lastName}
+              onChange={handleFieldChange}
+            />
+            {errorMessages.lastName && <span>invalid last name</span>}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+            }}
+          >
+            <label style={{ fontSize: "17px" }}>
+              Phone <br />
+              number:
+            </label>
+            <input
+              type="text"
+              name="phoneNumber"
+              className="input"
+              style={{
+                paddingLeft: "20px",
+                fontSize: "17px",
+                marginLeft: "43px",
+              }}
+              value={updatedCustomerData.phoneNumber}
+              onChange={handleFieldChange}
+            />
+            {invalidPhoneNumber && <span>invalid phone number</span>}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+            }}
+          >
+            <label style={{ fontSize: "17px" }}>Location:</label>
+            <select
+              defaultValue={updatedCustomerData.location}
+              name="location"
+              className="input"
+              style={{ paddingLeft: "20px", fontSize: "17px", width: "425px" }}
+              onChange={handleFieldChange}
+            >
+              {locations.map((location) => {
+                return <option value={location}>{location}</option>;
+              })}
+            </select>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              margin: "25px 0px",
+            }}
+          >
+            <button
+              className="submit gray"
+              onClick={() => {
+                setUpdateProfile(false);
+              }}
+            >
+              Go back
+            </button>
+            <input type="submit" className="submit" value="Update" />
+          </div>
+        </form>
+      </div>
+    </section>
   );
 };
 

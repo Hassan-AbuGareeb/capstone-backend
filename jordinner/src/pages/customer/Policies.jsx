@@ -1,9 +1,10 @@
-import React from 'react'
-import CustomerNav from './customerNav'
-import Footer from './Footer'
+import React from "react";
+import CustomerNav from "./customerNav";
+import Footer from "./Footer";
 
 function Policies() {
   return (
+
     <div >
         <CustomerNav/>
         <div className='conditions'>
@@ -89,7 +90,8 @@ function Policies() {
         </div>
         <Footer/>
     </div>
-  )
+  );
 }
 
-export default Policies
+export default Policies;
+
