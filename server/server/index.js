@@ -20,7 +20,7 @@ app.use("/customer", customerRouter);
 app.use("/restaurants", restaurantRouter);
 
 app.listen(3003, () => {
-  console.log(`Server listening on port ${port}`);
+  console.log(`Server listening on port ${3003}`);
   connectToMongo();
 });
 
