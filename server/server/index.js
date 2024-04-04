@@ -10,10 +10,6 @@ require("dotenv").config();
 const connectToMongo = require("./db/connection");
 
 const app = express();
-const port =
-  process.env.NODE_ENV === "test"
-    ? process.env.NODE_LOCAL_TEST_PORT
-    : process.env.NODE_LOCAL_PORT;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -23,7 +19,7 @@ app.use(express.json());
 app.use("/customer", customerRouter);
 app.use("/restaurants", restaurantRouter);
 
-app.listen(port, () => {
+app.listen(3003, () => {
   console.log(`Server listening on port ${port}`);
   connectToMongo();
 });
